@@ -1,0 +1,119 @@
+---
+// Base layout — all pages extend this.
+// Defines: html shell, font preconnects, palette CSS variables, gradient background.
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const {
+  title = 'Sebastian Rogala — AI-native product engineer',
+  description = 'Independent product engineer building AI-directed delivery systems. Designer of Pipeforge — Claude Code orchestration with MCP-backed context engineering.',
+} = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="generator" content={Astro.generator} />
+
+    <title>{title}</title>
+    <meta name="description" content={description} />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={Astro.url.href} />
+
+    <!-- Fonts: Source Serif 4, Inter, JetBrains Mono -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,wght@0,400;0,500;1,400&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  </head>
+
+  <body>
+    <slot />
+  </body>
+</html>
+
+<style is:global>
+  /* ─── Palette (R6 — Notebook brown) ─────────────────────────────── */
+  :root {
+    --bg-base: #1f1a14;        /* tinted warm-brown dark */
+    --bg-raise: #26201a;       /* row hover, surface lift */
+    --fg: #ede3d1;             /* warm paper, body text */
+    --fg-nav: #beb6a7;         /* ~78% of fg — nav text + icons + wordmark */
+    --muted: #8c8270;          /* secondary text, sidenotes */
+    --rule: #2d2620;           /* section dividers */
+    --rule-2: #372f26;         /* heavier rule, status pill border */
+    --accent: #7db36c;         /* muted working green — links, accents, hover */
+    --live-dot: #c8ae6a;       /* warm paper-yellow live indicator */
+    --status-bg: #1f2c1e;      /* availability pill background */
+    --status-fg: #a6d49f;      /* availability pill text + dot */
+
+    /* Typography stacks */
+    --serif: 'Source Serif 4', 'Iowan Old Style', Georgia, serif;
+    --sans: 'Inter', 'Helvetica Neue', sans-serif;
+    --mono: 'JetBrains Mono', ui-monospace, Menlo, monospace;
+  }
+
+  /* ─── Reset + base ──────────────────────────────────────────────── */
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
+
+  html {
+    background: var(--bg-base);
+    color: var(--fg);
+    font-family: var(--sans);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+
+  body {
+    margin: 0;
+    min-height: 100vh;
+    background-color: var(--bg-base);
+    /* Sub-perceptual gradient — verify by toggling. If the page goes flat, the gradient was doing its job. */
+    background-image:
+      linear-gradient(
+        180deg,
+        rgba(255, 240, 210, 0.035) 0%,
+        rgba(0, 0, 0, 0) 35%,
+        rgba(0, 0, 0, 0) 60%,
+        rgba(0, 0, 0, 0.3) 100%
+      ),
+      radial-gradient(140% 90% at 80% 10%, rgba(125, 179, 108, 0.04) 0%, rgba(0, 0, 0, 0) 55%);
+    background-attachment: fixed;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  p {
+    margin: 0;
+  }
+
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  ::selection {
+    background: rgba(125, 179, 108, 0.25);
+    color: var(--fg);
+  }
+</style>

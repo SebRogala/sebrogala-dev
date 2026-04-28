@@ -1,0 +1,357 @@
+---
+import Base from '../layouts/Base.astro';
+
+const testAuditAsOf = '2026-04-27';
+---
+
+<Base
+  title="About — Sebastian Rogala"
+  description="Independent product engineer with 12 years of software background, fully AI-directed since early 2026. Operating under Soft Solution as a B2B vehicle."
+>
+  <nav class="topnav">
+    <div class="topnav-inner">
+      <a href="/" class="wordmark">softsolution.pro</a>
+      <div class="nav-links">
+        <a href="/pipeforge" class="nav-link">Pipeforge</a>
+        <span class="sep">·</span>
+        <a href="/kb" class="nav-link">Knowledge base</a>
+        <span class="sep">·</span>
+        <a href="/about" class="nav-link active">About</a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="frame">
+    <header class="page-header">
+      <div class="eyebrow">About</div>
+      <h1>Sebastian Rogala</h1>
+      <p class="lede">
+        Independent AI-native product engineer. 12 years of software background. Fully AI-directed
+        since early 2026. Based in Rzeszów, Poland.
+      </p>
+    </header>
+
+    <section class="content">
+      <h2>How I work now</h2>
+      <p>
+        I am not looking for a classic senior developer role centred on manual code production. My
+        leverage is designing AI-directed delivery systems: turning product intent into structured
+        specs, decomposing work for agents, building verification loops, and validating shipped
+        outcomes. My core principle: <strong>AI failures are spec gaps, not agent shortcomings.</strong>
+        I improve delivery by encoding failure modes structurally — through tests, review agents,
+        audit tools, hooks, durable state, and source-cited knowledge.
+      </p>
+
+      <h2>Soft Solution</h2>
+      <p>
+        Soft Solution is my B2B vehicle, registered August 2019. It covers contract work, smaller
+        projects, and consulting. After finishing a contract at ovos in September 2025, I took a
+        personal/family pause through end of 2025 and returned to active product work in early 2026
+        with a fully AI-directed operating model.
+      </p>
+
+      <h2>Current work</h2>
+      <ul class="work-list">
+        <li>
+          <strong>Education CRM</strong> — multi-tenant course management and lead-operations system
+          for a Polish education client. In daily production use. CQRS, event-driven, GDPR-aware
+          workflows, multi-tenant ready for additional clients. Stack: PHP 8.4, Symfony 7.4 LTS,
+          PostgreSQL 16, Redis 7, Playwright. <em>Test audit as of {testAuditAsOf}:</em> 4,190 tests
+          (2,674 unit, 459 integration, 699 functional, 201 smoke, 157 E2E) plus PHPStan level 8 — full
+          audit suite runs in ~7 minutes.
+        </li>
+        <li>
+          <strong>ProfitOfExile</strong> — public-source Path of Exile lab-farming tool. Built as a
+          side project in roughly two weeks across Go / SvelteKit / Tauri (Rust) / TimescaleDB; ~72k
+          source LOC. Adopted by the broader community after creator coverage. Validates the workflow
+          across stacks where I had no prior production background, at a pace I couldn't have hit by
+          hand. <a href="https://profitofexile.top">profitofexile.top</a>.
+        </li>
+        <li>
+          <strong>Pipeforge</strong> — personal Claude Code orchestration plugin and PostgreSQL MCP
+          backend. 31 commands, 28 SKILL.md files, 20 agents, 64 MCP tools, ~42 Knowledge-Base entries
+          about Pipeforge itself. Walkthrough at <a href="/pipeforge">/pipeforge</a>.
+        </li>
+      </ul>
+
+      <figure class="audit-figure">
+        <a href="/screenshots/07-test-audit-all-suites-clean.png" target="_blank" rel="noopener">
+          <img
+            src="/screenshots/07-test-audit-all-suites-clean.png"
+            alt="Test audit on the production CRM: 4,190 PHP tests + 157 E2E, all clean, runtime 7m 13s"
+            loading="lazy"
+            decoding="async"
+          />
+        </a>
+        <figcaption>
+          Test audit on the production CRM. PHPStan clean · Unit 2674/2674 (8539 assertions) ·
+          Integration 459/459 · Functional 699/699 · Smoke 201/201 · E2E 157/157. Total runtime: 7m 13s.
+        </figcaption>
+      </figure>
+
+      <h2>Public proof &amp; community</h2>
+      <ul class="work-list">
+        <li>
+          <strong>Anthropic Claude Code tracker</strong> — public reproducible investigation isolating
+          a compact-vs-clear instruction-override asymmetry in SessionStart hook behavior:
+          <a
+            href="https://github.com/anthropics/claude-code/issues/6354#issuecomment-3849990217"
+            target="_blank"
+            rel="noopener">github.com/anthropics/claude-code/issues/6354</a>.
+        </li>
+        <li>
+          <strong>Open-source contributions</strong> — <code>poe-vendor-string</code> PR adding
+          prefix/suffix indicators and first tests to the repo; <code>superpowers</code> PR proposing
+          smart question batching with empirical <code>AskUserQuestion</code> reduction.
+        </li>
+        <li>
+          <strong>Speaking</strong> — rg-dev Meetup, Aug 2026 (scheduled), AI-native workflow / migration
+          audit talk; Xebia Internal Conference, Nov 2023, <em>GitHub Actions &amp; Continuous Delivery
+          on Shared Hosting</em>.
+        </li>
+      </ul>
+
+      <h2>Looking for</h2>
+      <p>
+        AI-native Product Engineer / Context Engineer roles at AI-forward teams. Also open to
+        consulting and workshop conversations on context engineering and AI-directed delivery. Most
+        teams I talk to discover that the workflow itself is the unfamiliar part — happy to walk
+        through it.
+      </p>
+
+      <h2>Reach</h2>
+      <ul class="reach">
+        <li><a href="mailto:sebrogala@gmail.com">sebrogala@gmail.com</a></li>
+        <li><a href="https://linkedin.com/in/seb-rogala">linkedin.com/in/seb-rogala</a></li>
+        <li><a href="https://github.com/SebRogala">github.com/SebRogala</a></li>
+      </ul>
+    </section>
+
+    <footer class="page-footer">
+      <a href="/">← back home</a>
+      <span class="sep">·</span>
+      <a href="/pipeforge">Pipeforge walkthrough →</a>
+      <span class="sep">·</span>
+      <a href="/kb">Knowledge base →</a>
+    </footer>
+  </main>
+</Base>
+
+<style>
+  .frame {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 0 32px 48px;
+  }
+
+  .topnav {
+    border-bottom: 1px solid var(--rule);
+    padding: 20px 0;
+    margin-bottom: 48px;
+  }
+  .topnav-inner {
+    max-width: 1140px;
+    margin: 0 auto;
+    padding: 0 32px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .wordmark {
+    font-family: var(--mono);
+    font-size: 13px;
+    color: var(--fg-nav);
+  }
+  .wordmark:hover {
+    color: var(--accent);
+  }
+  .nav-links {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    font-family: var(--sans);
+    font-size: 14px;
+    font-weight: 500;
+  }
+  .nav-link {
+    color: var(--fg-nav);
+    transition: color 160ms ease;
+  }
+  .nav-link.active {
+    color: var(--fg);
+  }
+  .nav-link:hover {
+    color: var(--accent);
+  }
+  .sep {
+    color: var(--rule-2);
+  }
+
+  .page-header {
+    margin-bottom: 36px;
+  }
+  .eyebrow {
+    font-family: var(--mono);
+    font-size: 11.5px;
+    color: var(--muted);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    margin-bottom: 18px;
+  }
+  h1 {
+    font-family: var(--serif);
+    font-weight: 500;
+    font-size: 44px;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    color: var(--fg);
+    margin-bottom: 16px;
+  }
+  .lede {
+    font-family: var(--serif);
+    font-weight: 500;
+    font-size: 19px;
+    line-height: 1.55;
+    color: var(--fg);
+    text-wrap: pretty;
+  }
+
+  .content {
+    border-top: 1px solid var(--rule);
+    padding-top: 32px;
+    font-family: var(--sans);
+    font-size: 15.5px;
+    line-height: 1.65;
+    color: var(--fg);
+  }
+  .content h2 {
+    font-family: var(--serif);
+    font-weight: 500;
+    font-size: 22px;
+    color: var(--fg);
+    margin: 32px 0 14px;
+    letter-spacing: -0.01em;
+  }
+  .content h2:first-child {
+    margin-top: 0;
+  }
+  .content p {
+    margin-bottom: 14px;
+    text-wrap: pretty;
+  }
+  .content strong {
+    color: var(--fg);
+    font-weight: 600;
+  }
+  .content em {
+    color: var(--muted);
+    font-style: italic;
+  }
+  .content code {
+    font-family: var(--mono);
+    font-size: 13px;
+    color: var(--fg-nav);
+    background: var(--bg-raise);
+    padding: 1px 5px;
+    border-radius: 3px;
+  }
+  .content a {
+    color: var(--accent);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    text-decoration-color: rgba(125, 179, 108, 0.4);
+  }
+
+  .work-list {
+    padding-left: 22px;
+    margin-bottom: 14px;
+  }
+  .work-list li {
+    margin-bottom: 14px;
+    text-wrap: pretty;
+  }
+
+  .audit-figure {
+    margin: 12px 0 24px;
+  }
+  .audit-figure a {
+    display: block;
+    border: 1px solid var(--rule-2);
+    border-radius: 4px;
+    overflow: hidden;
+    background: var(--bg-raise);
+    transition: border-color 160ms ease;
+    text-decoration: none;
+  }
+  .audit-figure a:hover {
+    border-color: var(--accent);
+  }
+  .audit-figure img {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+  .audit-figure figcaption {
+    margin-top: 10px;
+    font-family: var(--sans);
+    font-size: 13.5px;
+    line-height: 1.55;
+    color: var(--muted);
+    text-wrap: pretty;
+  }
+
+  .reach {
+    font-family: var(--mono);
+    font-size: 13.5px;
+    list-style: none;
+    padding-left: 0;
+    margin-bottom: 0;
+  }
+  .reach li {
+    margin-bottom: 6px;
+  }
+
+  .page-footer {
+    margin-top: 48px;
+    padding-top: 22px;
+    border-top: 1px solid var(--rule);
+    font-family: var(--mono);
+    font-size: 13px;
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  .page-footer a {
+    color: var(--accent);
+    transition: color 160ms ease;
+  }
+  .page-footer a:hover {
+    color: var(--fg);
+  }
+
+  @media (max-width: 720px) {
+    .frame {
+      padding: 0 22px 36px;
+    }
+    .topnav-inner {
+      padding: 0 22px;
+    }
+    .nav-links {
+      gap: 14px;
+      font-size: 13px;
+    }
+
+    h1 {
+      font-size: 32px;
+    }
+    .lede {
+      font-size: 16px;
+    }
+    .content h2 {
+      font-size: 19px;
+    }
+    .content {
+      font-size: 14.5px;
+    }
+  }
+</style>

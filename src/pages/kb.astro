@@ -1,0 +1,956 @@
+---
+import Base from '../layouts/Base.astro';
+
+const entries = [
+  {
+    id: 'home-vs-main-branch',
+    title: 'homeBranch vs mainBranch — Pipeline Merge Target vs Canonical State',
+    pattern: 'Disambiguation',
+    category: 'architecture',
+    scope: 'plugin',
+    stability: 'stable',
+  },
+  {
+    id: 'module-maps-deprecated',
+    title: 'Module Maps — Deprecated (Killed in Synth Rework)',
+    pattern: 'Killed decision',
+    category: 'reasoning',
+    scope: 'plugin',
+    stability: 'stable',
+  },
+  {
+    id: 'context-budget-management',
+    title: 'Context Budget Management — Keeping Coordinators Lean',
+    pattern: 'Meta reasoning',
+    category: 'reasoning',
+    scope: 'plugin',
+    stability: 'stable',
+  },
+  {
+    id: 'codebase-map-abstraction-level',
+    title: 'Codebase Map Abstraction Level — What Belongs and What Doesn\'t',
+    pattern: 'Inclusion criteria',
+    category: 'reasoning',
+    scope: 'plugin',
+    stability: 'stable',
+  },
+  {
+    id: 'discovery-chain',
+    title: 'Discovery Chain: Task Context Flow Through the Pipeline',
+    pattern: 'Context-flow architecture',
+    category: 'workflow',
+    scope: 'plugin',
+    stability: 'stable',
+  },
+];
+---
+
+<Base
+  title="Knowledge base — softsolution.pro"
+  description="Selected entries from the Pipeforge knowledge base: architectural decisions with rationale, rejected alternatives, and source-file citations."
+>
+  <nav class="topnav">
+    <div class="topnav-inner">
+      <a href="/" class="wordmark">softsolution.pro</a>
+      <div class="nav-links">
+        <a href="/pipeforge" class="nav-link">Pipeforge</a>
+        <span class="sep">·</span>
+        <a href="/kb" class="nav-link active">Knowledge base</a>
+        <span class="sep">·</span>
+        <a href="/about" class="nav-link">About</a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="frame">
+    <header class="page-header">
+      <div class="eyebrow">Knowledge base — showcase</div>
+      <h1>How decisions get captured</h1>
+      <p class="lede">
+        5 entries selected from ~42 Knowledge-Base entries about Pipeforge itself. Each was authored
+        during real development — design conversations, post-incident reviews, KB audits — and follows
+        the schema enforced by the <code>pipeforge:kb-writer</code> skill: rationale, rejected
+        alternatives, source-file citations, relationships.
+      </p>
+      <p class="sub-lede">
+        The five were chosen to illustrate <em>different rationale patterns</em> the KB is built to
+        capture, not just five greatest hits.
+      </p>
+    </header>
+
+    <section class="toc">
+      <ol>
+        {
+          entries.map((e) => (
+            <li>
+              <a href={`#${e.id}`}>
+                <span class="toc-pattern">{e.pattern}</span>
+                <span class="toc-title">{e.title}</span>
+              </a>
+            </li>
+          ))
+        }
+      </ol>
+    </section>
+
+    {/* ── 1 ────────────────────────────────────────────────────────────── */}
+    <article class="entry" id="home-vs-main-branch">
+      <header class="entry-header">
+        <div class="entry-pattern">Pattern: Disambiguation — two concepts that sound alike and keep getting confused</div>
+        <h2>homeBranch vs mainBranch — Pipeline Merge Target vs Canonical State</h2>
+        <div class="entry-meta">
+          <span><strong>Category:</strong> architecture</span>
+          <span><strong>Scope:</strong> plugin</span>
+          <span><strong>Stability:</strong> stable</span>
+        </div>
+      </header>
+
+      <h3>Summary</h3>
+      <p class="summary">
+        Two distinct branch concepts: <code>mainBranch</code> (config) is canonical codebase truth used
+        for sync/exploration/freshness. <code>homeBranch</code> (pipeline state) is where a specific
+        pipeline's work merges back to, set at seal time. In worktrees, <code>homeBranch</code> depends
+        on whether <code>currentBranch</code> matches the worktree's configured home: if yes →
+        <code>mainBranch</code> (standard flow), if no → <code>worktreeConfig.homeBranch</code>
+        (sub-branch merges back to worktree home).
+      </p>
+
+      <h3>How it works</h3>
+      <p>
+        <strong>Set at seal time:</strong> <code>/pipe-seal</code> stores <code>homeBranch</code> in
+        pipeline state. The value depends on context.
+      </p>
+      <ul>
+        <li><strong>Main worktree, on main:</strong> <code>homeBranch = mainBranch</code> (standard).</li>
+        <li>
+          <strong>Main worktree, on non-main branch (e.g., <code>hotfix/v0.1.1</code>):</strong> User
+          gets 4 options — hotfix-feature (local merge), hotfix-feature+review, feature PR targeting
+          <code>currentBranch</code>, or feature PR targeting <code>mainBranch</code>.
+        </li>
+        <li>
+          <strong>Worktree, on its configured homeBranch:</strong> <code>homeBranch = config.mainBranch</code>.
+          The worktree branch is where you work FROM, not where you merge TO.
+        </li>
+        <li>
+          <strong>Worktree, on a sub-branch:</strong> <code>homeBranch = worktreeConfig.homeBranch</code>.
+          Sub-branch merges back to the worktree's home.
+        </li>
+      </ul>
+      <p>
+        <strong>Detection is deterministic</strong> — no user prompt. Seal compares
+        <code>currentBranch</code> to <code>worktreeConfig.homeBranch</code>. If
+        <code>getWorktreeConfig</code> fails with not-found (new worktree, no config yet), default
+        to <code>config.mainBranch</code>. On any other infrastructure failure, log a warning and
+        default to <code>config.mainBranch</code>.
+      </p>
+      <p>
+        <strong>Phase fallback rules:</strong> Recoverable phases (git-prepare, branch-create,
+        need-fixture-update, pr-create) fall back to <code>config.mainBranch</code> with a stderr
+        warning. Irreversible phases (merge-to-parent) require <code>homeBranch</code> and fail hard
+        if missing — a silent fallback could merge+push to the wrong branch.
+      </p>
+
+      <table class="phase-table">
+        <thead>
+          <tr><th>Uses homeBranch (pipeline state)</th><th>Uses mainBranch (config)</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>git-prepare (rebase target)</td><td>sync (pull canonical)</td></tr>
+          <tr><td>branch-create (branch from)</td><td>check-map-cursor (freshness)</td></tr>
+          <tr><td>need-fixture-update (diff base)</td><td>codemap-update (cursor)</td></tr>
+          <tr><td>pr-create (PR base)</td><td>exploration baseline</td></tr>
+          <tr><td>merge-to-parent (merge target)</td><td></td></tr>
+          <tr><td>branch-cleanup (return to)</td><td></td></tr>
+        </tbody>
+      </table>
+
+      <h3>Worktree branch deletion gotcha</h3>
+      <p>
+        In worktrees, <code>git branch -d</code> may fail with "not fully merged" because: (1)
+        <code>fetchOrigin()</code> with <code>fetch.prune=true</code> removes the stale tracking ref,
+        (2) without an upstream, <code>-d</code> falls back to checking against HEAD, (3) HEAD is
+        <code>homeBranch</code>, not <code>mainBranch</code> where the PR merged. Fix: when <code>-d</code>
+        fails, verify the branch is merged into <code>origin/mainBranch</code> via
+        <code>git merge-base --is-ancestor</code>, then force-delete with <code>-D</code>. Only escalates
+        after cryptographic verification.
+      </p>
+
+      <h3>Rationale</h3>
+      <p>
+        The original design assumed all work merges to <code>mainBranch</code>. This broke when versioning
+        introduced hotfix branches with tag-based deploys: a client-reported issue grew from hotfix
+        into feature needing the full pipeline, but the pipeline couldn't target the hotfix branch.
+        The fix separates "where is canonical truth" (<code>mainBranch</code>) from "where does THIS
+        work go" (<code>homeBranch</code>). Worktrees were initially handled with a blanket
+        <code>homeBranch = currentBranch</code>, which caused PRs from worktrees to target the worktree
+        branch instead of main. Fixed by comparing <code>currentBranch</code> to the worktree's
+        configured home.
+      </p>
+
+      <h3>Alternatives considered</h3>
+      <ul class="alternatives">
+        <li><strong><code>--home-branch</code> CLI arg per phase.</strong> Fragile — orchestrator must pass conditionally, silent fallback if forgotten. Pipeline state already available via <code>--task</code>.</li>
+        <li><strong>Separate <code>mainBranch</code> override in config.</strong> <code>mainBranch</code> is canonical truth, shouldn't vary per pipeline.</li>
+        <li><strong>Always create PRs (even hotfix).</strong> Overhead for hotfix where speed matters.</li>
+        <li><strong>Always set <code>homeBranch = currentBranch</code> in worktrees.</strong> Caused PRs from worktrees to merge into the worktree branch instead of main.</li>
+        <li><strong>Always force-delete with <code>-D</code> in branch-cleanup.</strong> Unsafe — would silently delete unmerged branches.</li>
+        <li><strong>Use <code>git fetch --prune=false</code>.</strong> Workaround, not a fix. Leaves stale remote refs accumulating.</li>
+      </ul>
+
+      <h3>Source files</h3>
+      <ul class="sources">
+        <li><code>bin/commands/branch-cleanup.mjs</code> · <em>implements</em></li>
+        <li><code>bin/commands/git-prepare.mjs</code> · <em>implements</em></li>
+        <li><code>bin/commands/branch-create.mjs</code> · <em>implements</em></li>
+        <li><code>bin/commands/need-fixture-update.mjs</code> · <em>implements</em></li>
+        <li><code>bin/commands/merge-to-parent.mjs</code> · <em>implements</em></li>
+        <li><code>skills/pr-create/SKILL.md</code> · <em>implements</em></li>
+        <li><code>commands/pipe-seal.md</code> · <em>references</em></li>
+        <li><code>skills/branch-cleanup/SKILL.md</code> · <em>documents</em></li>
+      </ul>
+
+      <h3>Relationships</h3>
+      <ul class="relationships">
+        <li><code>plan-to-merge</code> · <em>part-of</em></li>
+      </ul>
+    </article>
+
+    {/* ── 2 ────────────────────────────────────────────────────────────── */}
+    <article class="entry" id="module-maps-deprecated">
+      <header class="entry-header">
+        <div class="entry-pattern">Pattern: Killed decision — things we built, shipped, and removed, with reasons intact</div>
+        <h2>Module Maps — Deprecated (Killed in Synth Rework)</h2>
+        <div class="entry-meta">
+          <span><strong>Category:</strong> reasoning</span>
+          <span><strong>Scope:</strong> plugin</span>
+          <span><strong>Stability:</strong> stable</span>
+        </div>
+      </header>
+
+      <h3>Summary</h3>
+      <p class="summary">
+        Module maps (per-module detail stored on MCP) were killed during the synth rework. Too expensive
+        to produce (~15min synthesis), agents ignored them in practice. Per-module navigation detail now
+        lives in project agents, which agents already load.
+      </p>
+
+      <h3>Why it was killed</h3>
+      <p>
+        Two independent failures made module maps net-negative.
+      </p>
+      <p>
+        <strong>Production cost was prohibitive.</strong> Module map synthesis took ~15 minutes per
+        pipeline run. The <code>synthesise-project-knowledge</code> agent would scan files, run bash
+        commands, and build per-module detail — costing more than the broad codebase exploration it was
+        supposed to replace.
+      </p>
+      <p>
+        <strong>Consumers ignored them.</strong> Despite explicit instructions to call
+        <code>getModuleMap(moduleName)</code> before reading files, sub-agents skipped the call and
+        explored the codebase directly. Observed across multiple production runs. The instruction was
+        a soft suggestion agents could skip — unlike project agent files which agents read because
+        they're injected into their own prompt.
+      </p>
+      <p>
+        <strong>Injection was impossible.</strong> The alternative — injecting module maps into
+        sub-agent prompts — was rejected because the orchestrator would need to load them first. For
+        5-7 chunks, repeating the same module map data would stuff ~30% of the orchestrator's context.
+      </p>
+
+      <h3>How per-module detail works now</h3>
+      <p>
+        Per-module navigation detail lives in <strong>project agents</strong>
+        (<code>config.agents.&#123;type&#125;.file</code>). Sub-agents already read their own agent file —
+        this is the one instruction they reliably follow. Loaded once per sub-agent (not repeated across
+        chunks), already in the right context, zero orchestrator context cost.
+      </p>
+
+      <h3>Rationale</h3>
+      <p>
+        Module maps failed on both sides of the value equation: production was too expensive (~15min
+        synthesis per run, agent going off-script reading files and running bash) and consumption was
+        zero (agents ignored the instruction to call <code>getModuleMap</code> and explored files
+        directly). Project agents solve the same problem without these costs. The simplification also
+        removes a maintenance burden — one less MCP data type to keep current.
+      </p>
+
+      <h3>Alternatives considered</h3>
+      <ul class="alternatives">
+        <li><strong>Inject module maps into sub-agent prompts.</strong> Orchestrator must load to inject. ~30% of context across 5-7 chunks — exactly what context trimming eliminated.</li>
+        <li><strong>Enforce agent consumption (validate <code>moduleMapsLoaded</code>).</strong> Hacky enforcement; doesn't solve the ~15min synthesis cost.</li>
+        <li><strong>Cheaper shell-based synthesis (no LLM).</strong> Module map content requires judgment. Shell scripts produce low-quality maps that agents still ignore.</li>
+      </ul>
+
+      <h3>Relationships</h3>
+      <ul class="relationships">
+        <li><code>post-merge-agents</code> · <em>part-of</em></li>
+      </ul>
+    </article>
+
+    {/* ── 3 ────────────────────────────────────────────────────────────── */}
+    <article class="entry" id="context-budget-management">
+      <header class="entry-header">
+        <div class="entry-pattern">Pattern: Meta reasoning — how we think about our own scaling constraints</div>
+        <h2>Context Budget Management — Keeping Coordinators Lean</h2>
+        <div class="entry-meta">
+          <span><strong>Category:</strong> reasoning</span>
+          <span><strong>Scope:</strong> plugin</span>
+          <span><strong>Stability:</strong> stable</span>
+        </div>
+      </header>
+
+      <h3>Summary</h3>
+      <p class="summary">
+        Pipeline coordinators (<code>pipe</code> orchestrator, <code>implement</code> skill) must
+        minimise context accumulation. Strategies: delegate context loading to sub-agents, use atomic
+        MCP updates, skip redundant verification, enforce minimal returns, drop results after status
+        check.
+      </p>
+
+      <h3>Why it exists</h3>
+      <p>
+        The <code>/pipe</code> orchestrator runs inline — all phase dispatches, results, state updates,
+        and narration accumulate in a single context window. For a 7-chunk implement phase, this easily
+        reaches 50k+ tokens of coordinator overhead before review and test phases even start. An early
+        production incident showed two 18min+ stalls caused by context bloat from verbose sub-agent
+        returns.
+      </p>
+
+      <h3>The six principles</h3>
+      <ol class="principles">
+        <li>
+          <strong>Sub-agents own their context loading.</strong> Don't read files or MCP data into the
+          coordinator just to copy into sub-agent prompts. Tell sub-agents WHERE to load. Coordinator
+          pays ~50 tokens per path reference; sub-agent pays full cost in its own window.
+        </li>
+        <li>
+          <strong>Atomic MCP updates over full-state writes.</strong> Chunk completion tracked by
+          artifact existence — <code>saveChunkArtifact</code> + presence check, not <code>savePipelineProgress</code>.
+        </li>
+        <li>
+          <strong>Trust sub-agent results.</strong> After a chunk completes, check Task status. Don't
+          re-fetch from MCP or spot-check files. The test phase catches real issues.
+        </li>
+        <li>
+          <strong>Minimal logging.</strong> One line per chunk: "Chunk N (name) done." Don't restate
+          the full summary.
+        </li>
+        <li>
+          <strong>Enforce minimal returns from all sub-agents.</strong> Every prompt ends with a
+          minimal-return template. Implement: status, chunk name, file count. Light review: status,
+          findings counts. Heavy review: JSON severity summary. Etc.
+        </li>
+        <li>
+          <strong>Drop results after status check.</strong> Orchestrator discards sub-agent responses
+          after extracting state propagation data. Prevents accumulation across 15+ phases.
+        </li>
+      </ol>
+
+      <h3>Key gotchas</h3>
+      <ul>
+        <li>Context is monotonically increasing — everything stays forever until compaction.</li>
+        <li>Implement runs as inline skill for user visibility, accepting the trade-off.</li>
+        <li>Sub-agent Task results auto-enter the coordinator's context — minimal-return templates limit damage to ~50-100 tokens per phase.</li>
+        <li>The orchestrator must NOT load <code>getPlan</code> — only <code>planExists</code> for validation.</li>
+      </ul>
+
+      <h3>Rationale</h3>
+      <p>
+        Context limits are the primary scaling constraint for pipeline execution. The early production
+        incident demonstrated the failure mode: verbose sub-agent returns accumulated across phases,
+        causing two 18min+ stalls. Every optimisation that shifts cost from coordinator to sub-agents
+        directly extends capacity. The lean-coordinator approach preserves user visibility while
+        managing the budget.
+      </p>
+
+      <h3>Alternatives considered</h3>
+      <ul class="alternatives">
+        <li><strong>Run implement as an agent phase for full context isolation.</strong> User loses all progress visibility — one spinner for 30+ minutes.</li>
+        <li><strong>Use <code>/compact</code> between chunks.</strong> Compaction loses in-memory state. Reload cost is itself expensive.</li>
+        <li><strong>Allow verbose sub-agent returns.</strong> Production showed this fails at scale — two 18min+ stalls.</li>
+      </ul>
+
+      <h3>Source files</h3>
+      <ul class="sources">
+        <li><code>skills/implement/SKILL.md</code> · <em>documents</em></li>
+        <li><code>commands/pipe.md</code> · <em>references</em></li>
+        <li><code>pipeforge-mcp/src/tools/chunk-results.ts</code> · <em>implements</em></li>
+      </ul>
+    </article>
+
+    {/* ── 4 ────────────────────────────────────────────────────────────── */}
+    <article class="entry" id="codebase-map-abstraction-level">
+      <header class="entry-header">
+        <div class="entry-pattern">Pattern: Inclusion criteria — what is allowed to live in persistent state, and what isn't</div>
+        <h2>Codebase Map Abstraction Level — What Belongs and What Doesn't</h2>
+        <div class="entry-meta">
+          <span><strong>Category:</strong> reasoning</span>
+          <span><strong>Scope:</strong> plugin</span>
+          <span><strong>Stability:</strong> stable</span>
+        </div>
+      </header>
+
+      <h3>Summary</h3>
+      <p class="summary">
+        The codebase map is a navigation aid for planning sessions, not a feature documentation system.
+        Content must pass the "any feature" test: would a developer working on a completely different
+        module need this? Excludes specific values, bug-fix details, task-specific gotchas, and feature
+        internals. Bias toward advancing cursor without content changes on incremental updates.
+      </p>
+
+      <h3>Why it exists</h3>
+      <p>
+        The codebase map was drifting toward feature-level documentation. An incremental update on a
+        real project (28 commits stale) ran for 12 minutes, consumed 96k tokens, and saved details like
+        buffer size changes and the reasons behind them. This is the same trajectory that killed module
+        maps — too detailed, too expensive, and ultimately ignored by the agents consuming them.
+      </p>
+      <p>
+        The root cause was twofold: (1) the <code>code-explorer</code> agent is designed for deep
+        feature analysis and its default output guidance overrode the synthesis skill's lighter prompts;
+        (2) the incremental path's behavioural-change filter was too loose — "update if they reveal
+        new patterns" let almost anything through.
+      </p>
+
+      <h3>How it works</h3>
+      <p>
+        <strong>The "any feature" test.</strong> Applied at every content decision point: would a
+        developer working on a COMPLETELY DIFFERENT module need to know this? If no, it doesn't belong
+        in the map.
+      </p>
+      <p><strong>Explicit exclusion list:</strong></p>
+      <ul>
+        <li>Specific values and sizes (buffer sizes, timeouts, thresholds, config constants)</li>
+        <li>Individual bug fixes and their root causes</li>
+        <li>Task-specific gotchas that only matter when touching one feature</li>
+        <li>Feature implementation details (algorithms, encoding, dedup logic, sort routing)</li>
+        <li>Internal ticket references as gotcha anchors (entries anchored to a single ticket are a smell)</li>
+        <li>Changelog-style entries ("Added in &lt;ticket-id&gt;")</li>
+      </ul>
+      <p>
+        <strong>Incremental bias:</strong> default is "advance cursor only" — content updates are the
+        exception, reserved for genuinely structural changes (new modules, new shared base classes,
+        new cross-cutting conventions).
+      </p>
+      <p>
+        <strong>Code-explorer guardrails.</strong> When launched for synthesis, code-explorer agents
+        receive an "Abstraction Level — MAP, NOT IMPLEMENTATION" block that overrides their default
+        deep-dive guidance with good/bad examples.
+      </p>
+
+      <h3>Rationale</h3>
+      <p>
+        The codebase map's value is proportional to its signal-to-noise ratio, not its completeness.
+        A 200-line map of module boundaries and cross-cutting patterns loads in seconds and informs
+        every planning session. A 400-line map with buffer sizes, encoding details, and per-task gotchas
+        costs more to maintain (12min/96k tokens for one incremental update) and creates noise that
+        obscures the structural knowledge. The "any feature" test naturally filters to the right
+        abstraction level — project-wide architecture survives, feature internals don't.
+      </p>
+
+      <h3>Alternatives considered</h3>
+      <ul class="alternatives">
+        <li><strong>Reduce the map size limit (e.g., 100 lines).</strong> The problem is content quality, not quantity. A 100-line map with buffer sizes is still wrong.</li>
+        <li><strong>Use a different agent type for synthesis.</strong> Code-explorer is the right tool for codebase scanning — it just needs different output instructions for map-level vs task-level work.</li>
+        <li><strong>Split the map into sections with different update frequencies.</strong> Overcomplicated. The simpler fix is tighter content rules applied uniformly.</li>
+      </ul>
+
+      <h3>Source files</h3>
+      <ul class="sources">
+        <li><code>plugin/skills/synthesise-project-knowledge/SKILL.md</code> · <em>implements</em></li>
+        <li><code>plugin/commands/deliver.md</code> · <em>implements</em></li>
+        <li><code>plugin/agents/code-explorer.md</code> · <em>references</em></li>
+      </ul>
+
+      <h3>Relationships</h3>
+      <ul class="relationships">
+        <li><code>codebase-map-cursor</code> · <em>depends-on</em></li>
+        <li><code>module-maps-deprecated</code> · <em>depends-on</em></li>
+        <li><code>post-merge-agents</code> · <em>depends-on</em></li>
+        <li><code>context-budget-management</code> · <em>part-of</em></li>
+      </ul>
+    </article>
+
+    {/* ── 5 ────────────────────────────────────────────────────────────── */}
+    <article class="entry" id="discovery-chain">
+      <header class="entry-header">
+        <div class="entry-pattern">Pattern: Context-flow architecture — how data survives across pipeline and session boundaries</div>
+        <h2>Discovery Chain: Task Context Flow Through the Pipeline</h2>
+        <div class="entry-meta">
+          <span><strong>Category:</strong> workflow</span>
+          <span><strong>Scope:</strong> plugin</span>
+          <span><strong>Stability:</strong> stable</span>
+        </div>
+      </header>
+
+      <h3>Summary</h3>
+      <p class="summary">
+        How task-specific knowledge (discoveries, plan, findings) flows from planning through sealing
+        to implementation via MCP persistence. Discoveries are saved during planning, the plan is sealed
+        to MCP, and both are loaded by implement, heavy-review, and e2e-gen phases — enabling context
+        survival across <code>/clear</code> boundaries and auto-compaction.
+      </p>
+
+      <h3>Why it exists</h3>
+      <p>
+        Claude Code conversations are ephemeral — <code>/clear</code> wipes them, auto-compaction
+        summarises them lossily, and session boundaries end them. But implementation phases need the
+        technical context gathered during planning: which files to modify, which patterns to follow,
+        which gotchas to avoid.
+      </p>
+      <p>
+        MCP acts as the persistence bridge. Saving discoveries and plan to MCP <em>before</em> the
+        context boundary lets downstream phases load exactly what they need without re-exploring.
+      </p>
+
+      <h3>How it works</h3>
+      <p><strong>Planning (<code>/breakdown</code>):</strong></p>
+      <ol class="phase-list">
+        <li>Code-explorer sub-agents explore the codebase → findings returned to main context.</li>
+        <li><code>save-code-discoveries</code> persists findings to MCP via <code>saveDiscoveries(taskId, content, parentTaskId?)</code>.</li>
+        <li>Parent discoveries auto-resolve: <code>getDiscoveries(taskId)</code> returns both task and parent content.</li>
+        <li>Discoveries are purely technical — decisions stay in conversation for <code>task-enrich</code> to mine.</li>
+      </ol>
+      <p><strong>Sealing (<code>/pipe-seal</code>):</strong></p>
+      <ol class="phase-list" start="5">
+        <li><code>save-plan</code> (shell) transfers plan file → MCP at zero LLM cost.</li>
+        <li><code>task-enrich</code> mines conversation → pushes business context to tracker.</li>
+        <li>Pipeline state created on MCP with task ID, branch, pipeline type.</li>
+      </ol>
+      <p><strong>Implementation (<code>/pipe</code>):</strong></p>
+      <ol class="phase-list" start="8">
+        <li><code>getTaskContext(taskId)</code> loads discoveries, findings, and chunk artifacts in one call.</li>
+        <li><code>getPlan(taskId)</code> or <code>getPlanChunk</code> loads the plan.</li>
+        <li>Implement sub-agents receive task ID only — they self-load context from MCP.</li>
+        <li>Sub-agents do NOT load <code>getCodebaseMap()</code> — the plan already distils map knowledge.</li>
+        <li>Heavy-review receives the branch diff plus MCP findings for classification.</li>
+      </ol>
+      <p><strong>Recovery:</strong></p>
+      <ul>
+        <li>If <code>getPlan</code> returns null at implement, <code>/pipe</code> attempts shell recovery via <code>pf-local save-plan</code>.</li>
+        <li>If the plan file is also missing → STOP with re-seal message.</li>
+        <li>Missing discoveries → STOP with "Run <code>/breakdown</code> first" (hard gate).</li>
+      </ul>
+
+      <h3>Key gotchas</h3>
+      <ul>
+        <li>Discoveries are TECHNICAL only — decisions belong in the conversation and are mined by <code>task-enrich</code>.</li>
+        <li>Sub-agents self-load context — orchestrator passes only the task ID.</li>
+        <li>Discovery content should be ~100 lines max. File paths without WHY are useless after <code>/clear</code>.</li>
+        <li>Plan transfer ALWAYS uses shell — never load plan content into LLM context via MCP tools directly.</li>
+      </ul>
+
+      <h3>Rationale</h3>
+      <p>
+        The discovery chain exists because the three-phase lifecycle creates deliberate context
+        boundaries (<code>/clear</code>) that would otherwise destroy all planning knowledge. MCP is
+        the structured persistence layer — each data type is saved at the natural point in the workflow
+        where it's produced, and loaded on-demand by consumers. The self-loading pattern prevents the
+        orchestrator from becoming a context bottleneck. Plan transfer always uses shell to keep plan
+        content out of LLM context.
+      </p>
+
+      <h3>Alternatives considered</h3>
+      <ul class="alternatives">
+        <li><strong>Pass discovery content in orchestrator prompts.</strong> Loads all discovery content into the orchestrator's context window just to relay it.</li>
+        <li><strong>Have agents call <code>savePlan</code> MCP tool directly for recovery.</strong> Loads plan content into agent/orchestrator context. Shell handles transfer at zero LLM cost.</li>
+        <li><strong>Summarise planning context instead of persisting verbatim.</strong> Summarisation is lossy — specific file paths, pattern details, and gotchas get simplified away.</li>
+      </ul>
+
+      <h3>Source files</h3>
+      <ul class="sources">
+        <li><code>skills/save-code-discoveries/SKILL.md</code> · <em>implements</em></li>
+        <li><code>skills/implement/SKILL.md</code> · <em>implements</em></li>
+        <li><code>commands/pipe.md</code> · <em>implements</em></li>
+        <li><code>bin/commands/save-plan.mjs</code> · <em>implements</em></li>
+      </ul>
+
+      <h3>Relationships</h3>
+      <ul class="relationships">
+        <li><code>plan-to-merge</code> · <em>part-of</em></li>
+      </ul>
+    </article>
+
+    <section class="closing">
+      <h3>Closing</h3>
+      <p>
+        This is 5 of ~42 entries currently in the Pipeforge knowledge base. The full KB is queryable
+        via MCP (<code>queryKnowledge</code>, <code>listKnowledgeConcepts</code>,
+        <code>getKnowledgeEntry</code>). Entries are authored during actual development — design
+        conversations, post-incident reviews, KB audits — and follow the schema enforced by the
+        <code>pipeforge:kb-writer</code> skill.
+      </p>
+    </section>
+
+    <footer class="page-footer">
+      <a href="/pipeforge">← Pipeforge walkthrough</a>
+      <span class="sep">·</span>
+      <a href="/">back home</a>
+      <span class="sep">·</span>
+      <a href="/about">About →</a>
+    </footer>
+  </main>
+</Base>
+
+<style>
+  .frame {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 0 32px 48px;
+  }
+
+  .topnav {
+    border-bottom: 1px solid var(--rule);
+    padding: 20px 0;
+    margin-bottom: 48px;
+  }
+  .topnav-inner {
+    max-width: 1140px;
+    margin: 0 auto;
+    padding: 0 32px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .wordmark {
+    font-family: var(--mono);
+    font-size: 13px;
+    color: var(--fg-nav);
+  }
+  .wordmark:hover {
+    color: var(--accent);
+  }
+  .nav-links {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    font-family: var(--sans);
+    font-size: 14px;
+    font-weight: 500;
+  }
+  .nav-link {
+    color: var(--fg-nav);
+    transition: color 160ms ease;
+  }
+  .nav-link.active {
+    color: var(--fg);
+  }
+  .nav-link:hover {
+    color: var(--accent);
+  }
+  .sep {
+    color: var(--rule-2);
+  }
+
+  .page-header {
+    margin-bottom: 32px;
+  }
+  .eyebrow {
+    font-family: var(--mono);
+    font-size: 11.5px;
+    color: var(--muted);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    margin-bottom: 18px;
+  }
+  h1 {
+    font-family: var(--serif);
+    font-weight: 500;
+    font-size: 44px;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    color: var(--fg);
+    margin-bottom: 16px;
+  }
+  .lede {
+    font-family: var(--serif);
+    font-weight: 500;
+    font-size: 18px;
+    line-height: 1.55;
+    color: var(--fg);
+    text-wrap: pretty;
+    margin-bottom: 14px;
+  }
+  .lede code {
+    font-family: var(--mono);
+    font-size: 14px;
+    background: var(--bg-raise);
+    padding: 1px 5px;
+    border-radius: 3px;
+    color: var(--fg-nav);
+  }
+  .sub-lede {
+    font-family: var(--sans);
+    font-size: 14px;
+    color: var(--muted);
+    line-height: 1.6;
+    text-wrap: pretty;
+  }
+
+  .toc {
+    border-top: 1px solid var(--rule);
+    border-bottom: 1px solid var(--rule);
+    padding: 22px 0;
+    margin-bottom: 48px;
+  }
+  .toc ol {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    counter-reset: toc;
+  }
+  .toc li {
+    counter-increment: toc;
+    margin-bottom: 10px;
+  }
+  .toc li:last-child {
+    margin-bottom: 0;
+  }
+  .toc a {
+    display: grid;
+    grid-template-columns: 24px 1fr;
+    gap: 12px;
+    align-items: baseline;
+    font-family: var(--sans);
+    color: var(--fg);
+    transition: color 160ms ease;
+  }
+  .toc a::before {
+    content: counter(toc, decimal-leading-zero);
+    font-family: var(--mono);
+    font-size: 11.5px;
+    color: var(--accent);
+  }
+  .toc a:hover .toc-title {
+    color: var(--accent);
+  }
+  .toc-pattern {
+    display: block;
+    font-family: var(--mono);
+    font-size: 10.5px;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 2px;
+  }
+  .toc-title {
+    font-family: var(--serif);
+    font-size: 16px;
+    color: var(--fg);
+    line-height: 1.4;
+    transition: color 160ms ease;
+  }
+
+  .entry {
+    border-top: 1px solid var(--rule);
+    padding: 40px 0 8px;
+    scroll-margin-top: 24px;
+  }
+  .entry-header {
+    margin-bottom: 24px;
+  }
+  .entry-pattern {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 12px;
+  }
+  .entry h2 {
+    font-family: var(--serif);
+    font-weight: 500;
+    font-size: 26px;
+    line-height: 1.2;
+    letter-spacing: -0.015em;
+    color: var(--fg);
+    margin-bottom: 12px;
+  }
+  .entry-meta {
+    font-family: var(--mono);
+    font-size: 11.5px;
+    color: var(--muted);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+  .entry-meta strong {
+    color: var(--fg-nav);
+    font-weight: 500;
+  }
+
+  .entry h3 {
+    font-family: var(--serif);
+    font-weight: 500;
+    font-size: 17px;
+    color: var(--accent);
+    margin: 28px 0 10px;
+    letter-spacing: -0.005em;
+  }
+  .entry p,
+  .entry ul,
+  .entry ol,
+  .entry table {
+    font-family: var(--sans);
+    font-size: 15px;
+    line-height: 1.65;
+    color: var(--fg);
+    text-wrap: pretty;
+  }
+  .entry p {
+    margin-bottom: 12px;
+  }
+  .entry ul,
+  .entry ol {
+    padding-left: 22px;
+    margin-bottom: 12px;
+  }
+  .entry li {
+    margin-bottom: 6px;
+  }
+  .entry strong {
+    color: var(--fg);
+    font-weight: 600;
+  }
+  .entry em {
+    color: var(--muted);
+    font-style: italic;
+  }
+  .entry code {
+    font-family: var(--mono);
+    font-size: 13px;
+    color: var(--fg-nav);
+    background: var(--bg-raise);
+    padding: 1px 5px;
+    border-radius: 3px;
+  }
+  .summary {
+    border-left: 2px solid var(--accent);
+    padding: 4px 0 4px 14px;
+    color: var(--fg);
+    font-family: var(--serif);
+    font-size: 16px;
+    line-height: 1.55;
+  }
+  .summary code {
+    font-size: 13.5px;
+  }
+
+  .phase-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 8px 0 16px;
+    font-size: 13.5px;
+  }
+  .phase-table th,
+  .phase-table td {
+    border: 1px solid var(--rule-2);
+    padding: 7px 10px;
+    text-align: left;
+    vertical-align: top;
+  }
+  .phase-table th {
+    background: var(--bg-raise);
+    font-family: var(--mono);
+    font-size: 11.5px;
+    color: var(--fg-nav);
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+
+  .alternatives li,
+  .sources li,
+  .relationships li {
+    margin-bottom: 8px;
+  }
+
+  .closing {
+    margin-top: 48px;
+    padding-top: 28px;
+    border-top: 1px solid var(--rule);
+  }
+  .closing h3 {
+    font-family: var(--serif);
+    font-weight: 500;
+    font-size: 18px;
+    color: var(--fg);
+    margin-bottom: 10px;
+  }
+  .closing p {
+    font-family: var(--sans);
+    font-size: 14.5px;
+    line-height: 1.6;
+    color: var(--muted);
+  }
+  .closing code {
+    font-family: var(--mono);
+    font-size: 12.5px;
+    color: var(--fg-nav);
+    background: var(--bg-raise);
+    padding: 1px 5px;
+    border-radius: 3px;
+  }
+
+  .page-footer {
+    margin-top: 48px;
+    padding-top: 22px;
+    border-top: 1px solid var(--rule);
+    font-family: var(--mono);
+    font-size: 13px;
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  .page-footer a {
+    color: var(--accent);
+    transition: color 160ms ease;
+  }
+  .page-footer a:hover {
+    color: var(--fg);
+  }
+
+  @media (max-width: 720px) {
+    .frame {
+      padding: 0 22px 36px;
+    }
+    .topnav-inner {
+      padding: 0 22px;
+    }
+    .nav-links {
+      gap: 14px;
+      font-size: 13px;
+    }
+
+    h1 {
+      font-size: 32px;
+    }
+    .lede {
+      font-size: 16px;
+    }
+    .sub-lede {
+      font-size: 13px;
+    }
+
+    .entry h2 {
+      font-size: 22px;
+    }
+    .entry h3 {
+      font-size: 15.5px;
+      margin-top: 22px;
+    }
+    .entry p,
+    .entry ul,
+    .entry ol {
+      font-size: 14.5px;
+    }
+
+    .phase-table {
+      font-size: 12.5px;
+    }
+    .phase-table th,
+    .phase-table td {
+      padding: 6px 7px;
+    }
+  }
+</style>

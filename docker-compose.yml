@@ -1,0 +1,25 @@
+services:
+  dev:
+    image: node:22-alpine
+    container_name: softsolution_dev
+    working_dir: /app
+    volumes:
+      - .:/app
+      - softsolution_node_modules:/app/node_modules
+    command: sh -c "npm install --prefer-offline --no-audit && npm run dev"
+    networks:
+      - infra
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.softsolution.rule=Host(`softsolution.localhost`)"
+      - "traefik.http.routers.softsolution.entrypoints=websecure"
+      - "traefik.http.routers.softsolution.tls=true"
+      - "traefik.http.services.softsolution.loadbalancer.server.port=4321"
+    restart: unless-stopped
+
+networks:
+  infra:
+    external: true
+
+volumes:
+  softsolution_node_modules:

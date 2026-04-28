@@ -1,0 +1,678 @@
+---
+import Base from '../layouts/Base.astro';
+
+// ─── Live (build-time) values ────────────────────────────────────
+// Regenerated on every Coolify rebuild. If these go stale, redeploy.
+const buildDate = new Date().toISOString().slice(0, 10); // YYYY-MM-DD
+// Last commit on Pipeforge — placeholder for now; later wire to a fetch.
+// To make truly live: replace with build-time fetch from GitHub API.
+const pipeforgeLastCommit = 'today';
+
+// ─── Tile data ───────────────────────────────────────────────────
+const tiles = [
+  {
+    n: '01',
+    title: 'Pipeforge',
+    tagline: 'personal AI delivery infrastructure',
+    body: '31 commands, 28 SKILL.md files, 20 agents, 64 MCP tools — screenshot walkthrough of real runs.',
+    href: '/pipeforge',
+    live: null,
+    durable: 'private tool · used daily',
+  },
+  {
+    n: '02',
+    title: 'Knowledge base',
+    tagline: 'how decisions get captured',
+    body: '5 selected entries from ~42 Knowledge-Base entries about Pipeforge itself — rationale, rejected alternatives, source citations.',
+    href: '/kb',
+    live: null,
+    durable: 'authored during real work',
+  },
+  {
+    n: '03',
+    title: 'Production work',
+    tagline: 'what the workflow ships',
+    body: 'Education CRM in production (4,190 tests as of 2026-04-27); ProfitOfExile, ~72k LOC across Go / SvelteKit / Tauri in ~2 weeks.',
+    href: '/about',
+    live: null,
+    durable: 'in production since 2025-Q3',
+  },
+];
+---
+
+<Base
+  title="Sebastian Rogala — AI-native product engineer"
+  description="Independent AI-native product engineer. Designer of Pipeforge — Claude Code orchestration with MCP-backed context engineering. Currently shipping a production multi-tenant CRM and a public-source community tool."
+>
+  <!-- ── Top nav ────────────────────────────────────────────────── -->
+  <nav class="topnav">
+    <div class="topnav-inner">
+      <a href="/" class="wordmark">softsolution.pro</a>
+      <div class="nav-links">
+        <a href="/pipeforge" class="nav-link">Pipeforge</a>
+        <span class="sep">·</span>
+        <a href="/kb" class="nav-link">Knowledge base</a>
+        <span class="sep">·</span>
+        <a href="/about" class="nav-link">About</a>
+      </div>
+      <div class="nav-icons">
+        <a
+          href="https://github.com/SebRogala"
+          aria-label="GitHub"
+          class="nav-link icon-link"
+        >
+          <svg width="15" height="15" viewBox="0 0 16 16" fill="currentColor"
+            ><path
+              d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z"
+            ></path></svg
+          >
+        </a>
+        <a
+          href="https://linkedin.com/in/seb-rogala"
+          aria-label="LinkedIn"
+          class="nav-link icon-link"
+        >
+          <svg width="15" height="15" viewBox="0 0 16 16" fill="currentColor"
+            ><path
+              d="M13.6 0H2.4A2.4 2.4 0 0 0 0 2.4v11.2A2.4 2.4 0 0 0 2.4 16h11.2a2.4 2.4 0 0 0 2.4-2.4V2.4A2.4 2.4 0 0 0 13.6 0zM4.84 13.6H2.56V6.08h2.28v7.52zM3.7 5.06a1.32 1.32 0 1 1 0-2.64 1.32 1.32 0 0 1 0 2.64zm9.9 8.54h-2.28V9.94c0-.85-.02-1.94-1.18-1.94-1.18 0-1.36.92-1.36 1.88v3.72H6.5V6.08h2.18v1.03h.03c.3-.57 1.04-1.18 2.14-1.18 2.3 0 2.72 1.51 2.72 3.48v4.19z"
+            ></path></svg
+          >
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ── Mobile sub-nav (visible only ≤640px) ──────────────────── -->
+  <nav class="mobile-subnav">
+    <a href="/pipeforge" class="nav-link">Pipeforge</a>
+    <a href="/kb" class="nav-link">KB</a>
+    <a href="/about" class="nav-link">About</a>
+  </nav>
+
+  <main class="frame">
+    <!-- ── Hero ──────────────────────────────────────────────── -->
+    <section class="hero">
+      <h1>Sebastian Rogala</h1>
+      <p class="tagline">AI-native product engineer · independent under Soft Solution</p>
+    </section>
+
+    <!-- ── Manifest (2 lines: currently + bases). today: dropped to reduce metric density. -->
+    <section class="manifest">
+      <div class="manifest-row">
+        <span class="manifest-label">currently:</span>
+        <span class="manifest-value sans">
+          developing <span class="accent">Pipeforge</span> · multi-tenant CRM in production · open to AI-native roles
+        </span>
+      </div>
+      <div class="manifest-row">
+        <span class="manifest-label">bases:</span>
+        <span class="manifest-value mono">
+          Rzeszów · UTC+2 · running Claude Sonnet 4.6 + Opus 4.7 on Pipeforge
+        </span>
+      </div>
+    </section>
+
+    <!-- ── Pitch + pull-quote ────────────────────────────────── -->
+    <section class="section pitch-section">
+      <div class="main-col">
+        <div class="eyebrow">What I do</div>
+        <p class="pitch">
+          I design AI-directed delivery systems that turn product intent into shipped, verified software. Twelve
+          years of software background; fully AI-directed since early 2026. Currently shipping a production
+          multi-tenant CRM, a public-source community tool, and Pipeforge — my Claude Code orchestration and
+          MCP-backed workflow infrastructure.
+        </p>
+      </div>
+      <div class="side-col">
+        <div class="pull-quote">
+          “AI failures are spec gaps, not agent shortcomings.”
+          <div class="pull-quote-attr">— core principle, in practice</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── Tiles header ─────────────────────────────────────── -->
+    <section class="section tiles-header">
+      <div class="eyebrow">Things I'm working on / pointing to</div>
+      <div class="tiles-count">3 entries</div>
+    </section>
+
+    <!-- ── Work tiles ────────────────────────────────────────── -->
+    <section class="tiles">
+      {
+        tiles.map((t) => (
+          <div class="tile-row">
+            <a href={t.href} class="tile-link">
+              <div class="tile-num">{t.n}</div>
+              <div class="tile-content">
+                <div class="tile-heading">
+                  {t.title}
+                  <span class="tile-tagline"> — {t.tagline}</span>
+                </div>
+                <div class="tile-body">{t.body}</div>
+              </div>
+              <div class="tile-arrow">{t.href} →</div>
+            </a>
+            <div class="side-col tile-side">
+              {t.live && (
+                <div class="sidenote-live">
+                  <span class="live-dot" />
+                  {t.live}
+                </div>
+              )}
+              <div class="sidenote-durable">{t.durable}</div>
+            </div>
+          </div>
+        ))
+      }
+    </section>
+
+    <!-- ── Availability (sidenote dropped to reduce metric density) ─ -->
+    <section class="section availability">
+      <div class="avail-left">
+        <div class="eyebrow">Availability</div>
+        <div class="status-pill">
+          <span class="status-dot"></span>
+          open · Q2 2026
+        </div>
+      </div>
+      <p class="avail-text">
+        Currently open to AI-native Product Engineer / Context Engineer roles at AI-forward teams, and to
+        consulting or workshop conversations on context engineering and AI-directed delivery. Most teams I talk
+        to discover that the workflow itself is the unfamiliar part — happy to walk through it.
+      </p>
+    </section>
+
+    <!-- ── Footer ─────────────────────────────────────────── -->
+    <footer class="footer">
+      <div class="footer-links">
+        <a href="mailto:sebrogala@gmail.com">sebrogala@gmail.com</a>
+        <span class="sep">·</span>
+        <a href="https://linkedin.com/in/seb-rogala">linkedin.com/in/seb-rogala</a>
+        <span class="sep">·</span>
+        <a href="https://github.com/SebRogala">github.com/SebRogala</a>
+      </div>
+      <div class="footer-meta">designed with Claude Design · built {buildDate}</div>
+    </footer>
+  </main>
+</Base>
+
+<style>
+  /* ─── Layout constants ────────────────────────────────────── */
+  /* Frame 1140 max · Body 660 + 28 gutter + 240 sidenote */
+
+  .frame {
+    max-width: 1140px;
+    margin: 0 auto;
+    padding: 0 32px;
+  }
+
+  /* ─── Top nav ─────────────────────────────────────────── */
+  .topnav {
+    border-bottom: 1px solid var(--rule);
+    padding: 20px 0;
+  }
+  .topnav-inner {
+    max-width: 1140px;
+    margin: 0 auto;
+    padding: 0 32px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .wordmark {
+    font-family: var(--mono);
+    font-size: 13px;
+    color: var(--fg-nav);
+    letter-spacing: 0.01em;
+    transition: color 160ms ease;
+  }
+  .wordmark:hover {
+    color: var(--accent);
+  }
+  .nav-links {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    font-family: var(--sans);
+    font-size: 14px;
+    font-weight: 500;
+  }
+  .nav-link {
+    color: var(--fg-nav);
+    transition: color 160ms ease;
+  }
+  .nav-link:hover {
+    color: var(--accent);
+  }
+  .icon-link {
+    display: inline-flex;
+    align-items: center;
+  }
+  .nav-icons {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+  .sep {
+    color: var(--rule-2);
+  }
+
+  /* Mobile sub-nav: hidden by default, shown on narrow viewports */
+  .mobile-subnav {
+    display: none;
+    padding: 12px 22px;
+    border-bottom: 1px solid var(--rule);
+    gap: 18px;
+    font-family: var(--sans);
+    font-size: 13px;
+    font-weight: 500;
+  }
+
+  /* ─── Hero ─────────────────────────────────────────────── */
+  .hero {
+    padding: 60px 0 24px;
+  }
+  .hero h1 {
+    font-family: var(--serif);
+    font-weight: 500;
+    font-size: 56px;
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    color: var(--fg);
+    margin-bottom: 14px;
+  }
+  .tagline {
+    font-size: 16px;
+    color: var(--muted);
+    letter-spacing: -0.005em;
+  }
+
+  /* ─── Manifest ─────────────────────────────────────────── */
+  .manifest {
+    padding: 24px 0 44px;
+    font-family: var(--mono);
+    font-size: 13px;
+    line-height: 1.85;
+  }
+  .manifest-row {
+    display: flex;
+    align-items: baseline;
+    gap: 14px;
+  }
+  .manifest-row + .manifest-row {
+    margin-top: 8px;
+  }
+  .manifest-label {
+    color: var(--accent);
+    width: 80px;
+    flex-shrink: 0;
+  }
+  .manifest-value.sans {
+    font-family: var(--sans);
+    font-size: 17px;
+    color: var(--fg);
+    line-height: 1.6;
+    letter-spacing: -0.005em;
+  }
+  .manifest-value.mono {
+    font-family: var(--mono);
+    font-size: 12.5px;
+    color: var(--muted);
+    line-height: 1.65;
+  }
+  .manifest .accent {
+    color: var(--accent);
+  }
+
+  /* ─── Pitch section ────────────────────────────────────── */
+  .section {
+    padding: 40px 0 52px;
+    border-top: 1px solid var(--rule);
+    display: grid;
+    grid-template-columns: 660px 28px 240px;
+  }
+  .pitch-section .main-col {
+    grid-column: 1;
+  }
+  .pitch-section .side-col {
+    grid-column: 3;
+    padding-top: 30px;
+  }
+
+  .eyebrow {
+    font-family: var(--mono);
+    font-size: 11.5px;
+    color: var(--muted);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    margin-bottom: 18px;
+  }
+
+  .pitch {
+    font-family: var(--serif);
+    /* Pitch weight bumped from 400 → 500 to anchor the page (one of three metric-reduction tweaks) */
+    font-weight: 500;
+    font-size: 22px;
+    line-height: 1.55;
+    color: var(--fg);
+    text-wrap: pretty;
+  }
+
+  .pull-quote {
+    border-left: 2px solid var(--accent);
+    padding-left: 14px;
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: 15.5px;
+    line-height: 1.5;
+    color: var(--fg);
+    text-wrap: pretty;
+  }
+  .pull-quote-attr {
+    margin-top: 10px;
+    font-family: var(--mono);
+    font-size: 10.5px;
+    font-style: normal;
+    color: var(--muted);
+    letter-spacing: 0.04em;
+  }
+
+  /* ─── Tiles header ─────────────────────────────────────── */
+  .tiles-header {
+    border-top: 1px solid var(--rule);
+    padding: 32px 0 20px;
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    grid-template-columns: none;
+  }
+  .tiles-header .eyebrow {
+    margin-bottom: 0;
+  }
+  .tiles-count {
+    font-family: var(--mono);
+    font-size: 11.5px;
+    color: var(--muted);
+  }
+
+  /* ─── Tiles ────────────────────────────────────────────── */
+  .tiles {
+    padding: 0 0 48px;
+  }
+  .tile-row {
+    display: grid;
+    grid-template-columns: 660px 28px 240px;
+    border-bottom: 1px solid var(--rule);
+  }
+  .tile-row:first-child {
+    border-top: 1px solid var(--rule);
+  }
+  .tile-link {
+    display: grid;
+    grid-template-columns: 36px 1fr 110px;
+    gap: 22px;
+    padding: 22px 12px 22px 0;
+    margin-left: -12px;
+    margin-right: -12px;
+    padding-left: 12px;
+    padding-right: 12px;
+    align-items: baseline;
+    border-radius: 4px;
+    color: inherit;
+    transition: background 160ms ease;
+  }
+  .tile-link:hover {
+    background: var(--bg-raise);
+  }
+  .tile-link:hover .tile-heading {
+    color: var(--accent);
+  }
+  .tile-link:hover .tile-arrow {
+    transform: translateX(2px);
+  }
+  .tile-num {
+    font-family: var(--mono);
+    font-size: 13px;
+    color: var(--muted);
+  }
+  .tile-heading {
+    font-family: var(--serif);
+    font-weight: 500;
+    font-size: 26px;
+    letter-spacing: -0.018em;
+    color: var(--fg);
+    margin-bottom: 4px;
+    transition: color 160ms ease;
+  }
+  .tile-tagline {
+    color: var(--muted);
+    font-style: italic;
+    font-weight: 400;
+    font-size: 17px;
+  }
+  .tile-body {
+    font-family: var(--sans);
+    font-size: 14.5px;
+    line-height: 1.55;
+    color: var(--fg);
+    opacity: 0.78;
+    text-wrap: pretty;
+  }
+  .tile-arrow {
+    font-family: var(--mono);
+    font-size: 13.5px;
+    color: var(--accent);
+    text-align: right;
+    font-weight: 500;
+    transition: transform 160ms ease;
+    display: inline-block;
+  }
+
+  .tile-side {
+    grid-column: 3;
+    padding: 24px 0;
+    font-family: var(--mono);
+    font-size: 11.5px;
+    line-height: 1.75;
+    color: var(--muted);
+  }
+  .sidenote-live {
+    color: var(--fg);
+    margin-bottom: 4px;
+    display: flex;
+    align-items: center;
+  }
+  .sidenote-durable {
+    opacity: 0.85;
+  }
+  .live-dot {
+    display: inline-block;
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--live-dot);
+    margin-right: 7px;
+    box-shadow: 0 0 4px rgba(200, 174, 106, 0.4);
+  }
+
+  /* ─── Availability ─────────────────────────────────────── */
+  .availability {
+    padding: 36px 0 44px;
+    grid-template-columns: 180px 1fr;
+    gap: 24px;
+  }
+  .avail-left {
+    grid-column: 1;
+  }
+  .availability .eyebrow {
+    margin-bottom: 12px;
+  }
+  .status-pill {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--status-fg);
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 5px 10px;
+    background: var(--status-bg);
+    border: 1px solid var(--rule-2);
+  }
+  .status-dot {
+    width: 6px;
+    height: 6px;
+    background: var(--status-fg);
+    border-radius: 50%;
+    box-shadow: 0 0 6px rgba(166, 212, 159, 0.53);
+  }
+  .avail-text {
+    grid-column: 2;
+    font-family: var(--serif);
+    /* Bumped to weight 500 to match pitch (consistent identity hierarchy) */
+    font-weight: 500;
+    font-size: 17.5px;
+    line-height: 1.6;
+    color: var(--fg);
+    text-wrap: pretty;
+  }
+
+  /* ─── Footer ───────────────────────────────────────────── */
+  .footer {
+    padding: 22px 0 36px;
+    border-top: 1px solid var(--rule);
+    display: flex;
+    justify-content: space-between;
+    font-family: var(--mono);
+    font-size: 13px;
+    color: var(--fg);
+  }
+  .footer-links {
+    display: flex;
+    gap: 22px;
+  }
+  .footer-links a {
+    color: var(--accent);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    text-decoration-color: rgba(125, 179, 108, 0.33);
+  }
+  .footer-meta {
+    color: var(--muted);
+  }
+
+  /* ─── Responsive: mobile ≤640px ────────────────────────── */
+  @media (max-width: 640px) {
+    .frame {
+      padding: 0 22px;
+    }
+    .topnav-inner {
+      padding: 0 22px;
+    }
+    .nav-links {
+      display: none;
+    }
+    .mobile-subnav {
+      display: flex;
+    }
+
+    .hero {
+      padding: 36px 0 18px;
+    }
+    .hero h1 {
+      font-size: 36px;
+      margin-bottom: 10px;
+    }
+    .tagline {
+      font-size: 13.5px;
+    }
+
+    .manifest {
+      padding: 20px 0 24px;
+    }
+    .manifest-row {
+      flex-direction: column;
+      gap: 4px;
+    }
+    .manifest-label {
+      width: auto;
+      font-size: 11.5px;
+    }
+    .manifest-value.sans {
+      font-size: 14.5px;
+    }
+    .manifest-value.mono {
+      font-size: 12px;
+    }
+
+    .section {
+      grid-template-columns: 1fr;
+      padding: 24px 0;
+    }
+    .pitch-section .side-col {
+      padding-top: 16px;
+      border-top: 1px dashed var(--rule-2);
+      margin-top: 16px;
+    }
+    .pitch {
+      font-size: 17px;
+    }
+    .pull-quote {
+      font-size: 14px;
+    }
+
+    .tiles-header {
+      padding: 24px 0 16px;
+    }
+
+    .tile-row {
+      grid-template-columns: 1fr;
+      padding: 18px 0;
+    }
+    .tile-link {
+      grid-template-columns: 1fr;
+      gap: 6px;
+      padding: 0;
+      margin: 0;
+    }
+    .tile-num {
+      font-size: 11px;
+    }
+    .tile-heading {
+      font-size: 22px;
+    }
+    .tile-body {
+      font-size: 14px;
+    }
+    .tile-arrow {
+      text-align: left;
+      margin-top: 8px;
+    }
+    .tile-side {
+      padding: 8px 0 0;
+      border-top: 1px dashed var(--rule-2);
+      margin-top: 12px;
+    }
+
+    .availability {
+      grid-template-columns: 1fr;
+      padding: 24px 0;
+    }
+    .avail-text {
+      font-size: 16px;
+    }
+
+    .footer {
+      flex-direction: column;
+      gap: 8px;
+      padding: 20px 0 28px;
+    }
+    .footer-links {
+      flex-direction: column;
+      gap: 4px;
+    }
+    .footer-links .sep {
+      display: none;
+    }
+  }
+</style>

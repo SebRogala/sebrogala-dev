@@ -1,0 +1,564 @@
+---
+import Base from '../layouts/Base.astro';
+
+const screenshotsAsOf = '2026-04-27';
+
+// Each panel: image filename in /screenshots, caption, body para.
+// Order follows portfolio-screenshots/MANIFEST.md narrative recommendation.
+const panels = [
+  {
+    section: 'Discovery & planning',
+    img: '03-execution-order-dependency-graph.png',
+    alt: 'Chunk dependency graph: backend → tests → independent frontends',
+    caption: 'Planner output: dependency tree for an epic. Backend chunk 1 is the foundation; tests wait on it; three frontends can fan out in parallel; one frontend waits on its backend partner.',
+    body: 'Before any code is written, the planner builds an explicit chunk dependency graph and translates the diagram into numbered execution rules. The orchestrator then runs that graph — sequentially where the graph forces it, in parallel where it allows it.',
+  },
+  {
+    section: 'Workspace coordination',
+    img: '13-show-routes-multi-worktree-state.png',
+    alt: '/show-routes: three concurrent worktrees with progress bars',
+    caption: '`/show-routes`: three concurrent worktrees on one machine. Each row shows the active route, the current in-progress task, a progress bar, and a next-step suggestion.',
+    body: 'My day-to-day involves multiple feature branches under different epics. Pipeforge tracks workspace state durably so the orchestrator (and I) can resume any of them without losing context — what the route is, what just merged, what is next.',
+  },
+  {
+    section: 'Workspace coordination',
+    img: '05-whats-next-route-overview.png',
+    alt: '/whats-next: route discovery with conflict-risk assessment',
+    caption: '`/whats-next`: three available routes — a fresh epic (4 ordered tasks, low conflict risk), an actionable bundle (3 ready tasks), and an in-flight resume option.',
+    body: 'When picking the next thing to work on, the route-discovery skill ranks options by readiness and conflict risk against work in flight elsewhere in the workspace. Status pills make it fast to choose.',
+  },
+  {
+    section: 'Plan review gate',
+    img: '11-plan-reviewer-findings-classification.png',
+    alt: 'Plan review: 5 findings classified by severity with concrete fixes',
+    caption: 'Plan-reviewer finished in ~1 minute with 5 findings (2 high · 2 medium · 1 low). Each finding has a one-line summary AND a concrete fix. Then the orchestrator presents 4 paths forward.',
+    body: 'The plan review is the implementation gate. Problems caught here cost minutes; problems caught after implementation cost the whole chunk. The reviewer is graceful — it never proceeds blindly. Either I address findings, accept the trade explicitly, or skip the task.',
+  },
+  {
+    section: 'Pipeline execution',
+    img: '02-parallel-chunks-group1-complete.png',
+    alt: '8 agents running in parallel: Group 1 finishing while Group 2 dispatches',
+    caption: 'Group 1 (4 chunks: data layer, API, CSS, preferences) finished with token + tool-use accounting per agent. Group 2 implementers (4 agents) and Group 1 light reviewers (4 agents) dispatch — 8 agents concurrent.',
+    body: 'Dependency-aware planning combined with parallel scheduling. The orchestrator dispatches the next group as soon as its dependencies clear, not after the whole previous wave finishes. Token and tool-use accounting per agent is the observability foundation everything else builds on.',
+  },
+  {
+    section: 'Heavy-review boundary',
+    img: '14-heavy-review-complete-findings-table.png',
+    alt: 'Heavy review: 5 specialised reviewers, 34 findings classified by severity, 0 critical',
+    caption: 'Heavy-review complete. 5 specialised reviewers ran in parallel (code-reviewer, pr-test-analyzer, silent-failure-hunter, comment-analyzer, type-design-analyzer). 34 findings, 0 critical, classified by agent and module.',
+    body: 'Heavy-review is the merge gate. Each reviewer is narrow on purpose — one looks for silent failures, one for comment rot, one for type-design issues. Findings are classified Critical / Important / Suggestion / Deferred per agent, with module-level totals. 0 critical = clean to merge. The pattern is derived from the open-source pr-review-toolkit, adapted to the Pipeforge agent model.',
+  },
+  {
+    section: 'Fidelity audit',
+    img: '12-fidelity-auditor-handler-moves-clean.png',
+    alt: 'Fidelity audit on handler refactor: 17/17 atoms preserved, 0 missing',
+    caption: 'Fidelity audit on a structural handler refactor. 17 behavioral atoms preserved, 0 missing, 2 cosmetic simplifications downgraded to LOW with explicit reasoning per item.',
+    body: 'The fidelity-auditor was built after AI silently summarised 491 lines of behavioural specs into 122 during a docs migration — the kind of regression that passes type-check and tests because nothing structurally broke. It runs at structural move/split/extract operations, classifies deltas Missing / Simplified / Evolved / Preserved, and explains LOW deltas instead of crying wolf.',
+  },
+  {
+    section: 'Fidelity audit',
+    img: '15-fidelity-auditor-critical-drift-caught.png',
+    alt: 'Fidelity audit catches a real regression: flash key silently unified across two flows',
+    caption: 'Different audit, real regression. A flash-key changed during a refactor, silently unifying two distinct user flows into one generic error. Auditor surfaces: original key, new key, file:line range, the exact UX consequence, and a one-line fix.',
+    body: 'This is the "show, don\'t tell" example. The change passed type-check and tests because the behaviour difference lives in user-visible flash messages. Without an audit pass focused on behavioural atoms — not just structural shape — this would have shipped.',
+  },
+  {
+    section: 'Test audit',
+    img: '07-test-audit-all-suites-clean.png',
+    alt: 'Test audit: 4,190 PHP tests + 157 E2E tests, all clean, 7m 13s total',
+    caption: `Test audit on the production CRM (as of ${screenshotsAsOf}). PHPStan clean · Unit 2674/2674 (8539 assertions) · Integration 459/459 · Functional 699/699 · Smoke 201/201 · E2E 157/157. Total runtime: 7m 13s.`,
+    body: 'The test audit is what backs the production claims. Numbers are concrete: 4,190 PHP tests, 157 E2E, PHPStan level 8, ~7 minutes end-to-end. The structured learnings counter (259 across categories) is the loop into the knowledge base — gotchas surfaced during fixes get captured durably.',
+  },
+];
+
+const appendix = [
+  { img: '01-fidelity-audit-pass-summary.png', caption: 'Fidelity audit on a docs merge: ~45 atoms preserved, category-and-severity classification.' },
+  { img: '04-foundation-then-parallel-group2.png', caption: 'Foundation chunk done in 14m 9s; orchestrator dispatches Group 2 (5 agents) labelled by specialisation.' },
+  { img: '06-whats-next-backlog-breakdown.png', caption: '`/whats-next` continued: 13-task backlog flagged for `/discover-routes`, 6 epics flagged for `/breakdown` first.' },
+  { img: '08-deliver-flow-shipping-options.png', caption: '`/deliver` prompts 5 shipping modes: adaptive single-flow, two-step, hand-implement, park, free text.' },
+  { img: '09-deliver-route-safety-check.png', caption: '`/deliver` Step 0 catches a route mismatch before doing damage and surfaces 4 explicit resolution options.' },
+  { img: '10-plan-reviewer-mcp-context-load.png', caption: 'Plan-reviewer dispatches and self-loads MCP context (`getConfig`, `getDiscoveries`, external tracker lookup) — orchestrator passes only the task ID.' },
+];
+---
+
+<Base
+  title="Pipeforge — softsolution.pro"
+  description="Pipeforge: Claude Code orchestration plugin and PostgreSQL MCP backend. Personal AI delivery infrastructure with verification, fidelity audits, and source-cited knowledge."
+>
+  <nav class="topnav">
+    <div class="topnav-inner">
+      <a href="/" class="wordmark">softsolution.pro</a>
+      <div class="nav-links">
+        <a href="/pipeforge" class="nav-link active">Pipeforge</a>
+        <span class="sep">·</span>
+        <a href="/kb" class="nav-link">Knowledge base</a>
+        <span class="sep">·</span>
+        <a href="/about" class="nav-link">About</a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="frame">
+    <header class="page-header">
+      <div class="eyebrow">Walkthrough</div>
+      <h1>Pipeforge</h1>
+      <p class="lede">
+        Personal Claude Code orchestration plugin and PostgreSQL MCP backend. Built from a personal need to
+        coordinate work across multiple machines and parallel worktrees, then evolved into where I prototype
+        the context-engineering patterns I apply in client work.
+      </p>
+      <p class="sub-lede">
+        This is not a product. It is the infrastructure I use daily. Below: real screenshots from real runs,
+        in execution order. Tracker IDs from a public open-source project (`POE-###`) are kept visible —
+        they are already public on GitHub. Tracker IDs from a proprietary client project have been replaced
+        with `[TSK-000]` placeholders.
+      </p>
+    </header>
+
+    <section class="stats">
+      <div class="stat">
+        <div class="stat-num">31</div>
+        <div class="stat-label">commands</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">28</div>
+        <div class="stat-label">SKILL.md files</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">20</div>
+        <div class="stat-label">agents</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">11</div>
+        <div class="stat-label">pipeline templates</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">64</div>
+        <div class="stat-label">MCP tools</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">31</div>
+        <div class="stat-label">Postgres tables</div>
+      </div>
+    </section>
+
+    <section class="prose">
+      <h2>What it does, briefly</h2>
+      <p>
+        Two orchestration patterns from different context-window eras: <strong>`/pipe`</strong> —
+        orchestrator clears, MCP holds state, sub-agents do the work (built to survive the compact-prone
+        200k era). <strong>`/deliver`</strong> — orchestrator keeps full context, dispatches from there
+        (viable once 1M removed compact pressure). A configurable <code>context_window_size</code> drives
+        chunk sizing independently of pattern.
+      </p>
+      <p>
+        Layered defence: structured state over fuzzy retrieval, source citations on KB entries, sub-agent
+        adversarial review, verification before completion, heavy-review (up to 5 parallel reviewer agents,
+        derived from the open-source <code>pr-review-toolkit</code>), and hook-level enforcement
+        (e.g. <code>cd</code> blocking to prevent worktree drift).
+      </p>
+    </section>
+
+    {
+      panels.map((p, i) => (
+        <section class="panel">
+          <div class="panel-meta">
+            <div class="panel-num">{String(i + 1).padStart(2, '0')}</div>
+            <div class="panel-section-label">{p.section}</div>
+          </div>
+          <figure class="panel-figure">
+            <a href={`/screenshots/${p.img}`} target="_blank" rel="noopener" aria-label="Open full-size screenshot in new tab">
+              <img
+                src={`/screenshots/${p.img}`}
+                alt={p.alt}
+                loading="lazy"
+                decoding="async"
+              />
+            </a>
+            <figcaption>{p.caption}</figcaption>
+          </figure>
+          <p class="panel-body">{p.body}</p>
+        </section>
+      ))
+    }
+
+    <section class="prose">
+      <h2>Two stories the screenshots back up</h2>
+      <p>
+        <strong>Pipeline observability caught an Opus 4.7 regression.</strong> Same pipeline shapes,
+        same task graphs, ~2× wall-clock and ~2.3× tokens vs Opus 4.6 across 8+ runs. Root-caused to
+        disk round-tripping of in-memory MCP results plus literal-instruction adherence overriding
+        session-level config. Shipped two revertible spec fixes (config-honoured deferred mode +
+        DRY-extracted per-phase metrics capture) and filed the reproducible investigation upstream:
+        <a
+          href="https://github.com/anthropics/claude-code/issues/6354#issuecomment-3849990217"
+          target="_blank"
+          rel="noopener"
+          >github.com/anthropics/claude-code/issues/6354</a
+        >.
+      </p>
+      <p>
+        <strong>The fidelity-auditor exists because of a near-miss.</strong> During a docs migration,
+        AI silently summarised 491 lines of behavioural specs into 122. Type-checks passed. Tests
+        passed. The behaviour was structurally fine but operationally lossy. The fidelity-auditor is
+        the structural answer: at every move/split/extract, an audit pass classifies behavioural
+        atoms Missing / Simplified / Evolved / Preserved, with explicit reasoning on every LOW.
+      </p>
+    </section>
+
+    <section class="appendix">
+      <h2>Appendix — more artefacts</h2>
+      <p class="appendix-intro">
+        Six additional screenshots covering more of the same pipeline surface. Same redaction policy
+        as above.
+      </p>
+      <div class="appendix-grid">
+        {
+          appendix.map((a) => (
+            <figure class="appendix-figure">
+              <a href={`/screenshots/${a.img}`} target="_blank" rel="noopener">
+                <img src={`/screenshots/${a.img}`} alt={a.caption} loading="lazy" decoding="async" />
+              </a>
+              <figcaption>{a.caption}</figcaption>
+            </figure>
+          ))
+        }
+      </div>
+    </section>
+
+    <footer class="page-footer">
+      <a href="/">← back</a>
+      <span class="sep">·</span>
+      <a href="/kb">Knowledge base →</a>
+    </footer>
+  </main>
+</Base>
+
+<style>
+  .frame {
+    max-width: 920px;
+    margin: 0 auto;
+    padding: 0 32px 48px;
+  }
+
+  .topnav {
+    border-bottom: 1px solid var(--rule);
+    padding: 20px 0;
+    margin-bottom: 48px;
+  }
+  .topnav-inner {
+    max-width: 1140px;
+    margin: 0 auto;
+    padding: 0 32px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .wordmark {
+    font-family: var(--mono);
+    font-size: 13px;
+    color: var(--fg-nav);
+    letter-spacing: 0.01em;
+  }
+  .wordmark:hover {
+    color: var(--accent);
+  }
+  .nav-links {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    font-family: var(--sans);
+    font-size: 14px;
+    font-weight: 500;
+  }
+  .nav-link {
+    color: var(--fg-nav);
+    transition: color 160ms ease;
+  }
+  .nav-link.active {
+    color: var(--fg);
+  }
+  .nav-link:hover {
+    color: var(--accent);
+  }
+  .sep {
+    color: var(--rule-2);
+  }
+
+  .page-header {
+    margin-bottom: 36px;
+  }
+  .eyebrow {
+    font-family: var(--mono);
+    font-size: 11.5px;
+    color: var(--muted);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    margin-bottom: 18px;
+  }
+  h1 {
+    font-family: var(--serif);
+    font-weight: 500;
+    font-size: 44px;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    color: var(--fg);
+    margin-bottom: 18px;
+  }
+  .lede {
+    font-family: var(--serif);
+    font-weight: 500;
+    font-size: 19px;
+    line-height: 1.55;
+    color: var(--fg);
+    text-wrap: pretty;
+    margin-bottom: 16px;
+  }
+  .sub-lede {
+    font-family: var(--sans);
+    font-size: 14px;
+    line-height: 1.6;
+    color: var(--muted);
+    text-wrap: pretty;
+  }
+  .sub-lede code {
+    font-family: var(--mono);
+    font-size: 12.5px;
+    color: var(--fg-nav);
+    background: var(--bg-raise);
+    padding: 1px 5px;
+    border-radius: 3px;
+  }
+
+  .stats {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 16px;
+    padding: 24px 0;
+    border-top: 1px solid var(--rule);
+    border-bottom: 1px solid var(--rule);
+    margin-bottom: 36px;
+  }
+  .stat-num {
+    font-family: var(--serif);
+    font-weight: 500;
+    font-size: 28px;
+    color: var(--accent);
+    letter-spacing: -0.01em;
+  }
+  .stat-label {
+    font-family: var(--mono);
+    font-size: 11.5px;
+    color: var(--muted);
+    margin-top: 2px;
+    line-height: 1.3;
+  }
+
+  .prose {
+    margin: 32px 0 36px;
+    font-family: var(--sans);
+    font-size: 15.5px;
+    line-height: 1.65;
+    color: var(--fg);
+  }
+  .prose h2 {
+    font-family: var(--serif);
+    font-weight: 500;
+    font-size: 22px;
+    color: var(--fg);
+    margin-bottom: 14px;
+    letter-spacing: -0.01em;
+  }
+  .prose p + p {
+    margin-top: 14px;
+  }
+  .prose code {
+    font-family: var(--mono);
+    font-size: 13px;
+    color: var(--fg-nav);
+    background: var(--bg-raise);
+    padding: 1px 5px;
+    border-radius: 3px;
+  }
+  .prose strong {
+    color: var(--fg);
+    font-weight: 600;
+  }
+  .prose a {
+    color: var(--accent);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    text-decoration-color: rgba(125, 179, 108, 0.4);
+  }
+
+  .panel {
+    border-top: 1px solid var(--rule);
+    padding: 36px 0;
+  }
+  .panel-meta {
+    display: flex;
+    align-items: baseline;
+    gap: 14px;
+    margin-bottom: 18px;
+    font-family: var(--mono);
+    font-size: 12px;
+  }
+  .panel-num {
+    color: var(--accent);
+    font-weight: 500;
+  }
+  .panel-section-label {
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-size: 11px;
+  }
+  .panel-figure {
+    margin: 0 0 18px;
+  }
+  .panel-figure a {
+    display: block;
+    border: 1px solid var(--rule-2);
+    border-radius: 4px;
+    overflow: hidden;
+    background: var(--bg-raise);
+    transition: border-color 160ms ease;
+  }
+  .panel-figure a:hover {
+    border-color: var(--accent);
+  }
+  .panel-figure img {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+  .panel-figure figcaption {
+    margin-top: 10px;
+    font-family: var(--sans);
+    font-size: 13.5px;
+    line-height: 1.55;
+    color: var(--muted);
+    text-wrap: pretty;
+  }
+  .panel-body {
+    font-family: var(--sans);
+    font-size: 15.5px;
+    line-height: 1.65;
+    color: var(--fg);
+    text-wrap: pretty;
+  }
+
+  .appendix {
+    margin-top: 48px;
+    padding-top: 36px;
+    border-top: 1px solid var(--rule);
+  }
+  .appendix h2 {
+    font-family: var(--serif);
+    font-weight: 500;
+    font-size: 22px;
+    color: var(--fg);
+    margin-bottom: 12px;
+  }
+  .appendix-intro {
+    font-family: var(--sans);
+    font-size: 14.5px;
+    color: var(--muted);
+    margin-bottom: 24px;
+  }
+  .appendix-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+  }
+  .appendix-figure {
+    margin: 0;
+  }
+  .appendix-figure a {
+    display: block;
+    border: 1px solid var(--rule-2);
+    border-radius: 4px;
+    overflow: hidden;
+    background: var(--bg-raise);
+    transition: border-color 160ms ease;
+  }
+  .appendix-figure a:hover {
+    border-color: var(--accent);
+  }
+  .appendix-figure img {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+  .appendix-figure figcaption {
+    margin-top: 8px;
+    font-family: var(--sans);
+    font-size: 12.5px;
+    line-height: 1.5;
+    color: var(--muted);
+  }
+
+  .page-footer {
+    margin-top: 48px;
+    padding-top: 22px;
+    border-top: 1px solid var(--rule);
+    font-family: var(--mono);
+    font-size: 13px;
+    display: flex;
+    gap: 12px;
+  }
+  .page-footer a {
+    color: var(--accent);
+    transition: color 160ms ease;
+  }
+  .page-footer a:hover {
+    color: var(--fg);
+  }
+
+  @media (max-width: 720px) {
+    .frame {
+      padding: 0 22px 36px;
+    }
+    .topnav-inner {
+      padding: 0 22px;
+    }
+    .nav-links {
+      gap: 14px;
+      font-size: 13px;
+    }
+
+    h1 {
+      font-size: 32px;
+    }
+    .lede {
+      font-size: 16px;
+    }
+    .sub-lede {
+      font-size: 13px;
+    }
+
+    .stats {
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+    }
+    .stat-num {
+      font-size: 22px;
+    }
+
+    .panel {
+      padding: 28px 0;
+    }
+    .panel-figure figcaption {
+      font-size: 13px;
+    }
+    .panel-body {
+      font-size: 15px;
+    }
+
+    .appendix-grid {
+      grid-template-columns: 1fr;
+      gap: 18px;
+    }
+  }
+</style>
+</Base>
