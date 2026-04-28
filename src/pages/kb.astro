@@ -1,5 +1,6 @@
 ---
 import Base from '../layouts/Base.astro';
+import TopNav from '../components/TopNav.astro';
 
 const entries = [
   {
@@ -46,21 +47,10 @@ const entries = [
 ---
 
 <Base
-  title="Knowledge base — softsolution.pro"
+  title="Knowledge base — sebrogala.dev"
   description="Selected entries from the Pipeforge knowledge base: architectural decisions with rationale, rejected alternatives, and source-file citations."
 >
-  <nav class="topnav">
-    <div class="topnav-inner">
-      <a href="/" class="wordmark">softsolution.pro</a>
-      <div class="nav-links">
-        <a href="/pipeforge" class="nav-link">Pipeforge</a>
-        <span class="sep">·</span>
-        <a href="/kb" class="nav-link active">Knowledge base</a>
-        <span class="sep">·</span>
-        <a href="/about" class="nav-link">About</a>
-      </div>
-    </div>
-  </nav>
+  <TopNav current="kb" />
 
   <main class="frame">
     <header class="page-header">
@@ -84,8 +74,10 @@ const entries = [
           entries.map((e) => (
             <li>
               <a href={`#${e.id}`}>
-                <span class="toc-pattern">{e.pattern}</span>
-                <span class="toc-title">{e.title}</span>
+                <div class="toc-text">
+                  <span class="toc-pattern">{e.pattern}</span>
+                  <span class="toc-title">{e.title}</span>
+                </div>
               </a>
             </li>
           ))
@@ -596,48 +588,11 @@ const entries = [
   .frame {
     max-width: 760px;
     margin: 0 auto;
-    padding: 0 32px 48px;
+    padding: 48px 32px;
   }
 
-  .topnav {
-    border-bottom: 1px solid var(--rule);
-    padding: 20px 0;
-    margin-bottom: 48px;
-  }
-  .topnav-inner {
-    max-width: 1140px;
-    margin: 0 auto;
-    padding: 0 32px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-  .wordmark {
-    font-family: var(--mono);
-    font-size: 13px;
-    color: var(--fg-nav);
-  }
-  .wordmark:hover {
-    color: var(--accent);
-  }
-  .nav-links {
-    display: flex;
-    align-items: center;
-    gap: 24px;
-    font-family: var(--sans);
-    font-size: 14px;
-    font-weight: 500;
-  }
-  .nav-link {
-    color: var(--fg-nav);
-    transition: color 160ms ease;
-  }
-  .nav-link.active {
-    color: var(--fg);
-  }
-  .nav-link:hover {
-    color: var(--accent);
-  }
+  /* Topnav lives in src/components/TopNav.astro. */
+  /* `.sep` is also used in the page footer below — keep as page-level rule. */
   .sep {
     color: var(--rule-2);
   }
@@ -724,6 +679,9 @@ const entries = [
   .toc a:hover .toc-title {
     color: var(--accent);
   }
+  .toc-text {
+    min-width: 0;
+  }
   .toc-pattern {
     display: block;
     font-family: var(--mono);
@@ -734,6 +692,7 @@ const entries = [
     margin-bottom: 2px;
   }
   .toc-title {
+    display: block;
     font-family: var(--serif);
     font-size: 16px;
     color: var(--fg);
@@ -744,7 +703,7 @@ const entries = [
   .entry {
     border-top: 1px solid var(--rule);
     padding: 40px 0 8px;
-    scroll-margin-top: 24px;
+    scroll-margin-top: 80px; /* ≈ sticky topnav height + breathing room */
   }
   .entry-header {
     margin-bottom: 24px;
@@ -912,14 +871,7 @@ const entries = [
 
   @media (max-width: 720px) {
     .frame {
-      padding: 0 22px 36px;
-    }
-    .topnav-inner {
-      padding: 0 22px;
-    }
-    .nav-links {
-      gap: 14px;
-      font-size: 13px;
+      padding: 36px 22px;
     }
 
     h1 {

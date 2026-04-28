@@ -1,9 +1,9 @@
 {
-  "name": "softsolution-pro",
+  "name": "sebrogala-dev",
   "type": "module",
   "version": "0.1.0",
   "private": true,
-  "description": "softsolution.pro — personal site of Sebastian Rogala",
+  "description": "sebrogala.dev — personal site of Sebastian Rogala",
   "scripts": {
     "dev": "astro dev",
     "start": "astro dev",

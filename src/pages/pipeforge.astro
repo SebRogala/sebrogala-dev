@@ -1,5 +1,6 @@
 ---
 import Base from '../layouts/Base.astro';
+import TopNav from '../components/TopNav.astro';
 
 const screenshotsAsOf = '2026-04-27';
 
@@ -82,21 +83,10 @@ const appendix = [
 ---
 
 <Base
-  title="Pipeforge — softsolution.pro"
+  title="Pipeforge — sebrogala.dev"
   description="Pipeforge: Claude Code orchestration plugin and PostgreSQL MCP backend. Personal AI delivery infrastructure with verification, fidelity audits, and source-cited knowledge."
 >
-  <nav class="topnav">
-    <div class="topnav-inner">
-      <a href="/" class="wordmark">softsolution.pro</a>
-      <div class="nav-links">
-        <a href="/pipeforge" class="nav-link active">Pipeforge</a>
-        <span class="sep">·</span>
-        <a href="/kb" class="nav-link">Knowledge base</a>
-        <span class="sep">·</span>
-        <a href="/about" class="nav-link">About</a>
-      </div>
-    </div>
-  </nav>
+  <TopNav current="pipeforge" />
 
   <main class="frame">
     <header class="page-header">
@@ -167,7 +157,11 @@ const appendix = [
             <div class="panel-section-label">{p.section}</div>
           </div>
           <figure class="panel-figure">
-            <a href={`/screenshots/${p.img}`} target="_blank" rel="noopener" aria-label="Open full-size screenshot in new tab">
+            <a
+              href={`/screenshots/${p.img}`}
+              class="lightbox-link"
+              aria-label="Open full-size screenshot"
+            >
               <img
                 src={`/screenshots/${p.img}`}
                 alt={p.alt}
@@ -216,7 +210,11 @@ const appendix = [
         {
           appendix.map((a) => (
             <figure class="appendix-figure">
-              <a href={`/screenshots/${a.img}`} target="_blank" rel="noopener">
+              <a
+                href={`/screenshots/${a.img}`}
+                class="lightbox-link"
+                aria-label="Open full-size screenshot"
+              >
                 <img src={`/screenshots/${a.img}`} alt={a.caption} loading="lazy" decoding="async" />
               </a>
               <figcaption>{a.caption}</figcaption>
@@ -238,49 +236,11 @@ const appendix = [
   .frame {
     max-width: 920px;
     margin: 0 auto;
-    padding: 0 32px 48px;
+    padding: 48px 32px;
   }
 
-  .topnav {
-    border-bottom: 1px solid var(--rule);
-    padding: 20px 0;
-    margin-bottom: 48px;
-  }
-  .topnav-inner {
-    max-width: 1140px;
-    margin: 0 auto;
-    padding: 0 32px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-  .wordmark {
-    font-family: var(--mono);
-    font-size: 13px;
-    color: var(--fg-nav);
-    letter-spacing: 0.01em;
-  }
-  .wordmark:hover {
-    color: var(--accent);
-  }
-  .nav-links {
-    display: flex;
-    align-items: center;
-    gap: 24px;
-    font-family: var(--sans);
-    font-size: 14px;
-    font-weight: 500;
-  }
-  .nav-link {
-    color: var(--fg-nav);
-    transition: color 160ms ease;
-  }
-  .nav-link.active {
-    color: var(--fg);
-  }
-  .nav-link:hover {
-    color: var(--accent);
-  }
+  /* Topnav lives in src/components/TopNav.astro. */
+  /* `.sep` is also used in the page footer below — keep as page-level rule. */
   .sep {
     color: var(--rule-2);
   }
@@ -339,18 +299,22 @@ const appendix = [
     border-bottom: 1px solid var(--rule);
     margin-bottom: 36px;
   }
+  .stat {
+    text-align: center;
+  }
   .stat-num {
     font-family: var(--serif);
     font-weight: 500;
     font-size: 28px;
     color: var(--accent);
     letter-spacing: -0.01em;
+    line-height: 1.1;
   }
   .stat-label {
     font-family: var(--mono);
     font-size: 11.5px;
     color: var(--muted);
-    margin-top: 2px;
+    margin-top: 4px;
     line-height: 1.3;
   }
 
@@ -517,14 +481,7 @@ const appendix = [
 
   @media (max-width: 720px) {
     .frame {
-      padding: 0 22px 36px;
-    }
-    .topnav-inner {
-      padding: 0 22px;
-    }
-    .nav-links {
-      gap: 14px;
-      font-size: 13px;
+      padding: 36px 22px;
     }
 
     h1 {

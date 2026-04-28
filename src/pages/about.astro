@@ -1,25 +1,15 @@
 ---
 import Base from '../layouts/Base.astro';
+import TopNav from '../components/TopNav.astro';
 
 const testAuditAsOf = '2026-04-27';
 ---
 
 <Base
   title="About — Sebastian Rogala"
-  description="Independent product engineer with 12 years of software background, fully AI-directed since early 2026. Operating under Soft Solution as a B2B vehicle."
+  description="Independent product engineer with 12 years of software background, fully AI-directed since early 2026."
 >
-  <nav class="topnav">
-    <div class="topnav-inner">
-      <a href="/" class="wordmark">softsolution.pro</a>
-      <div class="nav-links">
-        <a href="/pipeforge" class="nav-link">Pipeforge</a>
-        <span class="sep">·</span>
-        <a href="/kb" class="nav-link">Knowledge base</a>
-        <span class="sep">·</span>
-        <a href="/about" class="nav-link active">About</a>
-      </div>
-    </div>
-  </nav>
+  <TopNav current="about" />
 
   <main class="frame">
     <header class="page-header">
@@ -42,12 +32,12 @@ const testAuditAsOf = '2026-04-27';
         audit tools, hooks, durable state, and source-cited knowledge.
       </p>
 
-      <h2>Soft Solution</h2>
+      <h2>Recent</h2>
       <p>
-        Soft Solution is my B2B vehicle, registered August 2019. It covers contract work, smaller
-        projects, and consulting. After finishing a contract at ovos in September 2025, I took a
-        personal/family pause through end of 2025 and returned to active product work in early 2026
-        with a fully AI-directed operating model.
+        Through September 2025 I held a remote full-stack contract at ovos. I took a
+        personal/family pause through the end of 2025 and returned to active product work in
+        early 2026 — this time fully AI-directed across every stack. Contracts run through my
+        B2B entity (Soft Solution, registered 2019); the public face is just me.
       </p>
 
       <h2>Current work</h2>
@@ -65,7 +55,7 @@ const testAuditAsOf = '2026-04-27';
           side project in roughly two weeks across Go / SvelteKit / Tauri (Rust) / TimescaleDB; ~72k
           source LOC. Adopted by the broader community after creator coverage. Validates the workflow
           across stacks where I had no prior production background, at a pace I couldn't have hit by
-          hand. <a href="https://profitofexile.top">profitofexile.top</a>.
+          hand. <a href="https://profitofexile.top" target="_blank" rel="noopener">profitofexile.top</a>.
         </li>
         <li>
           <strong>Pipeforge</strong> — personal Claude Code orchestration plugin and PostgreSQL MCP
@@ -75,7 +65,11 @@ const testAuditAsOf = '2026-04-27';
       </ul>
 
       <figure class="audit-figure">
-        <a href="/screenshots/07-test-audit-all-suites-clean.png" target="_blank" rel="noopener">
+        <a
+          href="/screenshots/07-test-audit-all-suites-clean.png"
+          class="lightbox-link"
+          aria-label="Open full-size screenshot"
+        >
           <img
             src="/screenshots/07-test-audit-all-suites-clean.png"
             alt="Test audit on the production CRM: 4,190 PHP tests + 157 E2E, all clean, runtime 7m 13s"
@@ -122,8 +116,8 @@ const testAuditAsOf = '2026-04-27';
       <h2>Reach</h2>
       <ul class="reach">
         <li><a href="mailto:sebrogala@gmail.com">sebrogala@gmail.com</a></li>
-        <li><a href="https://linkedin.com/in/seb-rogala">linkedin.com/in/seb-rogala</a></li>
-        <li><a href="https://github.com/SebRogala">github.com/SebRogala</a></li>
+        <li><a href="https://linkedin.com/in/seb-rogala" target="_blank" rel="noopener">linkedin.com/in/seb-rogala</a></li>
+        <li><a href="https://github.com/SebRogala" target="_blank" rel="noopener">github.com/SebRogala</a></li>
       </ul>
     </section>
 
@@ -141,48 +135,11 @@ const testAuditAsOf = '2026-04-27';
   .frame {
     max-width: 760px;
     margin: 0 auto;
-    padding: 0 32px 48px;
+    padding: 48px 32px;
   }
 
-  .topnav {
-    border-bottom: 1px solid var(--rule);
-    padding: 20px 0;
-    margin-bottom: 48px;
-  }
-  .topnav-inner {
-    max-width: 1140px;
-    margin: 0 auto;
-    padding: 0 32px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-  .wordmark {
-    font-family: var(--mono);
-    font-size: 13px;
-    color: var(--fg-nav);
-  }
-  .wordmark:hover {
-    color: var(--accent);
-  }
-  .nav-links {
-    display: flex;
-    align-items: center;
-    gap: 24px;
-    font-family: var(--sans);
-    font-size: 14px;
-    font-weight: 500;
-  }
-  .nav-link {
-    color: var(--fg-nav);
-    transition: color 160ms ease;
-  }
-  .nav-link.active {
-    color: var(--fg);
-  }
-  .nav-link:hover {
-    color: var(--accent);
-  }
+  /* Topnav lives in src/components/TopNav.astro. */
+  /* `.sep` is also used in the page footer below — keep as page-level rule. */
   .sep {
     color: var(--rule-2);
   }
@@ -331,14 +288,7 @@ const testAuditAsOf = '2026-04-27';
 
   @media (max-width: 720px) {
     .frame {
-      padding: 0 22px 36px;
-    }
-    .topnav-inner {
-      padding: 0 22px;
-    }
-    .nav-links {
-      gap: 14px;
-      font-size: 13px;
+      padding: 36px 22px;
     }
 
     h1 {

@@ -1,6 +1,6 @@
-# softsolution.pro
+# sebrogala.dev
 
-Personal site of Sebastian Rogala / Soft Solution.
+Personal site of Sebastian Rogala.
 
 Static Astro site, served by nginx, deployed via Coolify.
 
@@ -13,7 +13,7 @@ cd /var/www/infra && docker compose up -d
 # 2. Start this project
 cd /var/www/softsolution && docker compose up -d
 
-# 3. Visit https://softsolution.localhost (Traefik handles TLS)
+# 3. Visit https://sebrogala.localhost (Traefik handles TLS)
 ```
 
 The dev container runs `npm install && npm run dev` automatically. Hot reload works through Traefik's WebSocket proxy.
@@ -24,10 +24,12 @@ To watch logs:
 docker compose logs -f dev
 ```
 
+> **Note:** the project directory is still `/var/www/softsolution`. If/when it gets moved to `/var/www/sebrogala-dev`, update the path above and the volume name in `docker-compose.yml` accordingly.
+
 ## Project structure
 
 ```
-softsolution/
+sebrogala-dev/
 ├── astro.config.mjs            # Astro config (Vite HMR set up for Traefik)
 ├── docker-compose.yml          # Dev container (joins shared infra network)
 ├── Dockerfile                  # Production multi-stage build (Node → nginx)
@@ -35,12 +37,14 @@ softsolution/
 ├── public/
 │   └── screenshots/            # Redacted Pipeforge screenshots (manifest in portfolio-screenshots/)
 ├── src/
+│   ├── components/
+│   │   └── TopNav.astro        # Shared sticky top navigation
 │   ├── layouts/
-│   │   └── Base.astro          # html shell, palette, fonts, gradient
+│   │   └── Base.astro          # html shell, palette, fonts, gradient, lightbox
 │   └── pages/
 │       ├── index.astro         # Homepage (R6 design — notebook-brown, manifest, marginalia)
-│       ├── pipeforge.astro     # Walkthrough (placeholder)
-│       ├── kb.astro            # Knowledge base showcase (placeholder)
+│       ├── pipeforge.astro     # Walkthrough (15 screenshots in narrative + appendix)
+│       ├── kb.astro            # Knowledge base showcase (5 entries)
 │       └── about.astro         # About page
 └── design_handoff_softsolution_pro/   # Reference materials (gitignored)
 ```
@@ -51,10 +55,10 @@ softsolution/
 2. In Coolify: Add New Resource → Private Repository (with GitHub App)
 3. Build Pack: **Dockerfile**
 4. Port: **80**
-5. Domain: `https://softsolution.pro`
+5. Domain: `https://sebrogala.dev`
 6. Auto Deploy: **on** (deploys on push to `main`)
 
-The `as of [build_date]` line in the homepage footer regenerates on every deploy.
+The `built {build_date}` line in the homepage footer regenerates on every deploy.
 
 ## Design source
 
