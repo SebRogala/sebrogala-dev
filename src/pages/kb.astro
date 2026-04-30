@@ -586,10 +586,13 @@ const entries = [
 
 <style>
   .frame {
-    max-width: 760px;
+    max-width: 1140px;
     margin: 0 auto;
     padding: 48px 32px;
   }
+  /* Content blocks span the full frame width (matching Home). If specific
+     long-form paragraphs need narrower line lengths for readability, cap
+     them individually — not at the section level. */
 
   /* Topnav lives in src/components/TopNav.astro. */
   /* `.sep` is also used in the page footer below — keep as page-level rule. */
@@ -637,7 +640,7 @@ const entries = [
   .sub-lede {
     font-family: var(--sans);
     font-size: 14px;
-    color: var(--muted);
+    color: var(--fg-nav);
     line-height: 1.6;
     text-wrap: pretty;
   }
@@ -685,7 +688,7 @@ const entries = [
   .toc-pattern {
     display: block;
     font-family: var(--mono);
-    font-size: 10.5px;
+    font-size: 11.5px;
     color: var(--muted);
     text-transform: uppercase;
     letter-spacing: 0.08em;
@@ -701,12 +704,38 @@ const entries = [
   }
 
   .entry {
-    border-top: 1px solid var(--rule);
-    padding: 40px 0 8px;
-    scroll-margin-top: 80px; /* ≈ sticky topnav height + breathing room */
+    /* Stronger divider than the within-entry --rule lines — accent 2px top
+       stripe with generous breathing on both sides. The ENTRY 0X / 05 counter
+       lives at the top of .entry-header (in normal flow) so it pairs visually
+       with the Pattern label and the H2 title below it. */
+    counter-increment: kb-entry;
+    border-top: 2px solid var(--accent);
+    padding: 64px 0 56px;
+    scroll-margin-top: 80px;
+  }
+  /* The first entry follows the TOC's bottom border, so a redundant accent
+     line on top would look like two parallel rules. Drop it; tighten padding. */
+  .entry:first-of-type {
+    border-top: none;
+    padding-top: 32px;
+  }
+  /* Reset the counter at the page level so it starts at 01 on the first entry. */
+  .frame {
+    counter-reset: kb-entry;
   }
   .entry-header {
     margin-bottom: 24px;
+  }
+  .entry-header::before {
+    content: 'Entry ' counter(kb-entry, decimal-leading-zero) ' / 05';
+    display: block;
+    font-family: var(--mono);
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 10px;
   }
   .entry-pattern {
     font-family: var(--mono);
@@ -840,7 +869,7 @@ const entries = [
     font-family: var(--sans);
     font-size: 14.5px;
     line-height: 1.6;
-    color: var(--muted);
+    color: var(--fg-nav);
   }
   .closing code {
     font-family: var(--mono);

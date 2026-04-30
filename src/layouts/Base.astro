@@ -59,6 +59,23 @@ const {
       <img class="lightbox-img" alt="" />
     </div>
 
+    <!-- Scroll-to-top: fades in after the user has scrolled past the threshold. -->
+    <button id="scroll-top" class="scroll-top" type="button" aria-label="Scroll to top">
+      <svg
+        width="16"
+        height="16"
+        viewBox="0 0 16 16"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1.8"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        aria-hidden="true"
+      >
+        <path d="M8 13 V3 M3 8 L8 3 L13 8" />
+      </svg>
+    </button>
+
     <script is:inline>
       (function () {
         const overlay = document.getElementById('lightbox');
@@ -97,6 +114,66 @@ const {
 
         document.addEventListener('keydown', (e) => {
           if (e.key === 'Escape' && !overlay.hidden) close();
+        });
+      })();
+    </script>
+
+    <script is:inline>
+      (function () {
+        const btn = document.getElementById('scroll-top');
+        if (!btn) return;
+        const threshold = 400;
+        const duration = 280; // ms — snappy; tweak here if you want a different feel
+        const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        let visRaf = 0;
+        let scrollAnim = null;
+
+        function update() {
+          const y = window.scrollY || document.documentElement.scrollTop;
+          btn.classList.toggle('visible', y > threshold);
+          visRaf = 0;
+        }
+
+        window.addEventListener(
+          'scroll',
+          () => {
+            // Cancel an in-flight scroll-to-top if the user grabs the page.
+            if (scrollAnim && scrollAnim.userInitiated) {
+              cancelAnimationFrame(scrollAnim.raf);
+              scrollAnim = null;
+            }
+            if (scrollAnim) scrollAnim.userInitiated = true;
+            if (!visRaf) visRaf = requestAnimationFrame(update);
+          },
+          { passive: true }
+        );
+        update();
+
+        function easeOutCubic(t) {
+          return 1 - Math.pow(1 - t, 3);
+        }
+
+        btn.addEventListener('click', () => {
+          if (reduceMotion) {
+            window.scrollTo(0, 0);
+            return;
+          }
+          const start = window.scrollY || document.documentElement.scrollTop;
+          if (start === 0) return;
+          const startTime = performance.now();
+          scrollAnim = { raf: 0, userInitiated: false };
+          function tick(now) {
+            const t = Math.min((now - startTime) / duration, 1);
+            const y = start * (1 - easeOutCubic(t));
+            window.scrollTo(0, y);
+            if (t < 1) {
+              scrollAnim.userInitiated = false; // ignore the scroll event our own scrollTo just fired
+              scrollAnim.raf = requestAnimationFrame(tick);
+            } else {
+              scrollAnim = null;
+            }
+          }
+          scrollAnim.raf = requestAnimationFrame(tick);
         });
       })();
     </script>
@@ -245,6 +322,66 @@ const {
       right: 10px;
       width: 36px;
       height: 36px;
+    }
+  }
+
+  /* ─── Scroll-to-top (global) ─────────────────────────────────────── */
+  .scroll-top {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    border: 1px solid var(--rule-2);
+    background: var(--bg-base);
+    color: var(--fg-nav);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 40;
+    opacity: 0;
+    transform: translateY(8px);
+    pointer-events: none;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.25);
+    transition:
+      opacity 200ms ease,
+      transform 200ms ease,
+      color 160ms ease,
+      border-color 160ms ease,
+      background 160ms ease;
+  }
+  .scroll-top.visible {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+  }
+  .scroll-top:hover {
+    color: var(--accent);
+    border-color: var(--accent);
+    background: var(--bg-raise);
+  }
+  .scroll-top:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+  }
+
+  @media (max-width: 640px) {
+    .scroll-top {
+      bottom: 16px;
+      right: 16px;
+      width: 40px;
+      height: 40px;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .scroll-top {
+      transition: opacity 100ms ease;
+      transform: none;
+    }
+    .scroll-top.visible {
+      transform: none;
     }
   }
 </style>

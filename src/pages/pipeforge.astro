@@ -4,81 +4,93 @@ import TopNav from '../components/TopNav.astro';
 
 const screenshotsAsOf = '2026-04-27';
 
-// Each panel: image filename in /screenshots, caption, body para.
-// Order follows portfolio-screenshots/MANIFEST.md narrative recommendation.
+// Each panel: image filename in /screenshots, caption (headline), body (what-it-shows).
+// Order + copy follows docs/MANIFEST_V2.md narrative.
 const panels = [
   {
     section: 'Discovery & planning',
     img: '03-execution-order-dependency-graph.png',
-    alt: 'Chunk dependency graph: backend → tests → independent frontends',
-    caption: 'Planner output: dependency tree for an epic. Backend chunk 1 is the foundation; tests wait on it; three frontends can fan out in parallel; one frontend waits on its backend partner.',
-    body: 'Before any code is written, the planner builds an explicit chunk dependency graph and translates the diagram into numbered execution rules. The orchestrator then runs that graph — sequentially where the graph forces it, in parallel where it allows it.',
+    alt: 'Chunk dependency graph: backend foundation → tests + 3 independent frontends',
+    caption: 'Chunk dependency graph: backend foundation → tests + 3 independent frontends',
+    body: 'Planner output for an epic. Chunk 1 (backend) is the foundation; Chunk 2 (backend-test) waits for it; Chunks 3 / 4 / 6 (frontend, comparator backend, desktop/OCR) can run in parallel after Chunk 1; Chunk 5 (comparator frontend) waits for Chunk 4. The numbered list translates the diagram into execution rules the orchestrator follows.',
   },
   {
     section: 'Workspace coordination',
     img: '13-show-routes-multi-worktree-state.png',
-    alt: '/show-routes: three concurrent worktrees with progress bars',
-    caption: '`/show-routes`: three concurrent worktrees on one machine. Each row shows the active route, the current in-progress task, a progress bar, and a next-step suggestion.',
-    body: 'My day-to-day involves multiple feature branches under different epics. Pipeforge tracks workspace state durably so the orchestrator (and I) can resume any of them without losing context — what the route is, what just merged, what is next.',
+    alt: '/show-routes: three concurrent worktrees, current task per route, progress bars',
+    caption: '`/show-routes`: three concurrent worktrees, current task per route, progress bars',
+    body: 'Lightweight workspace-state visualiser. Three worktrees (main / second / third), each with its active route, current in-progress task, and progress bar (2/6, 0/1, 5/5 done). Plus per-route next-step suggestions. Visual proof of the "parallel worktrees" workflow claim.',
   },
   {
     section: 'Workspace coordination',
     img: '05-whats-next-route-overview.png',
-    alt: '/whats-next: route discovery with conflict-risk assessment',
-    caption: '`/whats-next`: three available routes — a fresh epic (4 ordered tasks, low conflict risk), an actionable bundle (3 ready tasks), and an in-flight resume option.',
-    body: 'When picking the next thing to work on, the route-discovery skill ranks options by readiness and conflict risk against work in flight elsewhere in the workspace. Status pills make it fast to choose.',
+    alt: '/whats-next: three available routes with conflict-risk and readiness pills',
+    caption: '`/whats-next`: three available routes with conflict-risk and readiness pills',
+    body: 'Route-discovery output across one workspace. A fresh epic (Desktop App v2, 0/4 with LOW conflict risk and 4 ordered subtasks), a 3-task actionable bundle (Standalone v1.0), and an in-flight resume option (11 fixed, ~16 remain). Status pills (●/●/●) signal readiness; conflict-risk surfaces upfront so the operator picks safely.',
+  },
+  {
+    section: 'Plan review gate',
+    img: '10-plan-reviewer-mcp-context-load.png',
+    alt: 'Plan-reviewer self-loads context: getConfig, getDiscoveries, YouTrack issue',
+    caption: 'Plan-reviewer self-loads context: `getConfig`, `getDiscoveries`, YouTrack issue',
+    body: 'After single-task mode is confirmed, the plan-reviewer agent dispatches and immediately pulls context from MCP — Pipeforge\'s `getConfig` and `getDiscoveries`, plus the external tracker integration (YouTrack issue lookup). Layered context loading in action: orchestrator passes only a task ID; the sub-agent self-loads everything it needs.',
   },
   {
     section: 'Plan review gate',
     img: '11-plan-reviewer-findings-classification.png',
-    alt: 'Plan review: 5 findings classified by severity with concrete fixes',
-    caption: 'Plan-reviewer finished in ~1 minute with 5 findings (2 high · 2 medium · 1 low). Each finding has a one-line summary AND a concrete fix. Then the orchestrator presents 4 paths forward.',
-    body: 'The plan review is the implementation gate. Problems caught here cost minutes; problems caught after implementation cost the whole chunk. The reviewer is graceful — it never proceeds blindly. Either I address findings, accept the trade explicitly, or skip the task.',
+    alt: 'Plan review finishes with 5 severity-classified findings + a graceful proceed prompt',
+    caption: 'Plan review: 5 severity-classified findings + a graceful proceed prompt',
+    body: 'Review completed in 1m 10s (10 tool uses, 33.1k tokens). Each finding carries a one-line summary AND a concrete fix recommendation. The orchestrator then offers 4 paths: address all / highs only / proceed anyway / skip task. Implementation gate that catches design issues *before* code is written.',
+  },
+  {
+    section: 'Pipeline execution',
+    img: '04-foundation-then-parallel-group2.png',
+    alt: 'Foundation chunk done in 14m 9s, 5 agents dispatching for the next wave',
+    caption: 'Foundation chunk done in 14m 9s, 5 agents dispatching for the next wave',
+    body: 'Same project as the dependency graph above, now running. Group 1 backend (POE-65 backend engine) completed — 86 tool uses, 104.5k tokens. The orchestrator then dispatches Group 2 (chunks 2 / 3 / 4 / 6, all depending on chunk 1) plus a light review for chunk 1 — 5 concurrent agents, each tagged with its specialisation (general, backend-test, frontend, backend, general). Colour-coded labels make agent type visually obvious.',
   },
   {
     section: 'Pipeline execution',
     img: '02-parallel-chunks-group1-complete.png',
-    alt: '8 agents running in parallel: Group 1 finishing while Group 2 dispatches',
-    caption: 'Group 1 (4 chunks: data layer, API, CSS, preferences) finished with token + tool-use accounting per agent. Group 2 implementers (4 agents) and Group 1 light reviewers (4 agents) dispatch — 8 agents concurrent.',
-    body: 'Dependency-aware planning combined with parallel scheduling. The orchestrator dispatches the next group as soon as its dependencies clear, not after the whole previous wave finishes. Token and tool-use accounting per agent is the observability foundation everything else builds on.',
+    alt: '8 agents in parallel: Group 1 light reviews + Group 2 implementers',
+    caption: '8 agents in parallel: Group 1 light reviews + Group 2 implementers',
+    body: 'Mid-pipeline orchestration. Group 1 (4 implementer chunks: data layer, color API, CSS styles, preferences) reports per-agent token + tool-use accounting. The orchestrator immediately dispatches Group 2 implementers (4 agents) alongside light reviewers for Group 1 (4 more) — dependency-aware planning combined with parallel scheduling.',
   },
   {
     section: 'Heavy-review boundary',
     img: '14-heavy-review-complete-findings-table.png',
-    alt: 'Heavy review: 5 specialised reviewers, 34 findings classified by severity, 0 critical',
-    caption: 'Heavy-review complete. 5 specialised reviewers ran in parallel (code-reviewer, pr-test-analyzer, silent-failure-hunter, comment-analyzer, type-design-analyzer). 34 findings, 0 critical, classified by agent and module.',
-    body: 'Heavy-review is the merge gate. Each reviewer is narrow on purpose — one looks for silent failures, one for comment rot, one for type-design issues. Findings are classified Critical / Important / Suggestion / Deferred per agent, with module-level totals. 0 critical = clean to merge. The pattern is derived from the open-source pr-review-toolkit, adapted to the Pipeforge agent model.',
+    alt: '5 reviewers, 34 findings, 0 critical — clean to merge',
+    caption: '5 reviewers, 34 findings, 0 critical — clean to merge',
+    body: 'Heavy-review output. Five specialised agents finished in parallel (code-reviewer, pr-test-analyzer, silent-failure-hunter, comment-analyzer, type-design-analyzer) with token / tool-use transparency per agent. Findings classified Critical / Important / Suggestion / Deferred per agent, with a module breakdown (`backend 21+1 deferred · backend-test 13+1 deferred`). 0 Critical = merge gate clears. The pattern is derived from the open-source `pr-review-toolkit`, adapted to the Pipeforge agent model.',
   },
   {
     section: 'Fidelity audit',
     img: '12-fidelity-auditor-handler-moves-clean.png',
-    alt: 'Fidelity audit on handler refactor: 17/17 atoms preserved, 0 missing',
-    caption: 'Fidelity audit on a structural handler refactor. 17 behavioral atoms preserved, 0 missing, 2 cosmetic simplifications downgraded to LOW with explicit reasoning per item.',
-    body: 'The fidelity-auditor was built after AI silently summarised 491 lines of behavioural specs into 122 during a docs migration — the kind of regression that passes type-check and tests because nothing structurally broke. It runs at structural move/split/extract operations, classifies deltas Missing / Simplified / Evolved / Preserved, and explains LOW deltas instead of crying wolf.',
+    alt: 'Handler refactor verified: 17/17 atoms preserved, 2 cosmetic LOWs explained',
+    caption: 'Handler refactor verified: 17/17 atoms preserved, 2 cosmetic LOWs explained',
+    body: 'The auditor\'s voice on a real refactor. 17 behavioural atoms preserved across both handler moves, 0 missing. Two LOW-severity deltas surfaced with rationale: a string prefix shortening that\'s *more* correct given the new caller path, and a log message rename that\'s purely cosmetic. Calibrated, doesn\'t cry wolf.',
   },
   {
     section: 'Fidelity audit',
     img: '15-fidelity-auditor-critical-drift-caught.png',
-    alt: 'Fidelity audit catches a real regression: flash key silently unified across two flows',
-    caption: 'Different audit, real regression. A flash-key changed during a refactor, silently unifying two distinct user flows into one generic error. Auditor surfaces: original key, new key, file:line range, the exact UX consequence, and a one-line fix.',
-    body: 'This is the "show, don\'t tell" example. The change passed type-check and tests because the behaviour difference lives in user-visible flash messages. Without an audit pass focused on behavioural atoms — not just structural shape — this would have shipped.',
+    alt: 'A real regression caught: flash key silently unified across two flows',
+    caption: 'A real regression caught: flash key silently unified across two flows',
+    body: 'The "why this matters" example. During a refactor, an `\\InvalidArgumentException` flash key changed in a way that silently merged two distinct user-facing flows into one generic error message. The auditor surfaces: original key, new key, file:line range, the exact UX consequence, and a one-line revert fix. Verdict: 20/21 OK, 1 CRITICAL DRIFT.',
   },
   {
     section: 'Test audit',
     img: '07-test-audit-all-suites-clean.png',
-    alt: 'Test audit: 4,190 PHP tests + 157 E2E tests, all clean, 7m 13s total',
-    caption: `Test audit on the production CRM (as of ${screenshotsAsOf}). PHPStan clean · Unit 2674/2674 (8539 assertions) · Integration 459/459 · Functional 699/699 · Smoke 201/201 · E2E 157/157. Total runtime: 7m 13s.`,
-    body: 'The test audit is what backs the production claims. Numbers are concrete: 4,190 PHP tests, 157 E2E, PHPStan level 8, ~7 minutes end-to-end. The structured learnings counter (259 across categories) is the loop into the knowledge base — gotchas surfaced during fixes get captured durably.',
+    alt: '4,190 PHP tests + 157 E2E green, 259 structured learnings logged in 7m 13s',
+    caption: `4,190 PHP tests + 157 E2E green, 259 structured learnings logged in 7m 13s (as of ${screenshotsAsOf})`,
+    body: 'Full test-audit output. PHPStan clean, Unit 2674/2674 (8539 assertions), Integration 459/459, Functional 699/699, Smoke 201/201, E2E 157/157 (1 intentional skip). Plus 259 learnings extracted across backend / e2e / frontend / pattern / gotcha — top categories called out for the next `/integrate-agent-learnings` pass.',
   },
 ];
 
 const appendix = [
-  { img: '01-fidelity-audit-pass-summary.png', caption: 'Fidelity audit on a docs merge: ~45 atoms preserved, category-and-severity classification.' },
-  { img: '04-foundation-then-parallel-group2.png', caption: 'Foundation chunk done in 14m 9s; orchestrator dispatches Group 2 (5 agents) labelled by specialisation.' },
-  { img: '06-whats-next-backlog-breakdown.png', caption: '`/whats-next` continued: 13-task backlog flagged for `/discover-routes`, 6 epics flagged for `/breakdown` first.' },
-  { img: '08-deliver-flow-shipping-options.png', caption: '`/deliver` prompts 5 shipping modes: adaptive single-flow, two-step, hand-implement, park, free text.' },
-  { img: '09-deliver-route-safety-check.png', caption: '`/deliver` Step 0 catches a route mismatch before doing damage and surfaces 4 explicit resolution options.' },
-  { img: '10-plan-reviewer-mcp-context-load.png', caption: 'Plan-reviewer dispatches and self-loads MCP context (`getConfig`, `getDiscoveries`, external tracker lookup) — orchestrator passes only the task ID.' },
+  { img: '01-fidelity-audit-pass-summary.png', caption: 'Fidelity audit PASS — 4-row severity table on a structural docs merge. ~45 atoms preserved, full run 4m 31s.' },
+  { img: '06-whats-next-backlog-breakdown.png', caption: '`/whats-next` continued: 13-task backlog flagged for `/discover-routes`, 6 epics flagged "needs `/breakdown` first".' },
+  { img: '08-deliver-flow-shipping-options.png', caption: '`/deliver` prompts the operator with 5 shipping modes: adaptive single-flow, two-step, hand-implement, park, free text.' },
+  { img: '09-deliver-route-safety-check.png', caption: 'Step 0 catches a route mismatch and pauses for user resolution — 4 explicit options instead of failing or proceeding blindly.' },
 ];
 ---
 
@@ -178,33 +190,61 @@ const appendix = [
 
     <section class="prose">
       <h2>Two stories the screenshots back up</h2>
+
+      <h3>1 — Caught an Opus 4.7 regression with my own pipeline telemetry</h3>
       <p>
-        <strong>Pipeline observability caught an Opus 4.7 regression.</strong> Same pipeline shapes,
-        same task graphs, ~2× wall-clock and ~2.3× tokens vs Opus 4.6 across 8+ runs. Root-caused to
-        disk round-tripping of in-memory MCP results plus literal-instruction adherence overriding
-        session-level config. Shipped two revertible spec fixes (config-honoured deferred mode +
-        DRY-extracted per-phase metrics capture) and filed the reproducible investigation upstream:
+        After upgrading to Opus 4.7, identical pipeline shapes — same task graphs, same skills,
+        only the model changed — ran <strong>~2× wall-clock and ~2.3× tokens</strong> vs the Opus
+        4.6 baseline. Eight+ runs on real tasks ruled out variance.
+      </p>
+      <p>Two reproducible root causes:</p>
+      <ul>
+        <li>
+          <strong>Disk round-tripping of in-memory MCP results.</strong> Sub-agents materialised
+          MCP tool responses to the tool-results spool and looped <code>Read</code> + <code>jq</code>
+          over them instead of using the in-context value. Same file re-read 10+ times inside a
+          single agent run, multiplied across every implement / heavy-review fan-out.
+        </li>
+        <li>
+          <strong>Literal-instruction adherence overriding session-level config.</strong>
+          Per-session overrides ("don't post deferred items to the tracker") were acknowledged
+          and then violated — the agent reverted to the written spec, silently, with
+          plausible-looking output.
+        </li>
+      </ul>
+      <p>
+        Shipped two revertible spec fixes — config-honoured deferred mode and DRY-extracted
+        per-phase metrics capture — and filed the reproducible investigation upstream:
         <a
           href="https://github.com/anthropics/claude-code/issues/6354#issuecomment-3849990217"
           target="_blank"
           rel="noopener"
-          >github.com/anthropics/claude-code/issues/6354</a
+          >anthropics/claude-code#6354</a
         >.
       </p>
+
+      <h3>2 — The fidelity-auditor exists because of a near-miss</h3>
       <p>
-        <strong>The fidelity-auditor exists because of a near-miss.</strong> During a docs migration,
-        AI silently summarised 491 lines of behavioural specs into 122. Type-checks passed. Tests
-        passed. The behaviour was structurally fine but operationally lossy. The fidelity-auditor is
-        the structural answer: at every move/split/extract, an audit pass classifies behavioural
-        atoms Missing / Simplified / Evolved / Preserved, with explicit reasoning on every LOW.
+        During a docs migration, AI silently summarised <strong>491 lines of behavioural specs
+        into 122</strong>. Type-checks passed. Tests passed. The behaviour was structurally fine
+        but operationally lossy — the kind of regression that doesn't surface until months later,
+        in production, as <em>"wait, I thought we did X here?"</em>
+      </p>
+      <p>
+        The fidelity-auditor is the structural fix. On every move / split / extract, it classifies
+        behavioural atoms as <strong>Missing / Simplified / Evolved / Preserved</strong>, prints
+        severity per row, and demands explicit reasoning on every LOW. It refuses to ship a
+        verdict it can't justify — see screenshots <strong>01</strong>, <strong>12</strong>, and
+        especially <strong>15</strong> (a real regression caught) above for what that looks like
+        in practice.
       </p>
     </section>
 
     <section class="appendix">
       <h2>Appendix — more artefacts</h2>
       <p class="appendix-intro">
-        Six additional screenshots covering more of the same pipeline surface. Same redaction policy
-        as above.
+        Four additional screenshots covering more of the same pipeline surface. Same redaction
+        policy as above.
       </p>
       <div class="appendix-grid">
         {
@@ -234,10 +274,13 @@ const appendix = [
 
 <style>
   .frame {
-    max-width: 920px;
+    max-width: 1140px;
     margin: 0 auto;
     padding: 48px 32px;
   }
+  /* Content blocks span the full frame width (matching Home). If specific
+     long-form paragraphs need narrower line lengths for readability, cap
+     them individually — not at the section level. */
 
   /* Topnav lives in src/components/TopNav.astro. */
   /* `.sep` is also used in the page footer below — keep as page-level rule. */
@@ -278,7 +321,7 @@ const appendix = [
     font-family: var(--sans);
     font-size: 14px;
     line-height: 1.6;
-    color: var(--muted);
+    color: var(--fg-nav);
     text-wrap: pretty;
   }
   .sub-lede code {
@@ -333,8 +376,32 @@ const appendix = [
     margin-bottom: 14px;
     letter-spacing: -0.01em;
   }
-  .prose p + p {
+  .prose h3 {
+    font-family: var(--serif);
+    font-weight: 500;
+    font-size: 17px;
+    color: var(--accent);
+    margin: 28px 0 10px;
+    letter-spacing: -0.005em;
+  }
+  .prose p + p,
+  .prose p + ul,
+  .prose ul + p {
     margin-top: 14px;
+  }
+  .prose ul {
+    padding-left: 22px;
+    margin: 0;
+  }
+  .prose li {
+    margin-bottom: 8px;
+  }
+  .prose li:last-child {
+    margin-bottom: 0;
+  }
+  .prose em {
+    color: var(--muted);
+    font-style: italic;
   }
   .prose code {
     font-family: var(--mono);
@@ -401,7 +468,7 @@ const appendix = [
     font-family: var(--sans);
     font-size: 13.5px;
     line-height: 1.55;
-    color: var(--muted);
+    color: var(--fg-nav);
     text-wrap: pretty;
   }
   .panel-body {
@@ -427,7 +494,7 @@ const appendix = [
   .appendix-intro {
     font-family: var(--sans);
     font-size: 14.5px;
-    color: var(--muted);
+    color: var(--fg-nav);
     margin-bottom: 24px;
   }
   .appendix-grid {
@@ -457,9 +524,9 @@ const appendix = [
   .appendix-figure figcaption {
     margin-top: 8px;
     font-family: var(--sans);
-    font-size: 12.5px;
+    font-size: 13px;
     line-height: 1.5;
-    color: var(--muted);
+    color: var(--fg-nav);
   }
 
   .page-footer {

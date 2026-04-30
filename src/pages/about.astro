@@ -78,8 +78,9 @@ const testAuditAsOf = '2026-04-27';
           />
         </a>
         <figcaption>
-          Test audit on the production CRM. PHPStan clean · Unit 2674/2674 (8539 assertions) ·
-          Integration 459/459 · Functional 699/699 · Smoke 201/201 · E2E 157/157. Total runtime: 7m 13s.
+          Test audit on the production CRM (as of {testAuditAsOf}): 4,190 PHP tests + 157 E2E green,
+          259 structured learnings logged in 7m 13s. Suites: PHPStan clean · Unit 2674/2674
+          (8539 assertions) · Integration 459/459 · Functional 699/699 · Smoke 201/201 · E2E 157/157.
         </figcaption>
       </figure>
 
@@ -133,10 +134,13 @@ const testAuditAsOf = '2026-04-27';
 
 <style>
   .frame {
-    max-width: 760px;
+    max-width: 1140px;
     margin: 0 auto;
     padding: 48px 32px;
   }
+  /* Content blocks span the full frame width (matching Home). If specific
+     long-form paragraphs need narrower line lengths for readability, cap
+     them individually — not at the section level. */
 
   /* Topnav lives in src/components/TopNav.astro. */
   /* `.sep` is also used in the page footer below — keep as page-level rule. */
@@ -253,7 +257,7 @@ const testAuditAsOf = '2026-04-27';
     font-family: var(--sans);
     font-size: 13.5px;
     line-height: 1.55;
-    color: var(--muted);
+    color: var(--fg-nav);
     text-wrap: pretty;
   }
 

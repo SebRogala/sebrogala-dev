@@ -51,7 +51,7 @@ const tiles = [
     <!-- ── Hero ──────────────────────────────────────────────── -->
     <section class="hero">
       <h1>Sebastian Rogala</h1>
-      <p class="tagline">AI-native product engineer · independent</p>
+      <p class="tagline">AI-native product engineer · Context Engineer</p>
     </section>
 
     <!-- ── Manifest (2 lines: currently + bases). today: dropped to reduce metric density. -->
@@ -59,13 +59,13 @@ const tiles = [
       <div class="manifest-row">
         <span class="manifest-label">currently:</span>
         <span class="manifest-value sans">
-          developing <span class="accent">Pipeforge</span> · multi-tenant CRM in production · open to AI-native roles
+          developing <span class="accent">Pipeforge</span> orchestrator · multi-tenant <span class="accent">CRM</span> in production · <span class="accent">Desktop app</span> for POE community
         </span>
       </div>
       <div class="manifest-row">
         <span class="manifest-label">bases:</span>
         <span class="manifest-value mono">
-          Rzeszów · UTC+2 · running Claude Sonnet 4.6 + Opus 4.7 on Pipeforge
+          Rzeszów · UTC+2 · running Claude Opus 4.7 on Pipeforge · discovering Codex
         </span>
       </div>
     </section>
@@ -99,19 +99,17 @@ const tiles = [
     <section class="tiles">
       {
         tiles.map((t) => (
-          <div class="tile-row">
-            <a href={t.href} class="tile-link">
-              <div class="tile-num">{t.n}</div>
-              <div class="tile-content">
-                <div class="tile-heading">
-                  {t.title}
-                  <span class="tile-tagline"> — {t.tagline}</span>
-                </div>
-                <div class="tile-body">{t.body}</div>
+          <a href={t.href} class="tile-row tile-link">
+            <div class="tile-num">{t.n}</div>
+            <div class="tile-content">
+              <div class="tile-heading">
+                {t.title}
+                <span class="tile-tagline"> — {t.tagline}</span>
               </div>
-              <div class="tile-arrow">{t.href} →</div>
-            </a>
-            <div class="side-col tile-side">
+              <div class="tile-body">{t.body}</div>
+            </div>
+            <div class="tile-arrow">{t.href} →</div>
+            <div class="tile-side">
               {t.live && (
                 <div class="sidenote-live">
                   <span class="live-dot" />
@@ -120,18 +118,18 @@ const tiles = [
               )}
               <div class="sidenote-durable">{t.durable}</div>
             </div>
-          </div>
+          </a>
         ))
       }
     </section>
 
-    <!-- ── Availability (sidenote dropped to reduce metric density) ─ -->
+    <!-- ── Availability (no fixed quarter — just an "open" signal). ─ -->
     <section class="section availability">
       <div class="avail-left">
         <div class="eyebrow">Availability</div>
         <div class="status-pill">
           <span class="status-dot"></span>
-          open · Q2 2026
+          open
         </div>
       </div>
       <p class="avail-text">
@@ -150,14 +148,15 @@ const tiles = [
         <span class="sep">·</span>
         <a href="https://github.com/SebRogala" target="_blank" rel="noopener">github.com/SebRogala</a>
       </div>
-      <div class="footer-meta">designed with Claude Design · built {buildDate}</div>
+      <div class="footer-meta">designed with Claude Design · latest build {buildDate}</div>
     </footer>
   </main>
 </Base>
 
 <style>
   /* ─── Layout constants ────────────────────────────────────── */
-  /* Frame 1140 max · Body 660 + 28 gutter + 240 sidenote */
+  /* Frame 1140 max · Body 660 + 28 gutter + 1fr right column.
+     Pull-quote constrained by .pull-quote max-width; tile sidenotes right-align. */
 
   .frame {
     max-width: 1140px;
@@ -220,8 +219,8 @@ const tiles = [
   }
   .manifest-value.mono {
     font-family: var(--mono);
-    font-size: 12.5px;
-    color: var(--muted);
+    font-size: 13px;
+    color: var(--fg-nav);
     line-height: 1.65;
   }
   .manifest .accent {
@@ -233,7 +232,7 @@ const tiles = [
     padding: 40px 0 52px;
     border-top: 1px solid var(--rule);
     display: grid;
-    grid-template-columns: 660px 28px 240px;
+    grid-template-columns: 740px 28px 1fr;
   }
   .pitch-section .main-col {
     grid-column: 1;
@@ -263,6 +262,11 @@ const tiles = [
   }
 
   .pull-quote {
+    /* width capped + pushed to the right of column 3 so the pull-quote sits
+       at the same right-edge as the tile sidenotes below — visual consistency
+       across the page. */
+    max-width: 240px;
+    margin-left: auto;
     border-left: 2px solid var(--accent);
     padding-left: 14px;
     font-family: var(--serif);
@@ -275,7 +279,7 @@ const tiles = [
   .pull-quote-attr {
     margin-top: 10px;
     font-family: var(--mono);
-    font-size: 10.5px;
+    font-size: 11.5px;
     font-style: normal;
     color: var(--muted);
     letter-spacing: 0.04em;
@@ -295,49 +299,68 @@ const tiles = [
   }
   .tiles-count {
     font-family: var(--mono);
-    font-size: 11.5px;
-    color: var(--muted);
+    font-size: 12px;
+    color: var(--fg-nav);
   }
 
   /* ─── Tiles ────────────────────────────────────────────── */
+  /* Each tile-row IS the link. Sidenote sits in column 4 of the same grid,
+     so the whole row is one click target with one continuous hover state. */
   .tiles {
     padding: 0 0 48px;
   }
   .tile-row {
+    position: relative;
     display: grid;
-    grid-template-columns: 660px 28px 240px;
-    border-bottom: 1px solid var(--rule);
-  }
-  .tile-row:first-child {
-    border-top: 1px solid var(--rule);
-  }
-  .tile-link {
-    display: grid;
-    grid-template-columns: 36px 1fr 110px;
+    grid-template-columns: 36px 1fr 110px 240px;
     gap: 22px;
-    padding: 22px 12px 22px 0;
-    margin-left: -12px;
-    margin-right: -12px;
-    padding-left: 12px;
-    padding-right: 12px;
+    padding: 22px 12px;
+    margin: 0 -12px;
     align-items: baseline;
     border-radius: 4px;
     color: inherit;
     transition: background 160ms ease;
   }
-  .tile-link:hover {
+  /* Rule lines as pseudo-elements, inset 12px so they align with the frame
+     content edge (matching the section borders above/below) — not with the
+     row's outset hover background. */
+  .tile-row::after {
+    content: '';
+    position: absolute;
+    left: 12px;
+    right: 12px;
+    bottom: 0;
+    height: 1px;
+    background: var(--rule);
+  }
+  /* The next section (.availability) brings its own border-top, so suppressing
+     the last row's bottom rule prevents two near-adjacent lines with whitespace
+     between them. */
+  .tile-row:last-child::after {
+    display: none;
+  }
+  .tile-row:first-child::before {
+    content: '';
+    position: absolute;
+    left: 12px;
+    right: 12px;
+    top: 0;
+    height: 1px;
+    background: var(--rule);
+  }
+  .tile-row:hover {
     background: var(--bg-raise);
   }
-  .tile-link:hover .tile-heading {
+  .tile-row:hover .tile-heading {
     color: var(--accent);
   }
-  .tile-link:hover .tile-arrow {
+  .tile-row:hover .tile-arrow {
     transform: translateX(2px);
   }
   .tile-num {
     font-family: var(--mono);
     font-size: 13px;
-    color: var(--muted);
+    color: var(--fg-nav);
   }
   .tile-heading {
     font-family: var(--serif);
@@ -373,21 +396,22 @@ const tiles = [
   }
 
   .tile-side {
-    grid-column: 3;
-    padding: 24px 0;
+    /* sits in column 4 of the .tile-row grid (the row IS the link) */
     font-family: var(--mono);
-    font-size: 11.5px;
-    line-height: 1.75;
-    color: var(--muted);
+    font-size: 13px;
+    line-height: 1.65;
+    color: var(--fg-nav);
+    text-align: right;
   }
   .sidenote-live {
     color: var(--fg);
     margin-bottom: 4px;
     display: flex;
     align-items: center;
+    justify-content: flex-end;
   }
   .sidenote-durable {
-    opacity: 0.85;
+    color: var(--fg-nav);
   }
   .live-dot {
     display: inline-block;
@@ -461,7 +485,8 @@ const tiles = [
     text-decoration-color: rgba(125, 179, 108, 0.33);
   }
   .footer-meta {
-    color: var(--muted);
+    color: var(--fg-nav);
+    font-size: 12.5px;
   }
 
   /* ─── Responsive: mobile ≤640px ────────────────────────── */
@@ -521,12 +546,8 @@ const tiles = [
 
     .tile-row {
       grid-template-columns: 1fr;
-      padding: 18px 0;
-    }
-    .tile-link {
-      grid-template-columns: 1fr;
       gap: 6px;
-      padding: 0;
+      padding: 18px 0;
       margin: 0;
     }
     .tile-num {
@@ -546,6 +567,10 @@ const tiles = [
       padding: 8px 0 0;
       border-top: 1px dashed var(--rule-2);
       margin-top: 12px;
+      text-align: left;
+    }
+    .sidenote-live {
+      justify-content: flex-start;
     }
 
     .availability {

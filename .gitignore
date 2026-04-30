@@ -26,3 +26,7 @@ npm-debug.log*
 
 # Design handoff (kept locally as reference, not part of the live site)
 design_handoff_softsolution_pro/
+
+# Source authoring artefacts (manifest drafts, copy variants) — kept locally,
+# not part of the public repo
+docs/
