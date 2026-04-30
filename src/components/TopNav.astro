@@ -7,7 +7,8 @@ const { current = 'home' } = Astro.props;
 const isActive = (page: Props['current']) => current === page;
 ---
 
-<nav class="topnav">
+<div class="nav-stack">
+  <nav class="topnav">
   <div class="topnav-inner">
     <a href="/" class:list={['wordmark', { active: isActive('home') }]}>sebrogala.dev</a>
     <div class="nav-links">
@@ -49,22 +50,27 @@ const isActive = (page: Props['current']) => current === page;
 </nav>
 
 <!-- Mobile sub-nav: hidden by default, shown on narrow viewports. -->
-<nav class="mobile-subnav">
-  <a href="/pipeforge" class:list={['nav-link', { active: isActive('pipeforge') }]}>Pipeforge</a>
-  <a href="/kb" class:list={['nav-link', { active: isActive('kb') }]}>KB</a>
-  <a href="/about" class:list={['nav-link', { active: isActive('about') }]}>About</a>
-</nav>
+  <nav class="mobile-subnav">
+    <a href="/pipeforge" class:list={['nav-link', { active: isActive('pipeforge') }]}>Pipeforge</a>
+    <a href="/kb" class:list={['nav-link', { active: isActive('kb') }]}>KB</a>
+    <a href="/about" class:list={['nav-link', { active: isActive('about') }]}>About</a>
+  </nav>
+</div>
 
 <style>
-  .topnav {
-    border-bottom: 1px solid var(--rule);
-    padding: 20px 0;
+  /* Both nav rows scroll together as one sticky unit so there's never
+     a gap of page background visible between them. */
+  .nav-stack {
     position: sticky;
     top: 0;
     z-index: 50;
     background: var(--bg-base);
     backdrop-filter: saturate(140%) blur(6px);
     -webkit-backdrop-filter: saturate(140%) blur(6px);
+  }
+  .topnav {
+    border-bottom: 1px solid var(--rule);
+    padding: 20px 0;
   }
   .topnav-inner {
     max-width: 1140px;
@@ -124,12 +130,6 @@ const isActive = (page: Props['current']) => current === page;
     font-family: var(--sans);
     font-size: 13px;
     font-weight: 500;
-    position: sticky;
-    top: 59px;
-    z-index: 49;
-    background: var(--bg-base);
-    backdrop-filter: saturate(140%) blur(6px);
-    -webkit-backdrop-filter: saturate(140%) blur(6px);
   }
 
   @media (max-width: 640px) {

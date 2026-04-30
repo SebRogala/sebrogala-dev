@@ -36,7 +36,7 @@ const tiles = [
     body: 'Education CRM in production (4,190 tests as of 2026-04-27); ProfitOfExile, ~72k LOC across Go / SvelteKit / Tauri in ~2 weeks.',
     href: '/about',
     live: null,
-    durable: 'in production since 2025-Q3',
+    durable: 'in production since 2026-03',
   },
 ];
 ---
@@ -529,6 +529,9 @@ const tiles = [
       padding: 24px 0;
     }
     .pitch-section .side-col {
+      /* Reset desktop's grid-column: 3 so the pull-quote stacks under the
+         pitch in the single-column mobile layout. */
+      grid-column: 1;
       padding-top: 16px;
       border-top: 1px dashed var(--rule-2);
       margin-top: 16px;
@@ -538,6 +541,11 @@ const tiles = [
     }
     .pull-quote {
       font-size: 14px;
+      /* Desktop pushes pull-quote right with margin-left: auto so it lines up
+         with tile sidenotes. On mobile (single-column stack) we want it
+         left-aligned in the full-width column. */
+      max-width: none;
+      margin-left: 0;
     }
 
     .tiles-header {
@@ -549,6 +557,14 @@ const tiles = [
       gap: 6px;
       padding: 18px 0;
       margin: 0;
+    }
+    /* On mobile the row has no negative margin, so the pseudo-element rule
+       lines should sit at the row's full width (left:0 right:0) — not inset
+       12px the way they do on desktop. */
+    .tile-row::after,
+    .tile-row:first-child::before {
+      left: 0;
+      right: 0;
     }
     .tile-num {
       font-size: 11px;
@@ -578,6 +594,9 @@ const tiles = [
       padding: 24px 0;
     }
     .avail-text {
+      /* Reset desktop's grid-column: 2 so the paragraph stacks under the
+         eyebrow + pill in the single-column mobile layout. */
+      grid-column: 1;
       font-size: 16px;
     }
 
