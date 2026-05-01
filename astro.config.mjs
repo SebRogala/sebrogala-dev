@@ -2,6 +2,7 @@ import { defineConfig } from 'astro/config';
 
 export default defineConfig({
   site: 'https://sebrogala.dev',
+  trailingSlash: 'never',
   server: {
     host: '0.0.0.0',
     port: 4321,
