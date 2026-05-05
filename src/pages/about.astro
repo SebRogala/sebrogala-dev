@@ -45,10 +45,13 @@ const testAuditAsOf = '2026-04-27';
         </li>
         <li>
           <strong>ProfitOfExile</strong> — public-source Path of Exile lab-farming tool. Built as a
-          side project in roughly two weeks across Go / SvelteKit / Tauri (Rust) / TimescaleDB; ~72k
-          source LOC. Adopted by the broader community after creator coverage. Validates the workflow
-          across stacks where I had no prior production background, at a pace I couldn't have hit by
-          hand. <a href="https://profitofexile.top" target="_blank" rel="noopener">profitofexile.top</a>.
+          side project across Go / SvelteKit / Tauri (Rust) / TimescaleDB; ~52k source LOC (excluding
+          tests, generated assets, lockfiles, fixtures). Web continuously deployed; desktop overlay
+          reached usable release in ~2 weeks (v0.1.0 on 2026-03-31 → v0.6.x on 2026-04-13). A single
+          Go backend feeds both the web (zero-install SvelteKit) and the Rust/Tauri desktop with OCR
+          and in-game overlays — one source of truth, two delivery surfaces. Adopted by the broader
+          community after creator coverage.
+          <a href="https://profitofexile.top" target="_blank" rel="noopener">profitofexile.top</a>.
         </li>
         <li>
           <strong>Pipeforge</strong> — personal Claude Code orchestration plugin and PostgreSQL MCP
