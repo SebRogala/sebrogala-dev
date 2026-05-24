@@ -36,9 +36,9 @@ const testAuditAsOf = '2026-04-27';
       <h2>Current work</h2>
       <ul class="work-list">
         <li>
-          <strong>Education CRM</strong> — multi-tenant course management and lead-operations system
-          for a Polish education client. In daily production use, multi-tenant ready for additional
-          clients. Stack: PHP 8.4 / Symfony 7.4 LTS / Doctrine 3 / PostgreSQL 16 / Redis 7 backend;
+          <strong>Education SaaS</strong> — multi-tenant platform, launch customer in production.
+          Course management and lead-operations across education tenants; ready for expansion onto
+          additional customers. Stack: PHP 8.4 / Symfony 7.4 LTS / Doctrine 3 / PostgreSQL 16 / Redis 7 backend;
           Twig + Stimulus + Turbo + Tailwind front-end; Vitest + PHPUnit + Playwright on tests.
           Hexagonal modular monolith with full CQRS at the UseCase layer, async events via Symfony
           Messenger, 7 business modules. Audit suite green — see screenshot below.
@@ -70,13 +70,13 @@ const testAuditAsOf = '2026-04-27';
         >
           <img
             src="/screenshots/07-test-audit-all-suites-clean.png"
-            alt="Test audit on the production CRM: 4,190 PHP tests + 157 E2E, all clean, runtime 7m 13s"
+            alt="Test audit on the production Education SaaS: 4,190 PHP tests + 157 E2E, all clean, runtime 7m 13s"
             loading="lazy"
             decoding="async"
           />
         </a>
         <figcaption>
-          Test audit on the production CRM (as of {testAuditAsOf}): 4,190 PHP tests + 157 E2E green,
+          Test audit on the production Education SaaS (as of {testAuditAsOf}): 4,190 PHP tests + 157 E2E green,
           259 structured learnings logged in 7m 13s. Suites: PHPStan clean · Unit 2674/2674
           (8539 assertions) · Integration 459/459 · Functional 699/699 · Smoke 201/201 · E2E 157/157.
         </figcaption>
@@ -84,7 +84,7 @@ const testAuditAsOf = '2026-04-27';
 
       <h2>How quality gets enforced</h2>
       <p>
-        The Education CRM runs four independent custom enforcement layers in CI — every PR has
+        The Education SaaS runs four independent custom enforcement layers in CI — every PR has
         to pass all four before it can merge.
       </p>
       <ul class="work-list">
