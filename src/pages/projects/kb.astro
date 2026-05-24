@@ -1,6 +1,6 @@
 ---
-import Base from '../layouts/Base.astro';
-import TopNav from '../components/TopNav.astro';
+import Base from '../../layouts/Base.astro';
+import TopNav from '../../components/TopNav.astro';
 
 const entries = [
   {
@@ -50,7 +50,7 @@ const entries = [
   title="Knowledge base — sebrogala.dev"
   description="Selected entries from the Pipeforge knowledge base: architectural decisions with rationale, rejected alternatives, and source-file citations."
 >
-  <TopNav current="kb" />
+  <TopNav current="projects" />
 
   <main class="frame">
     <header class="page-header">
@@ -575,11 +575,11 @@ const entries = [
     </section>
 
     <footer class="page-footer">
-      <a href="/pipeforge">← Pipeforge walkthrough</a>
+      <a href="/">← back home</a>
       <span class="sep">·</span>
-      <a href="/">back home</a>
+      <a href="/projects">↑ projects</a>
       <span class="sep">·</span>
-      <a href="/about">About →</a>
+      <a href="/projects/pipeforge">Pipeforge walkthrough →</a>
     </footer>
   </main>
 </Base>

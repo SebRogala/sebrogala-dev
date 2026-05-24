@@ -3,6 +3,12 @@ import { defineConfig } from 'astro/config';
 export default defineConfig({
   site: 'https://sebrogala.dev',
   trailingSlash: 'never',
+  // Showcases live under /projects/* as canonical URLs. The old flat URLs
+  // (/pipeforge, /kb) redirect to keep any in-flight links working.
+  redirects: {
+    '/pipeforge': '/projects/pipeforge',
+    '/kb': '/projects/kb',
+  },
   server: {
     host: '0.0.0.0',
     port: 4321,

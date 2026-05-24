@@ -1,0 +1,385 @@
+---
+import Base from '../layouts/Base.astro';
+import TopNav from '../components/TopNav.astro';
+
+const testAuditAsOf = '2026-04-27';
+---
+
+<Base
+  title="Projects — Sebastian Rogala"
+  description="Multi-tenant Education SaaS in production, Pipeforge (Claude Code orchestration), ProfitOfExile, and open-source contributions."
+>
+  <TopNav current="projects" />
+
+  <main class="frame">
+    <header class="page-header">
+      <div class="eyebrow">Projects</div>
+      <h1>Projects</h1>
+      <p class="lede">
+        Two products in active development plus side projects and open-source contributions.
+        The Pipeforge walkthrough and a knowledge-base sample sit underneath as deeper reads.
+      </p>
+    </header>
+
+    <section class="content">
+      <h2>Products</h2>
+      <ul class="project-list">
+        <li>
+          <h3 class="project-title">Education SaaS</h3>
+          <p class="project-position">Multi-tenant platform, launch customer in production.</p>
+          <p>
+            Course management and lead-operations across education tenants; ready for expansion
+            onto additional customers. Stack: PHP 8.4 / Symfony 7.4 LTS / Doctrine 3 /
+            PostgreSQL 16 / Redis 7 backend; Twig + Stimulus + Turbo + Tailwind front-end;
+            Vitest + PHPUnit + Playwright on tests. Hexagonal modular monolith with full CQRS
+            at the UseCase layer, async events via Symfony Messenger, 7 business modules.
+          </p>
+          <p class="project-affordances">
+            <a href="#how-quality-gets-enforced">enforcement details ↓</a>
+          </p>
+        </li>
+        <li>
+          <h3 class="project-title">Pipeforge</h3>
+          <p class="project-position">Personal Claude Code orchestration plugin and PostgreSQL MCP backend.</p>
+          <p>
+            Pipeline orchestration with templated commands, agent dispatch, skill-based prompts,
+            and an MCP-backed tool layer over a PostgreSQL state store — plus a curated knowledge
+            base of decisions about Pipeforge itself. Built from a personal need to coordinate
+            work across multiple machines and parallel worktrees; not a product, the infrastructure
+            I use daily.
+          </p>
+          <p class="project-affordances">
+            <a href="/projects/pipeforge">walkthrough →</a>
+            <span class="sep">·</span>
+            <a href="/projects/kb">knowledge base →</a>
+          </p>
+        </li>
+      </ul>
+
+      <figure class="audit-figure">
+        <a
+          href="/screenshots/07-test-audit-all-suites-clean.png"
+          class="lightbox-link"
+          aria-label="Open full-size screenshot"
+        >
+          <img
+            src="/screenshots/07-test-audit-all-suites-clean.png"
+            alt="Test audit on the production Education SaaS: 4,190 PHP tests + 157 E2E, all clean, runtime 7m 13s"
+            loading="lazy"
+            decoding="async"
+          />
+        </a>
+        <figcaption>
+          Test audit on the production Education SaaS (as of {testAuditAsOf}): 4,190 PHP tests +
+          157 E2E green, 259 structured learnings logged in 7m 13s. Suites: PHPStan clean ·
+          Unit 2674/2674 (8539 assertions) · Integration 459/459 · Functional 699/699 ·
+          Smoke 201/201 · E2E 157/157.
+        </figcaption>
+      </figure>
+
+      <h2 id="how-quality-gets-enforced">How quality gets enforced</h2>
+      <p>
+        The Education SaaS runs four independent custom enforcement layers in CI — every PR has
+        to pass all four before it can merge.
+      </p>
+      <ul class="project-list">
+        <li>
+          <strong>PHPStan 2 at level 8</strong> — plus 13 project-specific custom rules:
+          entity-ID safety, tenant query safety (blocks direct <code>EntityManager</code> /
+          <code>Connection</code> access outside repositories), and ADR-shape rules for the
+          Action / UseCase / QueryAdapter / Port catalog. The CQRS seam is enforced at this
+          layer.
+        </li>
+        <li>
+          <strong>PHPMD</strong> — hexagonal-tuned ruleset for code smells; complements PHPStan
+          on style and maintainability fronts that static analysis doesn't cover.
+        </li>
+        <li>
+          <strong>Deptrac</strong> — enforces 3 hexagonal layers
+          (Domain → Application → Infrastructure) across 7 business modules. Vendor imports
+          gated by layer; exceptions baselined and documented.
+        </li>
+        <li>
+          <strong>Custom Twig/Tailwind lint script</strong> — 6 project rules expressing UI
+          conventions that off-the-shelf linters can't: component-only
+          <code>&lt;twig:Button&gt;</code> (no raw <code>&lt;button&gt;</code> in pages),
+          semantic-token-only Tailwind (no literal grays), required
+          <code>data-component</code> attributes, no manual <code>dark:</code> variants in
+          components, ADR-tied destructive-action wrapping, and target-naming in confirmation
+          modals. Managed baseline for staged migration with stale-entry detection.
+        </li>
+      </ul>
+      <p>
+        Each layer runs independently; the baseline pattern lets new code raise the bar without
+        requiring full migration of legacy code first.
+      </p>
+
+      <h2>Side projects</h2>
+      <ul class="project-list">
+        <li>
+          <h3 class="project-title">ProfitOfExile</h3>
+          <p class="project-position">Public-source Path of Exile lab-farming tool.</p>
+          <p>
+            Built solo across Go / SvelteKit / Tauri (Rust) / TimescaleDB — backend, web,
+            desktop overlay. Web continuously deployed; desktop overlay shipped from cold start
+            to usable release in ~2 weeks (v0.1.0 on 2026-03-31 → v0.6.x on 2026-04-13). A
+            single Go backend feeds both the web (zero-install SvelteKit) and the Rust/Tauri
+            desktop with OCR and in-game overlays — one source of truth, two delivery surfaces.
+            Adopted by the broader community after creator coverage.
+          </p>
+          <p class="project-affordances">
+            <a href="https://profitofexile.top" target="_blank" rel="noopener">profitofexile.top →</a>
+          </p>
+        </li>
+        <li>
+          <h3 class="project-title">Anthropic Claude Code tracker</h3>
+          <p class="project-position">Public reproducible investigation in the official issue tracker.</p>
+          <p>
+            Isolates a compact-vs-clear instruction-override asymmetry in SessionStart hook
+            behavior — minimal reproduction, mechanism analysis, suggested fix.
+          </p>
+          <p class="project-affordances">
+            <a href="https://github.com/anthropics/claude-code/issues/6354#issuecomment-3849990217" target="_blank" rel="noopener">issue thread →</a>
+          </p>
+        </li>
+        <li>
+          <h3 class="project-title">Open-source contributions</h3>
+          <p class="project-position">PRs to community tooling.</p>
+          <p>
+            <code>poe-vendor-string</code> — added prefix/suffix indicators and the repo's first
+            tests. <code>superpowers</code> — proposed smart question batching with empirical
+            <code>AskUserQuestion</code> reduction.
+          </p>
+          <p class="project-affordances">
+            <a href="https://github.com/SebRogala" target="_blank" rel="noopener">github.com/SebRogala →</a>
+          </p>
+        </li>
+      </ul>
+    </section>
+
+    <footer class="page-footer">
+      <a href="/">← back home</a>
+      <span class="sep">·</span>
+      <a href="/about">about →</a>
+    </footer>
+  </main>
+</Base>
+
+<style>
+  .frame {
+    max-width: 1140px;
+    margin: 0 auto;
+    padding: 48px 32px;
+  }
+
+  /* Topnav lives in src/components/TopNav.astro. */
+  /* `.sep` is also used in the page footer below — keep as page-level rule. */
+  .sep {
+    color: var(--rule-2);
+  }
+
+  .page-header {
+    margin-bottom: 36px;
+  }
+  .eyebrow {
+    font-family: var(--mono);
+    font-size: 11.5px;
+    color: var(--muted);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    margin-bottom: 18px;
+  }
+  h1 {
+    font-family: var(--serif);
+    font-weight: 500;
+    font-size: 44px;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    color: var(--fg);
+    margin-bottom: 16px;
+  }
+  .lede {
+    font-family: var(--serif);
+    font-weight: 500;
+    font-size: 19px;
+    line-height: 1.55;
+    color: var(--fg);
+    text-wrap: pretty;
+  }
+
+  .content {
+    border-top: 1px solid var(--rule);
+    padding-top: 32px;
+    font-family: var(--sans);
+    font-size: 15.5px;
+    line-height: 1.65;
+    color: var(--fg);
+  }
+  .content h2 {
+    font-family: var(--serif);
+    font-weight: 500;
+    font-size: 22px;
+    color: var(--fg);
+    margin: 36px 0 16px;
+    letter-spacing: -0.01em;
+  }
+  .content h2:first-child {
+    margin-top: 0;
+  }
+  .content p {
+    margin-bottom: 12px;
+    text-wrap: pretty;
+  }
+  .content strong {
+    color: var(--fg);
+    font-weight: 600;
+  }
+  .content em {
+    color: var(--muted);
+    font-style: italic;
+  }
+  .content code {
+    font-family: var(--mono);
+    font-size: 13px;
+    color: var(--fg-nav);
+    background: var(--bg-raise);
+    padding: 1px 5px;
+    border-radius: 3px;
+  }
+  .content a {
+    color: var(--accent);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    text-decoration-color: rgba(125, 179, 108, 0.4);
+  }
+
+  .project-list {
+    list-style: none;
+    padding-left: 0;
+    margin: 0;
+  }
+  .project-list > li {
+    padding: 22px 0;
+    border-top: 1px solid var(--rule);
+    text-wrap: pretty;
+  }
+  .project-list > li:first-child {
+    border-top: none;
+    padding-top: 8px;
+  }
+  .project-list > li:last-child {
+    padding-bottom: 8px;
+  }
+  /* When the enforcement section uses .project-list, its items are
+     short bulleted entries — restore list markers and tighten spacing. */
+  #how-quality-gets-enforced + p + .project-list {
+    list-style: disc;
+    padding-left: 22px;
+  }
+  #how-quality-gets-enforced + p + .project-list > li {
+    border-top: none;
+    padding: 0;
+    margin-bottom: 8px;
+  }
+
+  .project-title {
+    font-family: var(--serif);
+    font-weight: 500;
+    font-size: 20px;
+    color: var(--fg);
+    margin: 0 0 4px;
+    letter-spacing: -0.005em;
+  }
+  .project-position {
+    font-family: var(--sans);
+    font-size: 14.5px;
+    color: var(--fg-nav);
+    margin-bottom: 10px;
+    font-style: italic;
+  }
+  .project-affordances {
+    font-family: var(--mono);
+    font-size: 13px;
+    margin-top: 6px;
+    margin-bottom: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  .project-affordances a {
+    color: var(--accent);
+    text-decoration: none;
+  }
+  .project-affordances a:hover {
+    color: var(--fg);
+  }
+
+  .audit-figure {
+    margin: 16px 0 24px;
+  }
+  .audit-figure a {
+    display: block;
+    border: 1px solid var(--rule-2);
+    border-radius: 4px;
+    overflow: hidden;
+    background: var(--bg-raise);
+    transition: border-color 160ms ease;
+    text-decoration: none;
+  }
+  .audit-figure a:hover {
+    border-color: var(--accent);
+  }
+  .audit-figure img {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+  .audit-figure figcaption {
+    margin-top: 10px;
+    font-family: var(--sans);
+    font-size: 13.5px;
+    line-height: 1.55;
+    color: var(--fg-nav);
+    text-wrap: pretty;
+  }
+
+  .page-footer {
+    margin-top: 56px;
+    padding-top: 22px;
+    border-top: 1px solid var(--rule);
+    font-family: var(--mono);
+    font-size: 13px;
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  .page-footer a {
+    color: var(--accent);
+    transition: color 160ms ease;
+  }
+  .page-footer a:hover {
+    color: var(--fg);
+  }
+
+  @media (max-width: 720px) {
+    .frame {
+      padding: 36px 22px;
+    }
+
+    h1 {
+      font-size: 32px;
+    }
+    .lede {
+      font-size: 16px;
+    }
+    .content h2 {
+      font-size: 19px;
+    }
+    .content {
+      font-size: 14.5px;
+    }
+    .project-title {
+      font-size: 18px;
+    }
+  }
+</style>

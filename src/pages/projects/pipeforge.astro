@@ -1,6 +1,6 @@
 ---
-import Base from '../layouts/Base.astro';
-import TopNav from '../components/TopNav.astro';
+import Base from '../../layouts/Base.astro';
+import TopNav from '../../components/TopNav.astro';
 
 const screenshotsAsOf = '2026-04-27';
 
@@ -98,7 +98,7 @@ const appendix = [
   title="Pipeforge — sebrogala.dev"
   description="Pipeforge: Claude Code orchestration plugin and PostgreSQL MCP backend. Personal AI delivery infrastructure with verification, fidelity audits, and source-cited knowledge."
 >
-  <TopNav current="pipeforge" />
+  <TopNav current="projects" />
 
   <main class="frame">
     <header class="page-header">
@@ -265,9 +265,11 @@ const appendix = [
     </section>
 
     <footer class="page-footer">
-      <a href="/">← back</a>
+      <a href="/">← back home</a>
       <span class="sep">·</span>
-      <a href="/kb">Knowledge base →</a>
+      <a href="/projects">↑ projects</a>
+      <span class="sep">·</span>
+      <a href="/projects/kb">Knowledge base →</a>
     </footer>
   </main>
 </Base>

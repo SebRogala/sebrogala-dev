@@ -1,7 +1,9 @@
 ---
 // Shared top navigation. Pass `current` to highlight the active page.
+// Showcase sub-pages (/projects/pipeforge, /projects/kb) pass current="projects"
+// so the Projects nav slot highlights when the visitor is inside the hub.
 interface Props {
-  current?: 'home' | 'pipeforge' | 'kb' | 'about';
+  current?: 'home' | 'projects' | 'about';
 }
 const { current = 'home' } = Astro.props;
 const isActive = (page: Props['current']) => current === page;
@@ -12,9 +14,7 @@ const isActive = (page: Props['current']) => current === page;
   <div class="topnav-inner">
     <a href="/" class:list={['wordmark', { active: isActive('home') }]}>sebrogala.dev</a>
     <div class="nav-links">
-      <a href="/pipeforge" class:list={['nav-link', { active: isActive('pipeforge') }]}>Pipeforge</a>
-      <span class="sep">·</span>
-      <a href="/kb" class:list={['nav-link', { active: isActive('kb') }]}>Knowledge base</a>
+      <a href="/projects" class:list={['nav-link', { active: isActive('projects') }]}>Projects</a>
       <span class="sep">·</span>
       <a href="/about" class:list={['nav-link', { active: isActive('about') }]}>About</a>
     </div>
@@ -51,8 +51,7 @@ const isActive = (page: Props['current']) => current === page;
 
 <!-- Mobile sub-nav: hidden by default, shown on narrow viewports. -->
   <nav class="mobile-subnav">
-    <a href="/pipeforge" class:list={['nav-link', { active: isActive('pipeforge') }]}>Pipeforge</a>
-    <a href="/kb" class:list={['nav-link', { active: isActive('kb') }]}>KB</a>
+    <a href="/projects" class:list={['nav-link', { active: isActive('projects') }]}>Projects</a>
     <a href="/about" class:list={['nav-link', { active: isActive('about') }]}>About</a>
   </nav>
 </div>
