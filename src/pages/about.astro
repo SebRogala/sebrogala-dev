@@ -37,26 +37,27 @@ const testAuditAsOf = '2026-04-27';
       <ul class="work-list">
         <li>
           <strong>Education CRM</strong> — multi-tenant course management and lead-operations system
-          for a Polish education client. In daily production use. CQRS, event-driven, GDPR-aware
-          workflows, multi-tenant ready for additional clients. Stack: PHP 8.4, Symfony 7.4 LTS,
-          PostgreSQL 16, Redis 7, Playwright. <em>Test audit as of {testAuditAsOf}:</em> 4,190 tests
-          (2,674 unit, 459 integration, 699 functional, 201 smoke, 157 E2E) plus PHPStan level 8 — full
-          audit suite runs in ~7 minutes.
+          for a Polish education client. In daily production use, multi-tenant ready for additional
+          clients. Stack: PHP 8.4 / Symfony 7.4 LTS / Doctrine 3 / PostgreSQL 16 / Redis 7 backend;
+          Twig + Stimulus + Turbo + Tailwind front-end; Vitest + PHPUnit + Playwright on tests.
+          Hexagonal modular monolith with full CQRS at the UseCase layer, async events via Symfony
+          Messenger, 7 business modules. Audit suite green — see screenshot below.
         </li>
         <li>
-          <strong>ProfitOfExile</strong> — public-source Path of Exile lab-farming tool. Built as a
-          side project across Go / SvelteKit / Tauri (Rust) / TimescaleDB; ~52k source LOC (excluding
-          tests, generated assets, lockfiles, fixtures). Web continuously deployed; desktop overlay
-          reached usable release in ~2 weeks (v0.1.0 on 2026-03-31 → v0.6.x on 2026-04-13). A single
-          Go backend feeds both the web (zero-install SvelteKit) and the Rust/Tauri desktop with OCR
-          and in-game overlays — one source of truth, two delivery surfaces. Adopted by the broader
-          community after creator coverage.
+          <strong>ProfitOfExile</strong> — public-source Path of Exile lab-farming tool. Built solo
+          across Go / SvelteKit / Tauri (Rust) / TimescaleDB — backend, web, desktop overlay. Web
+          continuously deployed; desktop overlay shipped from cold start to usable release in ~2
+          weeks (v0.1.0 on 2026-03-31 → v0.6.x on 2026-04-13). A single Go backend feeds both the
+          web (zero-install SvelteKit) and the Rust/Tauri desktop with OCR and in-game overlays —
+          one source of truth, two delivery surfaces. Adopted by the broader community after creator
+          coverage.
           <a href="https://profitofexile.top" target="_blank" rel="noopener">profitofexile.top</a>.
         </li>
         <li>
           <strong>Pipeforge</strong> — personal Claude Code orchestration plugin and PostgreSQL MCP
-          backend. 31 commands, 28 SKILL.md files, 20 agents, 11 pipeline templates, 64 MCP tools,
-          31 Postgres tables, plus ~42 Knowledge-Base entries about Pipeforge itself. Walkthrough at
+          backend. Pipeline orchestration with templated commands, agent dispatch, skill-based
+          prompts, and an MCP-backed tool layer over a PostgreSQL state store — plus a curated
+          knowledge base of decisions about Pipeforge itself. Walkthrough at
           <a href="/pipeforge">/pipeforge</a>.
         </li>
       </ul>
@@ -81,6 +82,43 @@ const testAuditAsOf = '2026-04-27';
         </figcaption>
       </figure>
 
+      <h2>How quality gets enforced</h2>
+      <p>
+        The Education CRM runs four independent custom enforcement layers in CI — every PR has
+        to pass all four before it can merge.
+      </p>
+      <ul class="work-list">
+        <li>
+          <strong>PHPStan 2 at level 8</strong> — plus 13 project-specific custom rules:
+          entity-ID safety, tenant query safety (blocks direct <code>EntityManager</code> /
+          <code>Connection</code> access outside repositories), and ADR-shape rules for the
+          Action / UseCase / QueryAdapter / Port catalog. The CQRS seam is enforced at this
+          layer.
+        </li>
+        <li>
+          <strong>PHPMD</strong> — hexagonal-tuned ruleset for code smells; complements PHPStan
+          on style and maintainability fronts that static analysis doesn't cover.
+        </li>
+        <li>
+          <strong>Deptrac</strong> — enforces 3 hexagonal layers
+          (Domain → Application → Infrastructure) across 7 business modules. Vendor imports
+          gated by layer; exceptions baselined and documented.
+        </li>
+        <li>
+          <strong>Custom Twig/Tailwind lint script</strong> — 6 project rules expressing UI
+          conventions that off-the-shelf linters can't: component-only
+          <code>&lt;twig:Button&gt;</code> (no raw <code>&lt;button&gt;</code> in pages),
+          semantic-token-only Tailwind (no literal grays), required
+          <code>data-component</code> attributes, no manual <code>dark:</code> variants in
+          components, ADR-tied destructive-action wrapping, and target-naming in confirmation
+          modals. Managed baseline for staged migration with stale-entry detection.
+        </li>
+      </ul>
+      <p>
+        Each layer runs independently; the baseline pattern lets new code raise the bar without
+        requiring full migration of legacy code first.
+      </p>
+
       <h2>Public proof &amp; community</h2>
       <ul class="work-list">
         <li>
@@ -103,12 +141,11 @@ const testAuditAsOf = '2026-04-27';
         </li>
       </ul>
 
-      <h2>Looking for</h2>
+      <h2>Availability</h2>
       <p>
-        AI-native Product Engineer / Context Engineer roles at AI-forward teams. Also open to
-        consulting and workshop conversations on context engineering and AI-directed delivery. In
-        the conversations I've had so far, the workflow is usually the unfamiliar part — happy to
-        walk through it.
+        Available for AI-native engineering roles, advisory engagements, and team workshops on
+        context engineering and AI-directed delivery. The workflow is usually the unfamiliar part —
+        happy to walk through it.
       </p>
 
       <h2>Reach</h2>
