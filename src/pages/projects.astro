@@ -16,8 +16,9 @@ const testAuditAsOf = '2026-04-27';
       <div class="eyebrow">Projects</div>
       <h1>Projects</h1>
       <p class="lede">
-        Two products in active development plus side projects and open-source contributions.
-        The Pipeforge walkthrough and a knowledge-base sample sit underneath as deeper reads.
+        A product in production, the personal tool I rely on daily, a community side project, and
+        recurring open-source contributions. The Pipeforge walkthrough and a knowledge-base sample
+        sit underneath as deeper reads.
       </p>
     </header>
 
@@ -36,22 +37,6 @@ const testAuditAsOf = '2026-04-27';
           </p>
           <p class="project-affordances">
             <a href="#how-quality-gets-enforced">enforcement details ↓</a>
-          </p>
-        </li>
-        <li>
-          <h3 class="project-title">Pipeforge</h3>
-          <p class="project-position">Personal Claude Code orchestration plugin and PostgreSQL MCP backend.</p>
-          <p>
-            Pipeline orchestration with templated commands, agent dispatch, skill-based prompts,
-            and an MCP-backed tool layer over a PostgreSQL state store — plus a curated knowledge
-            base of decisions about Pipeforge itself. Built from a personal need to coordinate
-            work across multiple machines and parallel worktrees; not a product, the infrastructure
-            I use daily.
-          </p>
-          <p class="project-affordances">
-            <a href="/projects/pipeforge">walkthrough →</a>
-            <span class="sep">·</span>
-            <a href="/projects/kb">knowledge base →</a>
           </p>
         </li>
       </ul>
@@ -114,6 +99,27 @@ const testAuditAsOf = '2026-04-27';
         requiring full migration of legacy code first.
       </p>
 
+      <h2>Personal tools</h2>
+      <ul class="project-list">
+        <li>
+          <h3 class="project-title">Pipeforge</h3>
+          <p class="project-position">Claude Code orchestration plugin and PostgreSQL MCP backend.</p>
+          <p>
+            Built from a personal need to coordinate work across multiple machines and parallel
+            worktrees, then evolved into where I prototype the context-engineering patterns I
+            apply on production work. Pipeline orchestration with templated commands, agent
+            dispatch, skill-based prompts, and an MCP-backed tool layer over a PostgreSQL state
+            store — plus a curated knowledge base of decisions about Pipeforge itself. Not a
+            product; the infrastructure I use daily.
+          </p>
+          <p class="project-affordances">
+            <a href="/projects/pipeforge">walkthrough →</a>
+            <span class="sep">·</span>
+            <a href="/projects/kb">knowledge base →</a>
+          </p>
+        </li>
+      </ul>
+
       <h2>Side projects</h2>
       <ul class="project-list">
         <li>
@@ -131,6 +137,10 @@ const testAuditAsOf = '2026-04-27';
             <a href="https://profitofexile.top" target="_blank" rel="noopener">profitofexile.top →</a>
           </p>
         </li>
+      </ul>
+
+      <h2>Contributions</h2>
+      <ul class="project-list">
         <li>
           <h3 class="project-title">Anthropic Claude Code tracker</h3>
           <p class="project-position">Public reproducible investigation in the official issue tracker.</p>
@@ -223,10 +233,12 @@ const testAuditAsOf = '2026-04-27';
   .content h2 {
     font-family: var(--serif);
     font-weight: 500;
-    font-size: 22px;
+    font-size: 28px;
     color: var(--fg);
-    margin: 36px 0 16px;
-    letter-spacing: -0.01em;
+    margin: 56px 0 20px;
+    letter-spacing: -0.015em;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--rule);
   }
   .content h2:first-child {
     margin-top: 0;
@@ -378,13 +390,14 @@ const testAuditAsOf = '2026-04-27';
       font-size: 16px;
     }
     .content h2 {
-      font-size: 19px;
+      font-size: 23px;
+      margin-top: 40px;
     }
     .content {
       font-size: 14.5px;
     }
     .project-title {
-      font-size: 18px;
+      font-size: 17px;
     }
   }
 </style>
