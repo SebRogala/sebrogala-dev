@@ -32,19 +32,28 @@ import TopNav from '../components/TopNav.astro';
       </p>
 
       <h2>Currently building</h2>
+      <ul class="building">
+        <li>Education SaaS — multi-tenant platform, launch customer in production</li>
+        <li>Pipeforge — Claude Code orchestration</li>
+        <li>ProfitOfExile — community tool</li>
+        <li>Open-source contributions</li>
+      </ul>
       <p>
-        Education SaaS (multi-tenant platform, launch customer in production), Pipeforge (Claude
-        Code orchestration), ProfitOfExile (community tool), plus open-source contributions.
         Details, screenshots, and the architectural-enforcement layers at
         <a href="/projects">/projects</a>.
       </p>
 
       <h2>Speaking</h2>
-      <p>
-        rg-dev Meetup, 27.05.2026 (scheduled), AI-native workflow / migration audit talk; Xebia
-        Internal Conference, Nov 2023, <em>GitHub Actions &amp; Continuous Delivery on Shared
-        Hosting</em>.
-      </p>
+      <ul class="speaking">
+        <li>
+          <a href="https://www.meetup.com/rg-dev/events/314750399" target="_blank" rel="noopener">rg-dev
+          Meetup</a>, 27.05.2026 — <em>From Prompting to Directing Agents</em>
+        </li>
+        <li>
+          Xebia Internal Conference, Nov 2023 — <em>GitHub Actions &amp; Continuous Delivery on
+          Shared Hosting</em>
+        </li>
+      </ul>
 
       <h2>Availability</h2>
       <p>
@@ -158,6 +167,31 @@ import TopNav from '../components/TopNav.astro';
     text-decoration: underline;
     text-underline-offset: 3px;
     text-decoration-color: rgba(125, 179, 108, 0.4);
+  }
+
+  .speaking,
+  .building {
+    list-style: none;
+    padding-left: 0;
+    margin-bottom: 14px;
+  }
+  .speaking li,
+  .building li {
+    margin-bottom: 8px;
+    padding-left: 16px;
+    position: relative;
+    text-wrap: pretty;
+  }
+  .speaking li::before,
+  .building li::before {
+    content: '·';
+    position: absolute;
+    left: 2px;
+    color: var(--muted);
+  }
+  .speaking li:last-child,
+  .building li:last-child {
+    margin-bottom: 0;
   }
 
   .reach {
