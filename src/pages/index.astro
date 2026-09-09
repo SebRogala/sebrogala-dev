@@ -129,7 +129,7 @@ const tiles = [
     </section>
 
     <!-- ── Availability (no fixed quarter — just an "open" signal). ─ -->
-    <section class="section availability">
+    <section class="section availability" id="availability">
       <div class="avail-left">
         <h2 class="eyebrow">Availability</h2>
         <div class="status-pill">
@@ -137,11 +137,37 @@ const tiles = [
           open
         </div>
       </div>
-      <p class="avail-text">
-        Available for AI-native engineering roles, advisory engagements, and team workshops on context
-        engineering and AI-directed delivery. The workflow is usually the unfamiliar part — happy to
-        walk through it.
-      </p>
+      <div class="avail-right">
+        <p class="avail-text">
+          Open to fractional / contract AI-delivery work, advisory, and team workshops or training
+          on AI-directed development. Full-time for the right fit.
+        </p>
+        <ul class="shapes">
+          <li>
+            <span class="shape-name">Fractional delivery</span> — I run delivery on your codebase:
+            intent into specs, work decomposed for agents, and the verification layers that make
+            the output reviewable without reading every diff.
+          </li>
+          <li>
+            <span class="shape-name">Advisory</span> — a second pair of eyes on an AI-directed
+            setup you already have: where the review bottleneck actually sits, and what to
+            enforce structurally instead of by discipline.
+          </li>
+          <li>
+            <span class="shape-name">Team workshop / training</span> — how a team moves from
+            prompting to directing agents, using a codebase that ships to a paying customer as
+            the worked example.
+          </li>
+        </ul>
+        <p class="cta">
+          <a class="cta-link" href="mailto:sebrogala@gmail.com?subject=Fractional%20%2F%20contract%20work">
+            Tell me what you're shipping →
+          </a>
+          <span class="cta-note">The workflow is usually the unfamiliar part — happy to walk through it.</span>
+        </p>
+        <!-- TODO: link a CV / one-pager here. It is the artefact a hiring manager
+             forwards internally, and nothing is published to link to yet. -->
+      </div>
     </section>
 
     <!-- ── Footer ─────────────────────────────────────────── -->
@@ -462,14 +488,69 @@ const tiles = [
     border-radius: 50%;
     box-shadow: 0 0 6px rgba(166, 212, 159, 0.53);
   }
-  .avail-text {
+  .avail-right {
     grid-column: 2;
+  }
+  .avail-text {
     font-family: var(--serif);
     /* Bumped to weight 500 to match pitch (consistent identity hierarchy) */
     font-weight: 500;
     font-size: 17.5px;
     line-height: 1.6;
     color: var(--fg);
+    text-wrap: pretty;
+  }
+
+  /* Engagement shapes: the page's one conversion surface, so it answers
+     "what would I even hire him for?" before asking for the email. */
+  .shapes {
+    list-style: none;
+    padding: 0;
+    margin: 22px 0 0;
+    border-top: 1px solid var(--rule);
+  }
+  .shapes li {
+    padding: 14px 0;
+    border-bottom: 1px solid var(--rule);
+    font-family: var(--sans);
+    font-size: 14.5px;
+    line-height: 1.6;
+    color: var(--fg);
+    opacity: 0.86;
+    text-wrap: pretty;
+  }
+  .shape-name {
+    font-family: var(--mono);
+    font-size: 13px;
+    color: var(--accent);
+  }
+
+  .cta {
+    margin-top: 22px;
+    display: flex;
+    align-items: baseline;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  .cta-link {
+    font-family: var(--mono);
+    font-size: 14px;
+    color: var(--accent);
+    padding: 9px 14px;
+    border: 1px solid var(--accent);
+    border-radius: 3px;
+    transition:
+      background 160ms ease,
+      color 160ms ease;
+  }
+  .cta-link:hover {
+    background: var(--accent);
+    color: var(--bg);
+  }
+  .cta-note {
+    font-family: var(--sans);
+    font-size: 13.5px;
+    color: var(--muted);
     text-wrap: pretty;
   }
 
@@ -591,11 +672,20 @@ const tiles = [
       grid-template-columns: 1fr;
       padding: 24px 0;
     }
-    .avail-text {
-      /* Reset desktop's grid-column: 2 so the paragraph stacks under the
+    .avail-right {
+      /* Reset desktop's grid-column: 2 so the block stacks under the
          eyebrow + pill in the single-column mobile layout. */
       grid-column: 1;
+    }
+    .avail-text {
       font-size: 16px;
+    }
+    .shapes li {
+      font-size: 14px;
+    }
+    .cta {
+      flex-direction: column;
+      gap: 12px;
     }
 
     .footer {
