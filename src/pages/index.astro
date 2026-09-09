@@ -14,7 +14,7 @@ const tiles = [
     n: '01',
     title: 'Education SaaS',
     tagline: 'the product this workflow ships',
-    body: 'A multi-tenant education platform, in production with a paying customer. Hexagonal modular monolith on PHP 8.4 / Symfony 7.4, full CQRS at the UseCase layer, and the enforcement layers every merge has to pass.',
+    body: 'A multi-tenant education platform, in production with a paying customer. Hexagonal modular monolith on PHP 8.4 / Symfony 7.4, full CQRS at the UseCase layer, and enforcement layers every merge has to pass.',
     href: '/projects#education-saas',
     linkLabel: 'how it is built',
     live: null,
@@ -24,7 +24,7 @@ const tiles = [
     n: '02',
     title: 'Pipeforge',
     tagline: 'the delivery machinery',
-    body: 'My Claude Code orchestration plugin over a PostgreSQL MCP backend — templated commands, agent dispatch, verification and fidelity audits. Screenshot walkthrough of real runs.',
+    body: 'My Claude Code orchestration plugin over a PostgreSQL MCP backend: templated commands, agent dispatch, verification and fidelity audits. Screenshot walkthrough of real runs.',
     href: '/projects/pipeforge',
     linkLabel: 'walkthrough',
     live: null,
@@ -34,7 +34,7 @@ const tiles = [
     n: '03',
     title: 'ProfitOfExile',
     tagline: 'open source, in the wild',
-    body: 'An open-source desktop overlay and web app for the Path of Exile community, built across Go / SvelteKit / Tauri — one Go backend feeding two delivery surfaces. Adopted by the community after creator coverage.',
+    body: 'An open-source desktop overlay and web app for the Path of Exile community, built across Go / SvelteKit / Tauri, with one Go backend feeding two delivery surfaces. Adopted by the community after creator coverage.',
     href: '/projects#profitofexile',
     linkLabel: 'project details',
     live: null,
@@ -45,7 +45,7 @@ const tiles = [
 
 <Base
   title="Sebastian Rogala — AI Delivery Engineer"
-  description="I direct AI agents to build software — product intent in, verified software out. Currently shipping a multi-tenant Education SaaS in production, an open-source community tool, and Pipeforge — my Claude Code orchestration infrastructure."
+  description="I direct AI agents to build software — product intent in, verified software out. Currently shipping a multi-tenant Education SaaS in production, an open-source community tool, and Pipeforge, my Claude Code orchestration infrastructure."
 >
   <TopNav current="home" />
 
@@ -64,22 +64,22 @@ const tiles = [
       <div class="main-col">
         <h2 class="eyebrow">What I do</h2>
         <p class="pitch">
-          I design AI-directed delivery systems that turn product intent into shipped, verified software. Over
-          a decade of broad software engineering experience; fully AI-directed since early 2026. Currently
-          shipping a multi-tenant Education SaaS in production, an open-source community tool, and
-          Pipeforge — my Claude Code orchestration and MCP-backed workflow infrastructure.
+          I design AI-directed delivery systems. Over a decade of broad software engineering
+          experience; fully AI-directed since early 2026. Currently shipping a multi-tenant
+          Education SaaS in production, an open-source community tool, and Pipeforge, my Claude
+          Code orchestration and MCP-backed workflow infrastructure.
         </p>
         <p class="pitch-detail">
-          In practice: product intent into structured specs, work decomposed for agents,
-          verification loops built around it, and shipped outcomes validated against what was
-          actually asked for. Verification is structural — layered review agents, audit tools,
-          hooks, durable state, and source-cited knowledge.
+          In practice I turn product intent into specs agents can build from, decompose the work
+          for them, and wrap verification loops around it. Verification is structural: review
+          agents, audit tools, hooks, durable state, source-cited knowledge. Then I check the
+          shipped outcome against what was actually asked for.
         </p>
       </div>
       <div class="side-col">
         <div class="pull-quote">
           “AI failures are spec gaps, not agent shortcomings.”
-          <div class="pull-quote-attr">— core principle, in practice</div>
+          <div class="pull-quote-attr">— how I read most agent failures</div>
         </div>
       </div>
     </section>
@@ -91,12 +91,12 @@ const tiles = [
       <div class="main-col">
         <h2 class="eyebrow">How it holds up</h2>
         <p class="gates">
-          Every merge passes gates I wrote for this codebase: a rule that makes a cross-tenant
-          query fail static analysis; one that makes comparing entity identities by object fail;
-          dependency-direction checks on two axes — architectural layers, and the module graph;
-          a UI lint that enforces the design system's own conventions. The module-graph baseline
-          is <strong>shrink-only</strong>: it can go down, never up. None of it is a dashboard —
-          each one blocks the merge.
+          Every merge passes gates I wrote for this codebase. A cross-tenant query fails static
+          analysis, and so does comparing entity identities by object. Dependency direction gets
+          checked on two axes, architectural layers and the module graph, and a UI lint enforces
+          the design system's own conventions. The module-graph baseline is
+          <strong>shrink-only</strong>: it can go down, never up. None of it is a dashboard.
+          Each one blocks the merge.
         </p>
         <p class="gates-meta">
           All green as of 2026-07-31. <a href="/projects#how-quality-gets-enforced">what each layer does →</a>
@@ -166,32 +166,32 @@ const tiles = [
       </div>
       <div class="avail-right">
         <p class="avail-text">
-          Open to fractional / contract AI-delivery work, advisory, and team workshops or training
+          I'm open to fractional / contract AI-delivery work, advisory, and team workshops or training
           on AI-directed development. Full-time for the right fit. Based in Rzeszów, Poland
           (UTC+2).
         </p>
         <ul class="shapes">
           <li>
             <span class="shape-name">Fractional delivery</span> — I run delivery on your codebase:
-            intent into specs, work decomposed for agents, and the verification layers that make
-            the output reviewable.
+            I turn intent into specs, decompose the work for agents, and build the verification
+            that makes the output reviewable.
           </li>
           <li>
-            <span class="shape-name">Advisory</span> — a second pair of eyes on an AI-directed
-            setup you already have: where the review bottleneck actually sits, and what to
-            enforce structurally instead of by discipline.
+            <span class="shape-name">Advisory</span> — I look at an AI-directed setup you already
+            have and say where the review bottleneck actually sits, and what to enforce
+            structurally instead of by discipline.
           </li>
           <li>
             <span class="shape-name">Team workshop / training</span> — how a team moves from
-            prompting to directing agents, using a codebase that ships to a paying customer as
-            the worked example.
+            prompting to directing agents, with a codebase that ships to a paying customer as the
+            worked example.
           </li>
         </ul>
         <p class="cta">
           <a class="cta-link" href="mailto:sebrogala@gmail.com?subject=Fractional%20%2F%20contract%20work">
             Tell me what you're shipping →
           </a>
-          <span class="cta-note">The workflow is usually the unfamiliar part — happy to walk through it.</span>
+          <span class="cta-note">The workflow is usually the unfamiliar part. Happy to walk through it.</span>
         </p>
         <!-- TODO: link a CV / one-pager here. It is the artefact a hiring manager
              forwards internally, and nothing is published to link to yet. -->
