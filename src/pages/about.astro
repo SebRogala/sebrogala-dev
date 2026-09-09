@@ -24,23 +24,15 @@ import TopNav from '../components/TopNav.astro';
     <section class="content">
       <h2>How I work now</h2>
       <p>
-        I am not looking for a classic senior developer role centred on manual code production. My
-        leverage is designing AI-directed delivery systems: turning product intent into structured
-        specs, decomposing work for agents, building verification loops, and validating shipped
-        outcomes. My core principle: <strong>AI failures are spec gaps, not agent shortcomings.</strong>
-        I improve delivery by encoding failure modes structurally — through tests, review agents,
-        audit tools, hooks, durable state, and source-cited knowledge.
+        My leverage is in designing AI-directed delivery systems: turning product intent into
+        structured specs, decomposing work for agents, building the verification loops, and
+        validating shipped outcomes against what was actually asked for. Verification is
+        structural — layered review agents, audit tools, hooks, durable state, and source-cited
+        knowledge — and I check outcomes against intent rather than reading every diff. That is
+        where the work is, not in classic line-by-line production.
       </p>
-
-      <h2>Currently building</h2>
-      <ul class="building">
-        <li>Education SaaS — multi-tenant platform, launch customer in production</li>
-        <li>Pipeforge — Claude Code orchestration</li>
-        <li>ProfitOfExile — community tool</li>
-        <li>Open-source contributions</li>
-      </ul>
       <p>
-        Details, screenshots, and the architectural-enforcement layers at
+        Details, screenshots, and the architectural-enforcement layers are at
         <a href="/projects">/projects</a>.
       </p>
 
@@ -58,9 +50,8 @@ import TopNav from '../components/TopNav.astro';
 
       <h2>Availability</h2>
       <p>
-        Available for AI-native engineering roles, advisory engagements, and team workshops on
-        context engineering and AI-directed delivery. The workflow is usually the unfamiliar part —
-        happy to walk through it.
+        Open to fractional / contract AI-delivery work, advisory, and team workshops.
+        <a href="/#availability">The engagement shapes are on the home page →</a>
       </p>
 
       <h2>Reach</h2>
@@ -170,28 +161,24 @@ import TopNav from '../components/TopNav.astro';
     text-decoration-color: rgba(125, 179, 108, 0.4);
   }
 
-  .speaking,
-  .building {
+  .speaking {
     list-style: none;
     padding-left: 0;
     margin-bottom: 14px;
   }
-  .speaking li,
-  .building li {
+  .speaking li {
     margin-bottom: 8px;
     padding-left: 16px;
     position: relative;
     text-wrap: pretty;
   }
-  .speaking li::before,
-  .building li::before {
+  .speaking li::before {
     content: '·';
     position: absolute;
     left: 2px;
     color: var(--muted);
   }
-  .speaking li:last-child,
-  .building li:last-child {
+  .speaking li:last-child {
     margin-bottom: 0;
   }
 
