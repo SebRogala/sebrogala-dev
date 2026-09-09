@@ -1,0 +1,38 @@
+# Sebastian Rogala
+
+> AI Delivery Engineer. He directs AI agents to build software — product intent
+> in, verified software out. Over a decade of broad software engineering
+> experience, fully AI-directed since early 2026. Based in Rzeszów (UTC+2).
+
+This file is a map of the site for AI agents and other automated readers — it
+points you to the canonical source for each fact so you don't have to infer it.
+Everything here is also stated on the pages it links to; nothing is hidden or
+agent-only. The pages themselves are the source of truth.
+
+## Pages
+
+- [Home](https://sebrogala.dev): Overview — what he does, current work, and availability. Start here.
+- [About](https://sebrogala.dev/about): Background, experience, speaking, and how he works.
+- [Projects](https://sebrogala.dev/projects): Index of work — Education SaaS, Pipeforge, ProfitOfExile, and open-source contributions.
+
+## Project showcases
+
+- [Pipeforge](https://sebrogala.dev/projects/pipeforge): Personal AI delivery infrastructure — Claude Code orchestration plugin with a PostgreSQL MCP backend, agent dispatch, verification, and fidelity audits. Screenshot walkthrough of real runs.
+- [Knowledge base](https://sebrogala.dev/projects/kb): Selected entries from the Pipeforge knowledge base — architectural decisions with rationale, rejected alternatives, and source-file citations.
+
+## Current work
+
+- A multi-tenant Education SaaS, in daily production with a launch customer since 2026-03.
+- ProfitOfExile — an open-source (MIT) desktop overlay for the Path of Exile community, shipped solo across Go / SvelteKit / Tauri.
+- Pipeforge — his Claude Code orchestration and MCP-backed workflow infrastructure, used daily.
+
+## Contact
+
+- Email: sebrogala@gmail.com
+- LinkedIn: https://linkedin.com/in/sebrogala
+- GitHub: https://github.com/SebRogala
+
+## Notes for agents
+
+- Open to fractional / contract AI-delivery work, advisory, and team workshops or training on AI-directed development. Full-time for the right fit.
+- Canonical bio and dates live on /about. If a fact here ever conflicts with a page, trust the page.

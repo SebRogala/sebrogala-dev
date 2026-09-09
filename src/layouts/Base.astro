@@ -8,9 +8,12 @@ interface Props {
 }
 
 const {
-  title = 'Sebastian Rogala — AI-native product engineer',
-  description = 'Independent product engineer building AI-directed delivery systems. Designer of Pipeforge — Claude Code orchestration with MCP-backed context engineering.',
+  title = 'Sebastian Rogala — AI Delivery Engineer',
+  description = 'I direct AI agents to build software — product intent in, verified software out. Currently shipping a multi-tenant Education SaaS in production, an open-source community tool, and Pipeforge — my Claude Code orchestration infrastructure.',
 } = Astro.props;
+
+// Canonical URL without a trailing slash — matches the nginx canonicalisation.
+const canonical = new URL(Astro.url.pathname.replace(/\/+$/, '') || '/', Astro.site ?? Astro.url.origin).href;
 ---
 
 <!doctype html>
@@ -22,12 +25,16 @@ const {
 
     <title>{title}</title>
     <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
 
     <!-- Open Graph -->
+    <!-- TODO: og:image — needs a real 1200×630 card asset. LinkedIn is the main
+         traffic source and currently renders these links as bare text. A broken
+         or auto-generated placeholder is worse than none, so this stays open. -->
     <meta property="og:type" content="website" />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
-    <meta property="og:url" content={Astro.url.href} />
+    <meta property="og:url" content={canonical} />
 
     <!-- Fonts: Source Serif 4, Inter, JetBrains Mono -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />

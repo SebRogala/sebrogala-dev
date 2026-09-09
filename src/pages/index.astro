@@ -42,8 +42,8 @@ const tiles = [
 ---
 
 <Base
-  title="Sebastian Rogala — AI-native product engineer"
-  description="Independent AI-native product engineer. Designer of Pipeforge — Claude Code orchestration with MCP-backed context engineering. Currently shipping a multi-tenant Education SaaS in production and an open-source community tool."
+  title="Sebastian Rogala — AI Delivery Engineer"
+  description="I direct AI agents to build software — product intent in, verified software out. Currently shipping a multi-tenant Education SaaS in production, an open-source community tool, and Pipeforge — my Claude Code orchestration infrastructure."
 >
   <TopNav current="home" />
 
@@ -51,7 +51,10 @@ const tiles = [
     <!-- ── Hero ──────────────────────────────────────────────── -->
     <section class="hero">
       <h1>Sebastian Rogala</h1>
-      <p class="tagline">AI-native product engineer · Context Engineer</p>
+      <p class="tagline">AI Delivery Engineer</p>
+      <p class="subline">
+        I direct AI agents to build software — product intent in, verified software out.
+      </p>
     </section>
 
     <!-- ── Manifest (2 lines: currently + bases). today: dropped to reduce metric density. -->
@@ -185,9 +188,24 @@ const tiles = [
     margin-bottom: 14px;
   }
   .tagline {
-    font-size: 16px;
-    color: var(--muted);
-    letter-spacing: -0.005em;
+    font-family: var(--mono);
+    font-size: 13px;
+    color: var(--accent);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    margin-bottom: 14px;
+  }
+  /* The sub-line carries the category (Rule 8: it has to land from the grammar
+     of the first sentence, not from the label above it), so it is set at
+     reading weight rather than as a caption. */
+  .subline {
+    font-family: var(--serif);
+    font-weight: 500;
+    font-size: 20px;
+    line-height: 1.5;
+    color: var(--fg);
+    max-width: 640px;
+    text-wrap: pretty;
   }
 
   /* ─── Manifest ─────────────────────────────────────────── */
@@ -503,7 +521,11 @@ const tiles = [
       margin-bottom: 10px;
     }
     .tagline {
-      font-size: 13.5px;
+      font-size: 11.5px;
+      margin-bottom: 10px;
+    }
+    .subline {
+      font-size: 16px;
     }
 
     .manifest {
