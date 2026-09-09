@@ -69,6 +69,12 @@ const tiles = [
           shipping a multi-tenant Education SaaS in production, an open-source community tool, and
           Pipeforge — my Claude Code orchestration and MCP-backed workflow infrastructure.
         </p>
+        <p class="pitch-detail">
+          In practice: product intent into structured specs, work decomposed for agents,
+          verification loops built around it, and shipped outcomes validated against what was
+          actually asked for. Verification is structural — layered review agents, audit tools,
+          hooks, durable state, and source-cited knowledge.
+        </p>
       </div>
       <div class="side-col">
         <div class="pull-quote">
@@ -131,6 +137,24 @@ const tiles = [
       }
     </section>
 
+    <!-- ── Speaking ──────────────────────────────────────────── -->
+    <section class="section speaking-section">
+      <div class="main-col">
+        <h2 class="eyebrow">Speaking</h2>
+        <ul class="speaking">
+          <li>
+            <a href="https://www.meetup.com/rg-dev/events/314750399" target="_blank" rel="noopener"
+              >rg-dev Meetup</a
+            >, 27.05.2026 — <em>From Prompting to Directing Agents</em>
+          </li>
+          <li>
+            Xebia Internal Conference, Nov 2023 — <em>GitHub Actions &amp; Continuous Delivery on
+            Shared Hosting</em>
+          </li>
+        </ul>
+      </div>
+    </section>
+
     <!-- ── Availability (no fixed quarter — just an "open" signal). ─ -->
     <section class="section availability" id="availability">
       <div class="avail-left">
@@ -143,7 +167,8 @@ const tiles = [
       <div class="avail-right">
         <p class="avail-text">
           Open to fractional / contract AI-delivery work, advisory, and team workshops or training
-          on AI-directed development. Full-time for the right fit.
+          on AI-directed development. Full-time for the right fit. Based in Rzeszów, Poland
+          (UTC+2).
         </p>
         <ul class="shapes">
           <li>
@@ -273,6 +298,16 @@ const tiles = [
     font-size: 22px;
     line-height: 1.55;
     color: var(--fg);
+    text-wrap: pretty;
+  }
+
+  .pitch-detail {
+    margin-top: 18px;
+    font-family: var(--sans);
+    font-size: 15.5px;
+    line-height: 1.65;
+    color: var(--fg);
+    opacity: 0.86;
     text-wrap: pretty;
   }
 
@@ -468,6 +503,44 @@ const tiles = [
     box-shadow: 0 0 4px rgba(200, 174, 106, 0.4);
   }
 
+  /* ─── Speaking ─────────────────────────────────────────── */
+  .speaking-section .main-col {
+    grid-column: 1;
+  }
+  .speaking {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    font-family: var(--sans);
+    font-size: 15px;
+    line-height: 1.6;
+    color: var(--fg);
+  }
+  .speaking li {
+    padding-left: 16px;
+    position: relative;
+    text-wrap: pretty;
+  }
+  .speaking li + li {
+    margin-top: 8px;
+  }
+  .speaking li::before {
+    content: '·';
+    position: absolute;
+    left: 2px;
+    color: var(--muted);
+  }
+  .speaking em {
+    color: var(--muted);
+    font-style: italic;
+  }
+  .speaking a {
+    color: var(--accent);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    text-decoration-color: rgba(125, 179, 108, 0.33);
+  }
+
   /* ─── Availability ─────────────────────────────────────── */
   .availability {
     padding: 36px 0 44px;
@@ -627,6 +700,10 @@ const tiles = [
     }
     .gates {
       font-size: 15px;
+    }
+    .pitch-detail,
+    .speaking {
+      font-size: 14.5px;
     }
     .pull-quote {
       font-size: 14px;

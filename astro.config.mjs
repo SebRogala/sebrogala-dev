@@ -8,6 +8,9 @@ export default defineConfig({
   redirects: {
     '/pipeforge': '/projects/pipeforge',
     '/kb': '/projects/kb',
+    // /about was collapsed into the home page. Kept so existing links —
+    // LinkedIn, CV references, anything already indexed — do not 404.
+    '/about': '/',
   },
   server: {
     host: '0.0.0.0',

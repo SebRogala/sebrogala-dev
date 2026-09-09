@@ -11,8 +11,7 @@ agent-only. The pages themselves are the source of truth.
 
 ## Pages
 
-- [Home](https://sebrogala.dev): Overview — what he does, current work, and availability. Start here.
-- [About](https://sebrogala.dev/about): Background, experience, speaking, and how he works.
+- [Home](https://sebrogala.dev): Overview — what he does, how the work is verified, current work, speaking, and availability. Start here.
 - [Projects](https://sebrogala.dev/projects): Index of work — Education SaaS, Pipeforge, ProfitOfExile, and open-source contributions.
 
 ## Project showcases
@@ -35,4 +34,4 @@ agent-only. The pages themselves are the source of truth.
 ## Notes for agents
 
 - Open to fractional / contract AI-delivery work, advisory, and team workshops or training on AI-directed development. Full-time for the right fit.
-- Canonical bio and dates live on /about. If a fact here ever conflicts with a page, trust the page.
+- Canonical bio and dates live on the home page. If a fact here ever conflicts with a page, trust the page.
