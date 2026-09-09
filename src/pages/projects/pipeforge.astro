@@ -117,32 +117,6 @@ const appendix = [
       </p>
     </header>
 
-    <section class="stats">
-      <div class="stat">
-        <div class="stat-num">31</div>
-        <div class="stat-label">commands</div>
-      </div>
-      <div class="stat">
-        <div class="stat-num">28</div>
-        <div class="stat-label">SKILL.md files</div>
-      </div>
-      <div class="stat">
-        <div class="stat-num">20</div>
-        <div class="stat-label">agents</div>
-      </div>
-      <div class="stat">
-        <div class="stat-num">11</div>
-        <div class="stat-label">pipeline templates</div>
-      </div>
-      <div class="stat">
-        <div class="stat-num">64</div>
-        <div class="stat-label">MCP tools</div>
-      </div>
-      <div class="stat">
-        <div class="stat-num">31</div>
-        <div class="stat-label">Postgres tables</div>
-      </div>
-    </section>
 
     <section class="prose">
       <h2>What it does, briefly</h2>
@@ -335,33 +309,6 @@ const appendix = [
     border-radius: 3px;
   }
 
-  .stats {
-    display: grid;
-    grid-template-columns: repeat(6, 1fr);
-    gap: 16px;
-    padding: 24px 0;
-    border-top: 1px solid var(--rule);
-    border-bottom: 1px solid var(--rule);
-    margin-bottom: 36px;
-  }
-  .stat {
-    text-align: center;
-  }
-  .stat-num {
-    font-family: var(--serif);
-    font-weight: 500;
-    font-size: 28px;
-    color: var(--accent);
-    letter-spacing: -0.01em;
-    line-height: 1.1;
-  }
-  .stat-label {
-    font-family: var(--mono);
-    font-size: 11.5px;
-    color: var(--muted);
-    margin-top: 4px;
-    line-height: 1.3;
-  }
 
   .prose {
     margin: 32px 0 36px;
@@ -563,13 +510,6 @@ const appendix = [
       font-size: 13px;
     }
 
-    .stats {
-      grid-template-columns: repeat(3, 1fr);
-      gap: 14px;
-    }
-    .stat-num {
-      font-size: 22px;
-    }
 
     .panel {
       padding: 28px 0;
