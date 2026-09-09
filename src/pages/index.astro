@@ -5,38 +5,37 @@ import TopNav from '../components/TopNav.astro';
 // ─── Live (build-time) values ────────────────────────────────────
 // Regenerated on every Coolify rebuild. If these go stale, redeploy.
 const buildDate = new Date().toISOString().slice(0, 10); // YYYY-MM-DD
-// Last commit on Pipeforge — placeholder for now; later wire to a fetch.
-// To make truly live: replace with build-time fetch from GitHub API.
-const pipeforgeLastCommit = 'today';
 
 // ─── Tile data ───────────────────────────────────────────────────
+// Ranked the way a fractional/contract buyer reads them: the shipped product
+// first, the machinery that ships it second, the public artefact third.
 const tiles = [
   {
     n: '01',
+    title: 'Education SaaS',
+    tagline: 'the product this workflow ships',
+    body: 'A multi-tenant education platform, in production with a paying customer. Hexagonal modular monolith on PHP 8.4 / Symfony 7.4, full CQRS at the UseCase layer, and the enforcement layers every merge has to pass.',
+    href: '/projects#education-saas',
+    live: null,
+    durable: 'in production since 2026-03',
+  },
+  {
+    n: '02',
     title: 'Pipeforge',
-    tagline: 'personal AI delivery infrastructure',
-    body: 'Pipeline orchestration with templated commands, agent dispatch, and an MCP-backed tool layer — screenshot walkthrough of real runs.',
+    tagline: 'the delivery machinery',
+    body: 'My Claude Code orchestration plugin over a PostgreSQL MCP backend — templated commands, agent dispatch, verification and fidelity audits. Screenshot walkthrough of real runs.',
     href: '/projects/pipeforge',
     live: null,
     durable: 'private tool · used daily',
   },
   {
-    n: '02',
-    title: 'Knowledge base',
-    tagline: 'how decisions get captured',
-    body: 'Five entries selected from the Pipeforge knowledge base — rationale, rejected alternatives, source citations.',
-    href: '/projects/kb',
-    live: null,
-    durable: 'authored during real work',
-  },
-  {
     n: '03',
-    title: 'Production work',
-    tagline: 'what the workflow ships',
-    body: 'Education SaaS in daily production with launch customer, comprehensive test coverage; ProfitOfExile shipped solo across Go / SvelteKit / Tauri — desktop overlay from cold start to usable release in ~2 weeks.',
-    href: '/projects',
+    title: 'ProfitOfExile',
+    tagline: 'open source, in the wild',
+    body: 'An open-source desktop overlay and web app for the Path of Exile community, built across Go / SvelteKit / Tauri — one Go backend feeding two delivery surfaces. Adopted by the community after creator coverage.',
+    href: '/projects#profitofexile',
     live: null,
-    durable: 'in production since 2026-03',
+    durable: 'MIT · community-adopted',
   },
 ];
 ---
@@ -57,26 +56,10 @@ const tiles = [
       </p>
     </section>
 
-    <!-- ── Manifest (2 lines: currently + bases). today: dropped to reduce metric density. -->
-    <section class="manifest">
-      <div class="manifest-row">
-        <span class="manifest-label">currently:</span>
-        <span class="manifest-value sans">
-          developing <span class="accent">Pipeforge</span> orchestrator · multi-tenant <span class="accent">CRM</span> in production · <span class="accent">Desktop app</span> for POE community
-        </span>
-      </div>
-      <div class="manifest-row">
-        <span class="manifest-label">bases:</span>
-        <span class="manifest-value mono">
-          Rzeszów · UTC+2 · running Claude Opus 4.7 on Pipeforge · discovering Codex
-        </span>
-      </div>
-    </section>
-
     <!-- ── Pitch + pull-quote ────────────────────────────────── -->
     <section class="section pitch-section">
       <div class="main-col">
-        <div class="eyebrow">What I do</div>
+        <h2 class="eyebrow">What I do</h2>
         <p class="pitch">
           I design AI-directed delivery systems that turn product intent into shipped, verified software. Over
           a decade of broad software engineering experience; fully AI-directed since early 2026. Currently
@@ -92,10 +75,29 @@ const tiles = [
       </div>
     </section>
 
+    <!-- ── How it holds up ───────────────────────────────────── -->
+    <!-- Qualitative by design: named, falsifiable, binding mechanisms instead
+         of counts a stranger cannot price. /projects carries the detail. -->
+    <section class="section gates-section">
+      <div class="main-col">
+        <h2 class="eyebrow">How it holds up</h2>
+        <p class="gates">
+          Every merge passes gates I wrote for this codebase: a rule that makes a cross-tenant
+          query fail static analysis; one that makes comparing entity identities by object fail;
+          dependency-direction checks on two axes — architectural layers, and the module graph;
+          a UI lint that enforces the design system's own conventions. The module-graph baseline
+          is <strong>shrink-only</strong>: it can go down, never up. None of it is a dashboard —
+          each one blocks the merge.
+        </p>
+        <p class="gates-meta">
+          All green as of &lt;date&gt;. <a href="/projects#how-quality-gets-enforced">what each layer does →</a>
+        </p>
+      </div>
+    </section>
+
     <!-- ── Tiles header ─────────────────────────────────────── -->
     <section class="section tiles-header">
-      <div class="eyebrow">Things I'm working on / pointing to</div>
-      <div class="tiles-count">3 entries</div>
+      <h2 class="eyebrow">Things I'm working on / pointing to</h2>
     </section>
 
     <!-- ── Work tiles ────────────────────────────────────────── -->
@@ -129,7 +131,7 @@ const tiles = [
     <!-- ── Availability (no fixed quarter — just an "open" signal). ─ -->
     <section class="section availability">
       <div class="avail-left">
-        <div class="eyebrow">Availability</div>
+        <h2 class="eyebrow">Availability</h2>
         <div class="status-pill">
           <span class="status-dot"></span>
           open
@@ -208,43 +210,6 @@ const tiles = [
     text-wrap: pretty;
   }
 
-  /* ─── Manifest ─────────────────────────────────────────── */
-  .manifest {
-    padding: 24px 0 44px;
-    font-family: var(--mono);
-    font-size: 13px;
-    line-height: 1.85;
-  }
-  .manifest-row {
-    display: flex;
-    align-items: baseline;
-    gap: 14px;
-  }
-  .manifest-row + .manifest-row {
-    margin-top: 8px;
-  }
-  .manifest-label {
-    color: var(--accent);
-    width: 80px;
-    flex-shrink: 0;
-  }
-  .manifest-value.sans {
-    font-family: var(--sans);
-    font-size: 17px;
-    color: var(--fg);
-    line-height: 1.6;
-    letter-spacing: -0.005em;
-  }
-  .manifest-value.mono {
-    font-family: var(--mono);
-    font-size: 13px;
-    color: var(--fg-nav);
-    line-height: 1.65;
-  }
-  .manifest .accent {
-    color: var(--accent);
-  }
-
   /* ─── Pitch section ────────────────────────────────────── */
   .section {
     padding: 40px 0 52px;
@@ -260,9 +225,12 @@ const tiles = [
     padding-top: 30px;
   }
 
+  /* `.eyebrow` is an <h2> everywhere it appears — the section headings were
+     previously non-semantic divs, so the page had one <h1> and no <h2> at all. */
   .eyebrow {
     font-family: var(--mono);
     font-size: 11.5px;
+    font-weight: 400;
     color: var(--muted);
     letter-spacing: 0.06em;
     text-transform: uppercase;
@@ -303,6 +271,34 @@ const tiles = [
     letter-spacing: 0.04em;
   }
 
+  /* ─── Gates ────────────────────────────────────────────── */
+  .gates-section .main-col {
+    grid-column: 1;
+  }
+  .gates {
+    font-family: var(--sans);
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--fg);
+    text-wrap: pretty;
+  }
+  .gates strong {
+    font-weight: 600;
+    color: var(--accent);
+  }
+  .gates-meta {
+    margin-top: 16px;
+    font-family: var(--mono);
+    font-size: 13px;
+    color: var(--fg-nav);
+  }
+  .gates-meta a {
+    color: var(--accent);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    text-decoration-color: rgba(125, 179, 108, 0.33);
+  }
+
   /* ─── Tiles header ─────────────────────────────────────── */
   .tiles-header {
     border-top: 1px solid var(--rule);
@@ -314,11 +310,6 @@ const tiles = [
   }
   .tiles-header .eyebrow {
     margin-bottom: 0;
-  }
-  .tiles-count {
-    font-family: var(--mono);
-    font-size: 12px;
-    color: var(--fg-nav);
   }
 
   /* ─── Tiles ────────────────────────────────────────────── */
@@ -528,24 +519,6 @@ const tiles = [
       font-size: 16px;
     }
 
-    .manifest {
-      padding: 20px 0 24px;
-    }
-    .manifest-row {
-      flex-direction: column;
-      gap: 4px;
-    }
-    .manifest-label {
-      width: auto;
-      font-size: 11.5px;
-    }
-    .manifest-value.sans {
-      font-size: 14.5px;
-    }
-    .manifest-value.mono {
-      font-size: 12px;
-    }
-
     .section {
       grid-template-columns: 1fr;
       padding: 24px 0;
@@ -560,6 +533,9 @@ const tiles = [
     }
     .pitch {
       font-size: 17px;
+    }
+    .gates {
+      font-size: 15px;
     }
     .pull-quote {
       font-size: 14px;
