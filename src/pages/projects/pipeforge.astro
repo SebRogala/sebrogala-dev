@@ -80,9 +80,9 @@ const panels = [
   {
     section: 'Test audit',
     img: '07-test-audit-all-suites-clean.png',
-    alt: '4,190 PHP tests + 157 E2E green, 259 structured learnings logged in 7m 13s',
-    caption: `4,190 PHP tests + 157 E2E green, 259 structured learnings logged in 7m 13s (as of ${screenshotsAsOf})`,
-    body: 'Full test-audit output. PHPStan clean, Unit 2674/2674 (8539 assertions), Integration 459/459, Functional 699/699, Smoke 201/201, E2E 157/157 (1 intentional skip). Plus 259 learnings extracted across backend / e2e / frontend / pattern / gotcha — top categories called out for the next `/integrate-agent-learnings` pass.',
+    alt: 'Test-audit report: every suite green, structured learnings logged, total runtime 7m 13s',
+    caption: `Test-audit output from a single run on ${screenshotsAsOf}. The counts have grown since; the machinery is the point.`,
+    body: 'One command runs every suite, reports each one separately, and refuses to summarise a red run as green. It also extracts structured learnings across backend / e2e / frontend / pattern / gotcha and flags the top categories for the next `/integrate-agent-learnings` pass. A dated snapshot of one run — not a current scoreboard.',
   },
 ];
 
