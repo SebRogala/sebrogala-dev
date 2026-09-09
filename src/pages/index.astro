@@ -16,6 +16,7 @@ const tiles = [
     tagline: 'the product this workflow ships',
     body: 'A multi-tenant education platform, in production with a paying customer. Hexagonal modular monolith on PHP 8.4 / Symfony 7.4, full CQRS at the UseCase layer, and the enforcement layers every merge has to pass.',
     href: '/projects#education-saas',
+    linkLabel: 'how it is built',
     live: null,
     durable: 'in production since 2026-03',
   },
@@ -25,6 +26,7 @@ const tiles = [
     tagline: 'the delivery machinery',
     body: 'My Claude Code orchestration plugin over a PostgreSQL MCP backend — templated commands, agent dispatch, verification and fidelity audits. Screenshot walkthrough of real runs.',
     href: '/projects/pipeforge',
+    linkLabel: 'walkthrough',
     live: null,
     durable: 'private tool · used daily',
   },
@@ -34,6 +36,7 @@ const tiles = [
     tagline: 'open source, in the wild',
     body: 'An open-source desktop overlay and web app for the Path of Exile community, built across Go / SvelteKit / Tauri — one Go backend feeding two delivery surfaces. Adopted by the community after creator coverage.',
     href: '/projects#profitofexile',
+    linkLabel: 'project details',
     live: null,
     durable: 'MIT · community-adopted',
   },
@@ -113,8 +116,8 @@ const tiles = [
               </div>
               <div class="tile-body">{t.body}</div>
             </div>
-            <div class="tile-arrow">{t.href} →</div>
             <div class="tile-side">
+              <div class="tile-arrow">{t.linkLabel} →</div>
               {t.live && (
                 <div class="sidenote-live">
                   <span class="live-dot" />
@@ -347,7 +350,10 @@ const tiles = [
   .tile-row {
     position: relative;
     display: grid;
-    grid-template-columns: 36px 1fr 110px 240px;
+    /* Three columns, not four: the link label and the durable tag stack inside
+       one right-hand column. The old 110px column held the raw href, which
+       wrapped mid-path and orphaned the arrow onto its own line. */
+    grid-template-columns: 36px 1fr 220px;
     gap: 22px;
     padding: 22px 12px;
     margin: 0 -12px;
@@ -424,14 +430,19 @@ const tiles = [
     font-family: var(--mono);
     font-size: 13.5px;
     color: var(--accent);
-    text-align: right;
     font-weight: 500;
+    white-space: nowrap;
     transition: transform 160ms ease;
-    display: inline-block;
+    transform-origin: right center;
   }
 
   .tile-side {
-    /* sits in column 4 of the .tile-row grid (the row IS the link) */
+    /* column 3 of the .tile-row grid (the row IS the link). Label on top,
+       durable tag under it, both flush to the right edge. */
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 6px;
     font-family: var(--mono);
     font-size: 13px;
     line-height: 1.65;
@@ -440,7 +451,6 @@ const tiles = [
   }
   .sidenote-live {
     color: var(--fg);
-    margin-bottom: 4px;
     display: flex;
     align-items: center;
     justify-content: flex-end;
@@ -654,14 +664,11 @@ const tiles = [
     .tile-body {
       font-size: 14px;
     }
-    .tile-arrow {
-      text-align: left;
-      margin-top: 8px;
-    }
     .tile-side {
       padding: 8px 0 0;
       border-top: 1px dashed var(--rule-2);
       margin-top: 12px;
+      align-items: flex-start;
       text-align: left;
     }
     .sidenote-live {
