@@ -647,7 +647,12 @@ const tiles = [
     padding: 22px 0 36px;
     border-top: 1px solid var(--rule);
     display: flex;
+    /* space-between alone left no slack once the type scale grew — the links
+       and the build meta collided. A minimum column gap guarantees separation;
+       wrapping drops the meta to its own row before it can ever touch. */
+    flex-wrap: wrap;
     justify-content: space-between;
+    gap: 10px 32px;
     font-family: var(--mono);
     font-size: 0.90625rem;
     color: var(--fg);
