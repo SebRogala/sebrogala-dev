@@ -285,7 +285,7 @@ const tiles = [
      previously non-semantic divs, so the page had one <h1> and no <h2> at all. */
   .eyebrow {
     font-family: var(--mono);
-    font-size: 0.78125rem;
+    font-size: 1.25rem;
     font-weight: 400;
     color: var(--muted);
     letter-spacing: 0.06em;
@@ -647,11 +647,11 @@ const tiles = [
     padding: 22px 0 36px;
     border-top: 1px solid var(--rule);
     display: flex;
-    /* space-between alone left no slack once the type scale grew — the links
-       and the build meta collided. A minimum column gap guarantees separation;
-       wrapping drops the meta to its own row before it can ever touch. */
+    /* The links and the build meta together just exceed the frame, so the meta
+       wraps to a second row. Both rows are centred; the column gap keeps the
+       two apart on the rare width where they do fit on one line. */
     flex-wrap: wrap;
-    justify-content: space-between;
+    justify-content: center;
     gap: 10px 32px;
     font-family: var(--mono);
     font-size: 0.90625rem;
