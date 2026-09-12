@@ -354,7 +354,10 @@ import TopNav from '../components/TopNav.astro';
     /* Frame hugs the image so a narrow capture is not stretched inside a
        full-width box. */
     width: fit-content;
-    max-width: 100%;
+    /* 666px is this capture's authored size: the PNG is 999px wide and records
+       pHYs 5669 px/metre (144 DPI), i.e. taken at 1.5x scale, so 999 / 1.5.
+       Rendering the raw pixel width showed it 50% larger than it was made. */
+    max-width: min(100%, 666px);
     margin: 0 auto;
   }
   .audit-figure img {
