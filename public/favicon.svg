@@ -1,7 +1,7 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000" role="img" aria-label="Sebrogala mark">
-<rect width="1000" height="1000" rx="0" fill="#1f1a14"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 316 316" role="img" aria-label="Sebrogala 1.2A mark">
+<rect width="316" height="316" fill="#1f1a14"/>
 <g fill="#ffffff">
-  <polygon points="180,180 800,180 680,300 385,300 305,380 445,500 315,500 170,380"/>
-  <polygon points="820,820 200,820 320,700 615,700 695,620 555,500 685,500 830,620"/>
+  <polygon points="24.0,148.0 80.0,196.0 169.0,196.0 92.0,129.0 146.0,83.0 253.0,83.0 316.0,25.0 121.0,26.0 24.0,111.0"/>
+  <polygon points="283.0,182.0 222.0,128.0 135.0,128.0 216.0,201.0 180.0,234.0 59.0,235.0 0.0,291.0 202.0,290.0 283.0,221.0"/>
 </g>
 </svg>
