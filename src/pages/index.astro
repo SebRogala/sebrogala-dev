@@ -672,6 +672,23 @@ const tiles = [
   }
 
   /* ─── Responsive: mobile ≤640px ────────────────────────── */
+  /* The 3-track grid needs 740 + 28px of track, but .frame only offers
+     viewport - 64px. Below ~832px it no longer fits, so the pitch section
+     stacks early. Type and padding stay desktop until 640px. */
+  @media (max-width: 831px) {
+    .section {
+      grid-template-columns: 1fr;
+    }
+    .pitch-section .side-col {
+      grid-column: 1;
+      padding-top: 16px;
+    }
+    .pull-quote {
+      max-width: none;
+      margin-left: 0;
+    }
+  }
+
   @media (max-width: 640px) {
     .frame {
       padding: 0 22px;
