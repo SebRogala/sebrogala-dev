@@ -3,7 +3,7 @@ import Base from '../layouts/Base.astro';
 import TopNav from '../components/TopNav.astro';
 import { authoredWidth } from '../lib/authoredWidth';
 
-const auditImg = '16-full-audit-2026-09-12.png';
+const auditImg = '20-full-audit-2026-09-12.png';
 const productImg = '17-education-saas-participants-2026-09-12.png';
 const poeImg = '18-profitofexile-lab-dashboard-2026-09-12.png';
 const deliverImg = '19-mini-deliver-2026-09-04.png';
@@ -82,13 +82,14 @@ const deliverImg = '19-mini-deliver-2026-09-04.png';
         >
           <img
             src={`/screenshots/${auditImg}`}
-            alt="Audit report, twelve gates and suites green in one run: dependency check, PHPStan level 8 over 3,253 files, frontend R1-R7 plus ESLint, PHPMD, both Deptrac axes, PHP unit 6,218, JS unit 1,321, integration 2,018, functional 1,828, smoke 238, E2E 298 passed"
+            alt="Audit report, twelve gates and suites green in one run: dependency check, PHPStan level 8 over 3,253 files, frontend R1-R7 plus ESLint, PHPMD, both Deptrac axes, PHP unit 6,218, JS unit 1,321, integration 2,018, functional 1,828, smoke 238 as a subset of functional, E2E 298 passed, totalling 11,690 unique tests"
             loading="lazy"
             decoding="async"
           />
         </a>
         <figcaption>
-          One run on 2026-09-12, main @ bc44177a: twelve gates and suites, zero failures. The
+          One run on 2026-09-12, main @ bc44177a: twelve gates and suites, zero failures,
+          11,690 unique tests. Smoke re-runs a subset of Functional, so it counts once. The
           enforcement layers described below are the PHPStan, frontend, PHPMD and Deptrac rows.
         </figcaption>
       </figure>
