@@ -48,6 +48,27 @@ import TopNav from '../components/TopNav.astro';
         (PHP and JS unit), green as of 2026-09-12; the Playwright end-to-end suite is excluded
         from that figure because it does not run in CI.
       </p>
+
+      <figure class="audit-figure">
+        <a
+          href="/screenshots/16-full-audit-2026-09-12.png"
+          class="lightbox-link"
+          aria-label="Open full-size screenshot"
+        >
+          <img
+            src="/screenshots/16-full-audit-2026-09-12.png"
+            alt="Audit report, twelve gates and suites green in one run: dependency check, PHPStan level 8 over 3,253 files, frontend R1-R7 plus ESLint, PHPMD, both Deptrac axes, PHP unit 6,218, JS unit 1,321, integration 2,018, functional 1,828, smoke 238, E2E 298 passed"
+            loading="lazy"
+            decoding="async"
+          />
+        </a>
+        <figcaption>
+          One run on 2026-09-12, main @ bc44177a: twelve gates and suites, zero failures. The
+          four enforcement layers described below are the PHPStan, frontend, PHPMD and Deptrac
+          rows.
+        </figcaption>
+      </figure>
+
       <ul class="project-list">
         <li>
           <strong>PHPStan 2 at level 8</strong> — plus 14 project-specific custom rules:
@@ -313,6 +334,35 @@ import TopNav from '../components/TopNav.astro';
     color: var(--fg);
   }
 
+
+  .audit-figure {
+    margin: 20px 0 28px;
+  }
+  .audit-figure a {
+    display: block;
+    border: 1px solid var(--rule-2);
+    border-radius: 4px;
+    overflow: hidden;
+    background: var(--bg-raise);
+    transition: border-color 160ms ease;
+    text-decoration: none;
+  }
+  .audit-figure a:hover {
+    border-color: var(--accent);
+  }
+  .audit-figure img {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+  .audit-figure figcaption {
+    margin-top: 10px;
+    font-family: var(--sans);
+    font-size: 0.9375rem;
+    line-height: 1.55;
+    color: var(--fg-nav);
+    text-wrap: pretty;
+  }
 
   .page-footer {
     margin-top: 56px;
