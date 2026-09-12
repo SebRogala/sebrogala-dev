@@ -190,6 +190,15 @@ const canonical = new URL(Astro.url.pathname.replace(/\/+$/, '') || '/', Astro.s
 <style is:global>
   /* ─── Palette (R6 — Notebook brown) ─────────────────────────────── */
   :root {
+    /* ─── Type scale ──────────────────────────────────────────────
+       SINGLE SOURCE OF TRUTH for text size. Every font-size in the
+       project is expressed in rem against the root size below, so
+       changing this one number rescales all type site-wide and
+       nothing else — spacing and layout are px, letter-spacing is em
+       (relative to its own text, so it follows along).
+       1 = current scale. 1.1 = 10% larger. 0.95 = 5% smaller. */
+    --text-scale: 1;
+
     --bg-base: #1f1a14;        /* tinted warm-brown dark */
     --bg-raise: #26201a;       /* row hover, surface lift */
     --fg: #ede3d1;             /* warm paper, body text */
@@ -216,6 +225,9 @@ const canonical = new URL(Astro.url.pathname.replace(/\/+$/, '') || '/', Astro.s
   }
 
   html {
+    /* Percentage keeps the browser/user default (usually 16px) as the
+       base, so zoom and accessibility settings still work. */
+    font-size: calc(100% * var(--text-scale));
     background: var(--bg-base);
     color: var(--fg);
     font-family: var(--sans);
@@ -295,7 +307,7 @@ const canonical = new URL(Astro.url.pathname.replace(/\/+$/, '') || '/', Astro.s
     background: var(--bg-base);
     color: var(--fg);
     font-family: var(--sans);
-    font-size: 26.5px;
+    font-size: 1.65625rem;
     line-height: 1;
     cursor: pointer;
     display: flex;
