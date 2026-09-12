@@ -30,3 +30,6 @@ design_handoff_softsolution_pro/
 # Source authoring artefacts (manifest drafts, copy variants) — kept locally,
 # not part of the public repo
 docs/
+
+# Local agent notes — references a path outside the repo
+CLAUDE.local.md
