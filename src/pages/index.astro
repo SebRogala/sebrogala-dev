@@ -339,8 +339,10 @@ const tiles = [
   }
 
   /* ─── Gates ────────────────────────────────────────────── */
+  /* Spans the whole frame: nothing occupies the right column here, so capping
+     at the 740px body width just wrapped the text early. */
   .gates-section .main-col {
-    grid-column: 1;
+    grid-column: 1 / -1;
   }
   .gates {
     font-family: var(--sans);
@@ -507,8 +509,9 @@ const tiles = [
   }
 
   /* ─── Speaking ─────────────────────────────────────────── */
+  /* Full frame width — see .gates-section .main-col. */
   .speaking-section .main-col {
-    grid-column: 1;
+    grid-column: 1 / -1;
   }
   .speaking {
     list-style: none;
