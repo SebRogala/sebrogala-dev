@@ -1,6 +1,7 @@
 ---
 import Base from '../../layouts/Base.astro';
 import TopNav from '../../components/TopNav.astro';
+import { authoredWidth } from '../../lib/authoredWidth';
 
 // Each panel: image filename in /screenshots, caption (headline), body (what-it-shows).
 // Order + copy follows docs/MANIFEST_V2.md narrative.
@@ -140,7 +141,7 @@ const appendix = [
             <div class="panel-num">{String(i + 1).padStart(2, '0')}</div>
             <div class="panel-section-label">{p.section}</div>
           </div>
-          <figure class="panel-figure">
+          <figure class="panel-figure" style={`max-width:${authoredWidth(p.img)}px`}>
             <a
               href={`/screenshots/${p.img}`}
               class="lightbox-link"
@@ -222,7 +223,7 @@ const appendix = [
       <div class="appendix-grid">
         {
           appendix.map((a) => (
-            <figure class="appendix-figure">
+            <figure class="appendix-figure" style={`max-width:${authoredWidth(a.img)}px`}>
               <a
                 href={`/screenshots/${a.img}`}
                 class="lightbox-link"
@@ -393,15 +394,12 @@ const appendix = [
     font-size: 0.75rem;
   }
   .panel-figure {
-    margin: 0 0 18px;
+    /* Capped inline at the capture's authored width; the caption is a child of
+       the same element, so it matches the image width exactly. */
+    margin: 0 auto 18px;
   }
   .panel-figure a {
-    /* Frame hugs the image, so a capture narrower than the column is not
-       stretched inside a full-width box. */
     display: block;
-    width: fit-content;
-    max-width: 100%;
-    margin: 0 auto;
     border: 1px solid var(--rule-2);
     border-radius: 4px;
     overflow: hidden;
@@ -413,11 +411,7 @@ const appendix = [
   }
   .panel-figure img {
     display: block;
-    /* Never upscale. Every capture here is currently 1222-1919px wide against a
-       1076px column, so all of them scale down and nothing changes today; this
-       stops a future narrow capture being blown up and softened. */
-    width: auto;
-    max-width: 100%;
+    width: 100%;
     height: auto;
   }
   .panel-figure figcaption {

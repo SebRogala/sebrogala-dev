@@ -1,6 +1,9 @@
 ---
 import Base from '../layouts/Base.astro';
 import TopNav from '../components/TopNav.astro';
+import { authoredWidth } from '../lib/authoredWidth';
+
+const auditImg = '16-full-audit-2026-09-12.png';
 ---
 
 <Base
@@ -49,14 +52,14 @@ import TopNav from '../components/TopNav.astro';
         from that figure because it does not run in CI.
       </p>
 
-      <figure class="audit-figure">
+      <figure class="audit-figure" style={`max-width:${authoredWidth(auditImg)}px`}>
         <a
-          href="/screenshots/16-full-audit-2026-09-12.png"
+          href={`/screenshots/${auditImg}`}
           class="lightbox-link"
           aria-label="Open full-size screenshot"
         >
           <img
-            src="/screenshots/16-full-audit-2026-09-12.png"
+            src={`/screenshots/${auditImg}`}
             alt="Audit report, twelve gates and suites green in one run: dependency check, PHPStan level 8 over 3,253 files, frontend R1-R7 plus ESLint, PHPMD, both Deptrac axes, PHP unit 6,218, JS unit 1,321, integration 2,018, functional 1,828, smoke 238, E2E 298 passed"
             loading="lazy"
             decoding="async"
@@ -336,7 +339,9 @@ import TopNav from '../components/TopNav.astro';
 
 
   .audit-figure {
-    margin: 20px 0 28px;
+    /* Capped inline at the capture's authored width. The cap lives on the
+       figure, so the caption below shares exactly the image's width. */
+    margin: 20px auto 28px;
   }
   .audit-figure a {
     display: block;
@@ -350,23 +355,9 @@ import TopNav from '../components/TopNav.astro';
   .audit-figure a:hover {
     border-color: var(--accent);
   }
-  .audit-figure a {
-    /* Frame hugs the image so a narrow capture is not stretched inside a
-       full-width box. */
-    width: fit-content;
-    /* 666px is this capture's authored size: the PNG is 999px wide and records
-       pHYs 5669 px/metre (144 DPI), i.e. taken at 1.5x scale, so 999 / 1.5.
-       Rendering the raw pixel width showed it 50% larger than it was made. */
-    max-width: min(100%, 666px);
-    margin: 0 auto;
-  }
   .audit-figure img {
     display: block;
-    /* Never upscale: this capture is 999px wide against a 1076px column, so
-       width: 100% blew it up ~8% and softened the text. Wider captures still
-       scale down, which is what max-width does. */
-    width: auto;
-    max-width: 100%;
+    width: 100%;
     height: auto;
   }
   .audit-figure figcaption {
