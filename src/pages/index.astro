@@ -667,6 +667,10 @@ const tiles = [
     text-decoration-color: rgba(125, 179, 108, 0.33);
   }
   .footer-meta {
+    /* Own row always: the links and the meta now both fit on one line, and a
+       wrap-dependent break would come and go with the viewport. */
+    flex-basis: 100%;
+    text-align: center;
     color: var(--muted);
     font-size: 0.75rem;
   }
@@ -803,6 +807,9 @@ const tiles = [
       align-items: center;
       gap: 8px;
       padding: 20px 0 28px;
+    }
+    .footer-meta {
+      flex-basis: auto;
     }
     .footer-links {
       flex-direction: column;
