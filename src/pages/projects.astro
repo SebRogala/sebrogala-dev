@@ -5,6 +5,7 @@ import { authoredWidth } from '../lib/authoredWidth';
 
 const auditImg = '16-full-audit-2026-09-12.png';
 const productImg = '17-education-saas-participants-2026-09-12.png';
+const poeImg = '18-profitofexile-lab-dashboard-2026-09-12.png';
 ---
 
 <Base
@@ -166,6 +167,25 @@ const productImg = '17-education-saas-participants-2026-09-12.png';
           </p>
         </li>
       </ul>
+
+      <figure class="audit-figure" style={`max-width:${authoredWidth(poeImg)}px`}>
+        <a
+          href={`/screenshots/${poeImg}`}
+          class="lightbox-link"
+          aria-label="Open full-size screenshot"
+        >
+          <img
+            src={`/screenshots/${poeImg}`}
+            alt="ProfitOfExile desktop app: lab-farming dashboard with a font expected-value matrix across three reward types and four variants, live currency rate, and a pool overview breaking each type into price bands"
+            loading="lazy"
+            decoding="async"
+          />
+        </a>
+        <figcaption>
+          The Tauri desktop app — expected value per font across reward types and variants,
+          recomputed against live market prices, with a pool overview by price band.
+        </figcaption>
+      </figure>
 
       <h2>Contributions</h2>
       <ul class="project-list">
