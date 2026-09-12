@@ -67,8 +67,8 @@ const poeImg = '18-profitofexile-lab-dashboard-2026-09-12.png';
 
       <h2 id="how-quality-gets-enforced">How quality gets enforced</h2>
       <p>
-        The Education SaaS runs four independent custom enforcement layers in CI, and every PR
-        has to pass all four before it can merge. Behind them sit over 11,000 automated tests
+        Every PR has to pass the enforcement layers below before it can merge; each runs
+        independently in CI. Behind them sit over 11,000 automated tests
         (PHP and JS unit), green as of 2026-09-12; the Playwright end-to-end suite is excluded
         from that figure because it does not run in CI.
       </p>
@@ -88,8 +88,7 @@ const poeImg = '18-profitofexile-lab-dashboard-2026-09-12.png';
         </a>
         <figcaption>
           One run on 2026-09-12, main @ bc44177a: twelve gates and suites, zero failures. The
-          four enforcement layers described below are the PHPStan, frontend, PHPMD and Deptrac
-          rows.
+          enforcement layers described below are the PHPStan, frontend, PHPMD and Deptrac rows.
         </figcaption>
       </figure>
 
