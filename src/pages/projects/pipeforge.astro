@@ -2,8 +2,6 @@
 import Base from '../../layouts/Base.astro';
 import TopNav from '../../components/TopNav.astro';
 
-const screenshotsAsOf = '2026-04-27';
-
 // Each panel: image filename in /screenshots, caption (headline), body (what-it-shows).
 // Order + copy follows docs/MANIFEST_V2.md narrative.
 const panels = [
@@ -79,9 +77,9 @@ const panels = [
   },
   {
     section: 'Test audit',
-    img: '07-test-audit-all-suites-clean.png',
-    alt: 'Test-audit report: every suite green, structured learnings logged, total runtime 7m 13s',
-    caption: `Test-audit output from a single run on ${screenshotsAsOf}. The counts have grown since; the machinery is the point.`,
+    img: '16-test-audit-2026-09-12.png',
+    alt: 'Test-audit report, every suite green: PHPStan clean across 3,253 files, PHP unit 6,218, JS unit 1,321, integration 2,018, functional 1,828, smoke 238, E2E 298 passed',
+    caption: 'Test-audit output from a single run on 2026-09-12 — every suite green, end-to-end included.',
     body: 'One command runs every suite and reports each one separately, pass/fail per suite, so a failing suite cannot disappear into an aggregate. It also extracts structured learnings across backend / e2e / frontend / pattern / gotcha and flags the top categories for the next `/integrate-agent-learnings` pass. A dated snapshot of one run — not a current scoreboard.',
   },
 ];
