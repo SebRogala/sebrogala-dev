@@ -14,6 +14,10 @@ const {
 
 // Canonical URL without a trailing slash — matches the nginx canonicalisation.
 const canonical = new URL(Astro.url.pathname.replace(/\/+$/, '') || '/', Astro.site ?? Astro.url.origin).href;
+
+// Social card. Versioned filename: a future swap gets a new URL, so platform and
+// CDN caches never serve a stale card. LinkedIn caches previews for 7 days.
+const ogImage = new URL('/og-card-v1.png', Astro.site ?? Astro.url.origin).href;
 ---
 
 <!doctype html>
@@ -28,13 +32,17 @@ const canonical = new URL(Astro.url.pathname.replace(/\/+$/, '') || '/', Astro.s
     <link rel="canonical" href={canonical} />
 
     <!-- Open Graph -->
-    <!-- TODO: og:image — needs a real 1200×630 card asset. LinkedIn is the main
-         traffic source and currently renders these links as bare text. A broken
-         or auto-generated placeholder is worse than none, so this stays open. -->
     <meta property="og:type" content="website" />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Sebastian Rogala — AI Delivery Engineer" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:image" content={ogImage} />
 
     <!-- Fonts: Source Serif 4, Inter, JetBrains Mono -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
