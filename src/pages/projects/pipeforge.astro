@@ -82,7 +82,7 @@ const panels = [
     img: '07-test-audit-all-suites-clean.png',
     alt: 'Test-audit report: every suite green, structured learnings logged, total runtime 7m 13s',
     caption: `Test-audit output from a single run on ${screenshotsAsOf}. The counts have grown since; the machinery is the point.`,
-    body: 'One command runs every suite, reports each one separately, and refuses to summarise a red run as green. It also extracts structured learnings across backend / e2e / frontend / pattern / gotcha and flags the top categories for the next `/integrate-agent-learnings` pass. A dated snapshot of one run — not a current scoreboard.',
+    body: 'One command runs every suite and reports each one separately, pass/fail per suite, so a failing suite cannot disappear into an aggregate. It also extracts structured learnings across backend / e2e / frontend / pattern / gotcha and flags the top categories for the next `/integrate-agent-learnings` pass. A dated snapshot of one run — not a current scoreboard.',
   },
 ];
 
@@ -188,7 +188,8 @@ const appendix = [
       </ul>
       <p>
         Shipped two revertible spec fixes — config-honoured deferred mode and DRY-extracted
-        per-phase metrics capture — and filed the reproducible investigation upstream:
+        per-phase metrics capture. Separately, on the instruction-adherence side, I posted a
+        reproducible finding on the open Claude Code issue for post-compaction context loss:
         <a
           href="https://github.com/anthropics/claude-code/issues/6354#issuecomment-3849990217"
           target="_blank"
@@ -269,7 +270,7 @@ const appendix = [
   }
   .eyebrow {
     font-family: var(--mono);
-    font-size: 1.25rem;
+    font-size: 0.78125rem;
     color: var(--muted);
     letter-spacing: 0.06em;
     text-transform: uppercase;

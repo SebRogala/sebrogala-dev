@@ -281,8 +281,9 @@ const tiles = [
     padding-top: 30px;
   }
 
-  /* `.eyebrow` is an <h2> everywhere it appears — the section headings were
-     previously non-semantic divs, so the page had one <h1> and no <h2> at all. */
+  /* On this page `.eyebrow` is an <h2>: the section headings were previously
+     non-semantic divs, so the page had one <h1> and no <h2> at all. On the other
+     pages `.eyebrow` is a kicker <div> above the <h1> and stays caption-sized. */
   .eyebrow {
     font-family: var(--mono);
     font-size: 1.25rem;
@@ -633,7 +634,7 @@ const tiles = [
   }
   .cta-link:hover {
     background: var(--accent);
-    color: var(--bg);
+    color: var(--bg-base);
   }
   .cta-note {
     font-family: var(--sans);
