@@ -6,6 +6,7 @@ import { authoredWidth } from '../lib/authoredWidth';
 const auditImg = '16-full-audit-2026-09-12.png';
 const productImg = '17-education-saas-participants-2026-09-12.png';
 const poeImg = '18-profitofexile-lab-dashboard-2026-09-12.png';
+const deliverImg = '19-mini-deliver-run.png';
 ---
 
 <Base
@@ -146,6 +147,28 @@ const poeImg = '18-profitofexile-lab-dashboard-2026-09-12.png';
           </p>
         </li>
       </ul>
+
+      <figure class="audit-figure" style={`max-width:${authoredWidth(deliverImg)}px`}>
+        <a
+          href={`/screenshots/${deliverImg}`}
+          class="lightbox-link"
+          aria-label="Open full-size screenshot"
+        >
+          <img
+            src={`/screenshots/${deliverImg}`}
+            alt="Completed mini-deliver run: a table of seven tasks, each with its commit SHA and the review rounds it went through - adversarial plus fidelity, one to three rounds - followed by a delivery audit summary and a handover list"
+            loading="lazy"
+            decoding="async"
+          />
+        </a>
+        <figcaption>
+          A <code>mini-deliver</code> run — a deliberately reduced slice of the full
+          <code>/deliver</code> orchestration, for lower-risk work that does not need the whole
+          gate stack. Seven tasks on ProfitOfExile, each landing with its commit and its review
+          rounds. It ran unattended and stopped at the merge boundary: commits on local main,
+          tree clean, nothing pushed.
+        </figcaption>
+      </figure>
 
       <h2>Side projects</h2>
       <ul class="project-list">
