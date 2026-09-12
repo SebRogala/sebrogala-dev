@@ -4,6 +4,7 @@ import TopNav from '../components/TopNav.astro';
 import { authoredWidth } from '../lib/authoredWidth';
 
 const auditImg = '16-full-audit-2026-09-12.png';
+const productImg = '17-education-saas-participants-2026-09-12.png';
 ---
 
 <Base
@@ -43,6 +44,25 @@ const auditImg = '16-full-audit-2026-09-12.png';
           </p>
         </li>
       </ul>
+
+      <figure class="audit-figure" style={`max-width:${authoredWidth(productImg)}px`}>
+        <a
+          href={`/screenshots/${productImg}`}
+          class="lightbox-link"
+          aria-label="Open full-size screenshot"
+        >
+          <img
+            src={`/screenshots/${productImg}`}
+            alt="Participant management in the Education SaaS: search, status and source filters, course, location and date-range facets, and a results table with per-row group assignment"
+            loading="lazy"
+            decoding="async"
+          />
+        </a>
+        <figcaption>
+          Participant management — faceted filtering over course, location, group and status,
+          with per-row group assignment. Demo tenant, generated fixture data.
+        </figcaption>
+      </figure>
 
       <h2 id="how-quality-gets-enforced">How quality gets enforced</h2>
       <p>
