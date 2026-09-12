@@ -350,9 +350,20 @@ import TopNav from '../components/TopNav.astro';
   .audit-figure a:hover {
     border-color: var(--accent);
   }
+  .audit-figure a {
+    /* Frame hugs the image so a narrow capture is not stretched inside a
+       full-width box. */
+    width: fit-content;
+    max-width: 100%;
+    margin: 0 auto;
+  }
   .audit-figure img {
     display: block;
-    width: 100%;
+    /* Never upscale: this capture is 999px wide against a 1076px column, so
+       width: 100% blew it up ~8% and softened the text. Wider captures still
+       scale down, which is what max-width does. */
+    width: auto;
+    max-width: 100%;
     height: auto;
   }
   .audit-figure figcaption {
