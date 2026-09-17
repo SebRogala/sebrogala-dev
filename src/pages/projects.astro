@@ -5,13 +5,15 @@ import { authoredWidth } from '../lib/authoredWidth';
 
 const auditImg = '20-full-audit-2026-09-12.png';
 const productImg = '17-education-saas-participants-2026-09-12.png';
+const omsImg = '22-oms-backoffice-design-preview-2026-09-17.png';
 const poeImg = '18-profitofexile-lab-dashboard-2026-09-12.png';
 const deliverImg = '19-mini-deliver-2026-09-04.png';
+const pomodoroImg = '21-pomodoro-timer-2026-09-17.png';
 ---
 
 <Base
   title="Projects — Sebastian Rogala"
-  description="Multi-tenant Education SaaS in production, Pipeforge (Claude Code orchestration), ProfitOfExile, and open-source contributions."
+  description="Education CRM in production, OMS/backoffice project in progress, Pipeforge, ProfitOfExile, smaller practical apps, and open-source contributions."
 >
   <TopNav current="projects" />
 
@@ -20,9 +22,10 @@ const deliverImg = '19-mini-deliver-2026-09-04.png';
       <div class="eyebrow">Projects</div>
       <h1>Projects</h1>
       <p class="lede">
-        A product in production, a personal tool I rely on daily, a community side project, and
-        recurring open-source contributions. The Pipeforge walkthrough and a knowledge-base sample
-        sit underneath if you want to go deeper.
+        An education CRM in production, an OMS / backoffice project in progress, a personal tool I
+        rely on daily, a community side project, smaller practical apps built around specific
+        needs, and recurring open-source contributions. The Pipeforge walkthrough and a
+        knowledge-base sample sit underneath if you want to go deeper.
       </p>
     </header>
 
@@ -32,7 +35,7 @@ const deliverImg = '19-mini-deliver-2026-09-04.png';
         <li id="education-saas">
           <h3 class="project-title">Education SaaS</h3>
           <p class="project-position">
-            Multi-tenant platform, in production with a paying customer.
+            Multi-tenant education CRM, in production with a paying customer.
           </p>
           <p>
             Course management and lead-operations across education tenants; ready to take on
@@ -64,6 +67,33 @@ const deliverImg = '19-mini-deliver-2026-09-04.png';
           Participant management — faceted filtering over course, location, group and status,
           with per-row group assignment. Demo tenant, generated fixture data.
         </figcaption>
+      </figure>
+
+      <ul class="project-list project-list-followup">
+        <li id="oms-backoffice">
+          <h3 class="project-title">OMS / backoffice</h3>
+          <p class="project-position">In progress.</p>
+          <p>
+            I have just started this custom software project. The screen below is a design preview
+            using made-up fixture data.
+          </p>
+        </li>
+      </ul>
+
+      <figure class="audit-figure" style="max-width:960px">
+        <a
+          href={`/screenshots/${omsImg}`}
+          class="lightbox-link"
+          aria-label="Open full-size screenshot"
+        >
+          <img
+            src={`/screenshots/${omsImg}`}
+            alt="OMS/backoffice design preview showing an offers table with bulk selection and an open column-settings panel"
+            loading="lazy"
+            decoding="async"
+          />
+        </a>
+        <figcaption>OMS/backoffice design preview with sample data.</figcaption>
       </figure>
 
       <h2 id="how-quality-gets-enforced">How quality gets enforced</h2>
@@ -207,6 +237,50 @@ const deliverImg = '19-mini-deliver-2026-09-04.png';
         <figcaption>
           The Tauri desktop app — expected value per font across reward types and variants,
           recomputed against live market prices, with a pool overview by price band.
+        </figcaption>
+      </figure>
+
+      <ul class="project-list project-list-followup">
+        <li id="milisto">
+          <h3 class="project-title">Milisto</h3>
+          <p class="project-position">Personal mobile PWA shopping companion · not publicly released.</p>
+          <p>
+            Shopping lists follow shop layout instead of entry order, updates arrive live through
+            Mercure, and recipe ingredients can be added to a selected list with merge confirmation
+            when needed.
+          </p>
+        </li>
+        <li id="pomodoro">
+          <h3 class="project-title">Pomodoro</h3>
+          <p class="project-position">Visual sequence timer for cooking and focus sessions.</p>
+          <p>
+            The countdown uses a fixed 60-minute dial: each minute is six degrees, so 15 minutes
+            fills a quarter-circle. Steps can be arranged into a sequence and shared by URL.
+          </p>
+          <p class="project-affordances">
+            <a href="https://pomodoro.softsolution.pro" target="_blank" rel="noopener">live app →</a>
+            <span class="sep">·</span>
+            <a href="https://github.com/SebRogala/Pomodoro" target="_blank" rel="noopener">source →</a>
+          </p>
+        </li>
+      </ul>
+
+      <figure class="audit-figure" style={`max-width:${authoredWidth(pomodoroImg)}px`}>
+        <a
+          href={`/screenshots/${pomodoroImg}`}
+          class="lightbox-link"
+          aria-label="Open full-size screenshot"
+        >
+          <img
+            src={`/screenshots/${pomodoroImg}`}
+            alt="Pomodoro timer showing a fixed 60-minute dial, a red remaining-time sector, an audio control, and a stop button"
+            loading="lazy"
+            decoding="async"
+          />
+        </a>
+        <figcaption>
+          Pomodoro countdown in progress: a fixed 60-minute dial with remaining time shown in red,
+          plus audio and stop controls.
         </figcaption>
       </figure>
 
@@ -355,6 +429,10 @@ const deliverImg = '19-mini-deliver-2026-09-04.png';
   }
   .project-list > li:last-child {
     padding-bottom: 8px;
+  }
+  .project-list-followup > li:first-child {
+    border-top: 1px solid var(--rule);
+    padding-top: 22px;
   }
   /* When the enforcement section uses .project-list, its items are
      short bulleted entries — restore list markers and tighten spacing. */

@@ -7,14 +7,14 @@ import TopNav from '../components/TopNav.astro';
 const buildDate = new Date().toISOString().slice(0, 10); // YYYY-MM-DD
 
 // ─── Tile data ───────────────────────────────────────────────────
-// Ranked the way a fractional/contract buyer reads them: the shipped product
+// Ranked the way a buyer reads them: shipped and in-progress custom software
 // first, the machinery that ships it second, the public artefact third.
 const tiles = [
   {
     n: '01',
     title: 'Education SaaS',
     tagline: 'the product this workflow ships',
-    body: 'A multi-tenant education platform, in production with a paying customer. Hexagonal modular monolith on PHP 8.4 / Symfony 7.4, full CQRS at the UseCase layer, and enforcement layers every merge has to pass.',
+    body: 'A multi-tenant education CRM, in production with a paying customer. Hexagonal modular monolith on PHP 8.4 / Symfony 7.4, full CQRS at the UseCase layer, and enforcement layers every merge has to pass.',
     href: '/projects#education-saas',
     linkLabel: 'how it is built',
     live: null,
@@ -22,6 +22,16 @@ const tiles = [
   },
   {
     n: '02',
+    title: 'OMS / backoffice',
+    tagline: 'custom software, in progress',
+    body: 'A newly started OMS / backoffice project. Its current visual is a design preview using made-up fixture data.',
+    href: '/projects#oms-backoffice',
+    linkLabel: 'project status',
+    live: null,
+    durable: 'in progress',
+  },
+  {
+    n: '03',
     title: 'Pipeforge',
     tagline: 'the delivery machinery',
     body: 'My Claude Code orchestration plugin over a PostgreSQL MCP backend: templated commands, agent dispatch, verification and fidelity audits. Screenshot walkthrough of real runs.',
@@ -31,7 +41,7 @@ const tiles = [
     durable: 'private tool · used daily',
   },
   {
-    n: '03',
+    n: '04',
     title: 'ProfitOfExile',
     tagline: 'open source, in the wild',
     body: 'An open-source desktop overlay and web app for the Path of Exile community, built across Go / SvelteKit / Tauri, with one Go backend feeding two delivery surfaces. Adopted by the community after creator coverage.',
@@ -45,7 +55,7 @@ const tiles = [
 
 <Base
   title="Sebastian Rogala — AI Delivery Engineer"
-  description="I direct AI agents to build software — product intent in, verified software out. Currently shipping a multi-tenant Education SaaS in production, an open-source community tool, and Pipeforge, my Claude Code orchestration infrastructure."
+  description="Custom software delivery from business need through launch and handover, using AI-directed development. Current work includes an education CRM and an OMS/backoffice project."
 >
   <TopNav current="home" />
 
@@ -169,11 +179,19 @@ const tiles = [
       </div>
       <div class="avail-right">
         <p class="avail-text">
-          I'm open to fractional / contract AI-delivery work, advisory, and team workshops or training
-          on AI-directed development. Full-time for the right fit. Based in Rzeszów, Poland
-          (UTC+2).
+          I'm available for standalone custom software projects, taking a business problem from
+          defining the need through working software, launch, and handover. AI-directed delivery is
+          how I build it. I'm also open to fractional / contract delivery, advisory, and team
+          workshops or training on AI-directed development. Full-time for the right fit. Based in
+          Rzeszów, Poland (UTC+2).
         </p>
         <ul class="shapes">
+          <li>
+            <span class="shape-name">Custom software projects</span> — I take a business problem
+            from defining what is needed through implementation, verification, launch, and handover.
+            Examples include an <a href="/projects#education-saas">education CRM</a> and an
+            <a href="/projects#oms-backoffice">OMS/backoffice project</a>.
+          </li>
           <li>
             <span class="shape-name">Fractional delivery</span> — I run delivery on your codebase:
             I turn intent into specs, decompose the work for agents, and build the verification
@@ -191,7 +209,7 @@ const tiles = [
           </li>
         </ul>
         <p class="cta">
-          <a class="cta-link" href="mailto:sebrogala@gmail.com?subject=Fractional%20%2F%20contract%20work">
+          <a class="cta-link" href="mailto:sebrogala@gmail.com?subject=Custom%20software%20%2F%20delivery%20work">
             Tell me what you're shipping →
           </a>
           <span class="cta-note">The workflow is usually the unfamiliar part. Happy to walk through it.</span>
@@ -608,6 +626,12 @@ const tiles = [
     font-family: var(--mono);
     font-size: 0.90625rem;
     color: var(--accent);
+  }
+  .shapes a {
+    color: var(--accent);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    text-decoration-color: rgba(125, 179, 108, 0.33);
   }
 
   .cta {

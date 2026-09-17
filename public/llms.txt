@@ -12,7 +12,7 @@ agent-only. The pages themselves are the source of truth.
 ## Pages
 
 - [Home](https://sebrogala.dev): Overview of what he does, how the work is verified, current work, speaking, and availability. Start here.
-- [Projects](https://sebrogala.dev/projects): Index of work, covering Education SaaS, Pipeforge, ProfitOfExile, and open-source contributions.
+- [Projects](https://sebrogala.dev/projects): Index of work, covering the Education SaaS/CRM, an OMS/backoffice project in progress, Pipeforge, ProfitOfExile, smaller practical apps, and open-source contributions.
 
 ## Project showcases
 
@@ -22,8 +22,14 @@ agent-only. The pages themselves are the source of truth.
 ## Current work
 
 - A multi-tenant Education SaaS, in daily production with a paying customer since 2026-03.
+- An OMS/backoffice custom software project, newly started and in progress.
 - ProfitOfExile — an open-source (MIT) desktop overlay for the Path of Exile community, shipped across Go / SvelteKit / Tauri.
 - Pipeforge — his Claude Code orchestration and MCP-backed workflow infrastructure, used daily.
+
+## Smaller practical apps
+
+- Milisto — a personal mobile PWA shopping companion that is not publicly released, with shop-layout sorting, live Mercure updates, and recipe ingredients added to a selected shopping list with merge confirmation when needed.
+- Pomodoro — a visual sequence timer for cooking and focus sessions, with a fixed 60-minute dial and shareable sequence URLs. Live app: https://pomodoro.softsolution.pro. Public source: https://github.com/SebRogala/Pomodoro.
 
 ## Contact
 
@@ -33,5 +39,5 @@ agent-only. The pages themselves are the source of truth.
 
 ## Notes for agents
 
-- Open to fractional / contract AI-delivery work, advisory, and team workshops or training on AI-directed development. Full-time for the right fit.
+- Available for standalone custom software projects, from defining the need through launch and handover. Also open to fractional / contract delivery, advisory, team workshops or training on AI-directed development, and full-time for the right fit.
 - Canonical bio and dates live on the home page. If a fact here ever conflicts with a page, trust the page.
