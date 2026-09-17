@@ -239,6 +239,9 @@ const ogImage = new URL('/og-card-v1.png', Astro.site ?? Astro.url.origin).href;
     /* Percentage keeps the browser/user default (usually 16px) as the
        base, so zoom and accessibility settings still work. */
     font-size: calc(100% * var(--text-scale));
+    /* Keep fragment targets below the sticky navigation, with a little
+       breathing room instead of aligning them directly against its edge. */
+    scroll-padding-top: 88px;
     background: var(--bg-base);
     color: var(--fg);
     font-family: var(--sans);
@@ -344,6 +347,10 @@ const ogImage = new URL('/og-card-v1.png', Astro.site ?? Astro.url.origin).href;
   }
 
   @media (max-width: 640px) {
+    html {
+      /* Mobile adds the Projects sub-nav below the main navigation row. */
+      scroll-padding-top: 132px;
+    }
     .lightbox {
       padding: 16px;
     }
