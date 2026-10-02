@@ -1,39 +1,32 @@
 // Served at /llms.txt. An endpoint rather than a file in public/ so the text can
 // import shared values (the OMS status in src/lib/oms.ts) instead of repeating them.
 import type { APIRoute } from 'astro';
-import { omsPhase, omsStatus, omsScopeVerb, capitalize } from '../lib/oms';
+import { omsStatus, omsScopeVerb, capitalize } from '../lib/oms';
 
 const body = `# Sebastian Rogala
 
-> AI-First Software Engineer | AI-native SDLC. He directs AI agents to build software — product intent
-> in, verified software out. Over a decade of broad software engineering
-> experience, fully AI-directed since early 2026. Based in Rzeszów (UTC+2).
+> AI-First Software Engineer | AI-native SDLC. AI agents build the software, and he directs them and verifies it works. Over a decade of broad software engineering, fully AI-directed since early 2026. Based in Rzeszów, Poland.
 
-This file is a map of the site for AI agents and other automated readers. It points
-you to the canonical source for each fact so you don't have to infer it.
-Everything here is also stated on the pages it links to; nothing is hidden or
-agent-only. The pages themselves are the source of truth.
+A map of the site for automated readers. Everything here is also on the linked pages. If a fact here conflicts with a page, trust the page.
 
 ## Pages
 
-- [Home](https://sebrogala.dev): Overview of what he does, how the work is verified, current work, speaking, and availability. Start here.
-- [Projects](https://sebrogala.dev/projects): Index of work, covering the Education SaaS/CRM, an OMS/backoffice client project ${omsPhase}, Pipeforge, ProfitOfExile, smaller practical apps, and open-source contributions.
-
-## Project showcases
-
-- [Pipeforge](https://sebrogala.dev/projects/pipeforge): Personal AI delivery infrastructure: a Claude Code orchestration plugin with a PostgreSQL MCP backend, agent dispatch, verification, and fidelity audits. Screenshot walkthrough of real runs.
+- [Home](https://sebrogala.dev): what he does, how the work is verified, current work, speaking, availability.
+- [Projects](https://sebrogala.dev/projects): every project below, plus small apps and open-source contributions.
+- [Pipeforge and Fleetforge](https://sebrogala.dev/projects/pipeforge): orchestration for Claude Code and Codex on a PostgreSQL MCP server. Screenshot walkthrough of real runs.
 
 ## Current work
 
-- A multi-tenant Education SaaS, in daily production with a paying customer since 03.2026.
+- Education SaaS: multi-tenant education CRM, his own product, in production since 03.2026.
 - OMS / backoffice: ${omsStatus}. Order management and catalogue import for a building-materials e-shop. ${capitalize(omsScopeVerb)} the most-used ~80% of a legacy admin.
-- ProfitOfExile — an open-source (GPL-3.0) desktop overlay for the Path of Exile community, shipped across Go / SvelteKit / Tauri.
-- Pipeforge — his Claude Code orchestration and MCP-backed workflow infrastructure, used daily.
+- ProfitOfExile: open-source (GPL-3.0) Windows companion app for Path of Exile.
+- Pipeforge and Fleetforge: private orchestration tooling, used daily. Every project above ships through it.
+- Claude Design Playbook: public design-to-code handoff for coding agents. https://github.com/SebRogala/claude-design-playbook
 
-## Smaller practical apps
+## Smaller apps
 
-- Milisto — a personal mobile PWA shopping companion that is not publicly released, with shop-layout sorting, live Mercure updates, and recipe ingredients added to a selected shopping list with merge confirmation when needed.
-- Pomodoro — a visual sequence timer for cooking and focus sessions, with a fixed 60-minute dial and shareable sequence URLs. Live app: https://pomodoro.softsolution.pro. Public source: https://github.com/SebRogala/Pomodoro.
+- Milisto: personal mobile PWA shopping list, not released.
+- Pomodoro: visual sequence timer. https://pomodoro.softsolution.pro
 
 ## Contact
 
@@ -41,10 +34,9 @@ agent-only. The pages themselves are the source of truth.
 - LinkedIn: https://linkedin.com/in/sebrogala
 - GitHub: https://github.com/SebRogala
 
-## Notes for agents
+## Availability
 
-- Available for standalone custom software projects, from defining the need through launch and handover. Also open to fractional / contract delivery, advisory, team workshops or training on AI-directed development, and full-time for the right fit.
-- Canonical bio and dates live on the home page. If a fact here ever conflicts with a page, trust the page.
+- Custom software projects, fractional delivery, advisory, and workshops or training. Full-time for the right fit.
 `;
 
 export const GET: APIRoute = () =>
