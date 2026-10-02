@@ -90,12 +90,7 @@ const pomodoroImg = '21-pomodoro-timer-2026-09-17.png';
       </figure>
 
       <h2 id="how-quality-gets-enforced">How quality gets enforced</h2>
-      <p>
-        Every PR has to pass the enforcement layers below before it can merge; each runs
-        independently in CI. Behind them sit over 11,000 automated tests
-        (PHP and JS unit), green as of 12.09.2026; the Playwright end-to-end suite is excluded
-        from that figure because it does not run in CI.
-      </p>
+      <p>Every Education SaaS PR passes these layers in CI before it can merge. Behind them sit over 11,000 automated tests, all green (09.2026).</p>
 
       <figure class="audit-figure" style={`max-width:${authoredWidth(auditImg)}px`}>
         <a
@@ -110,11 +105,7 @@ const pomodoroImg = '21-pomodoro-timer-2026-09-17.png';
             decoding="async"
           />
         </a>
-        <figcaption>
-          One run on 12.09.2026, main @ bc44177a: twelve gates and suites, zero failures,
-          11,690 unique tests. Smoke re-runs a subset of Functional, so it counts once. The
-          enforcement layers described below are the PHPStan, frontend, PHPMD and Deptrac rows.
-        </figcaption>
+        <figcaption>One run, 12.09.2026: twelve gates and suites, zero failures.</figcaption>
       </figure>
 
       <ul class="project-list">
