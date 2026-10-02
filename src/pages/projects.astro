@@ -14,7 +14,7 @@ const pomodoroImg = '21-pomodoro-timer-2026-09-17.png';
 
 <Base
   title="Projects — Sebastian Rogala"
-  description={`Education CRM in production, OMS/backoffice client project ${omsPhase}, Pipeforge, ProfitOfExile, smaller practical apps, and open-source contributions.`}
+  description={`Education CRM in production, OMS/backoffice client project ${omsPhase}, Pipeforge and Fleetforge, ProfitOfExile, smaller practical apps, and open-source contributions.`}
 >
   <TopNav current="projects" />
 
@@ -30,16 +30,9 @@ const pomodoroImg = '21-pomodoro-timer-2026-09-17.png';
       <ul class="project-list">
         <li id="education-saas">
           <h3 class="project-title">Education SaaS</h3>
-          <p class="project-position">
-            Multi-tenant education CRM, in production with a paying customer.
-          </p>
-          <p>
-            Course management and lead-operations across education tenants; ready to take on
-            additional customers. Stack: PHP 8.4 / Symfony 7.4 LTS / Doctrine 3 /
-            PostgreSQL 16 / Redis 7 backend; Twig + Stimulus + Turbo + Tailwind front-end;
-            Vitest + PHPUnit + Playwright on tests. Hexagonal modular monolith with full CQRS
-            at the UseCase layer, async events via Symfony Messenger, 13 business modules.
-          </p>
+          <p class="project-position">Own product. Multi-tenant education CRM, in production since 03.2026.</p>
+          <p>Course management and lead operations for education businesses. It replaced manual lead handling, SMS and email follow-up and operations coordination, which freed hours of weekly staff time.</p>
+          <p>PHP 8 / Symfony 7, PostgreSQL, Redis, Twig, Tailwind. Hexagonal modular monolith, 13 modules, CQRS.</p>
           <p class="project-affordances">
             <a href="#how-quality-gets-enforced">enforcement details ↓</a>
           </p>
@@ -59,10 +52,7 @@ const pomodoroImg = '21-pomodoro-timer-2026-09-17.png';
             decoding="async"
           />
         </a>
-        <figcaption>
-          Participant management — faceted filtering over course, location, group and status,
-          with per-row group assignment. Demo tenant, generated fixture data.
-        </figcaption>
+        <figcaption>Participant management: faceted filters and per-row group assignment. Demo tenant, generated data.</figcaption>
       </figure>
 
       <ul class="project-list project-list-followup">
@@ -109,52 +99,17 @@ const pomodoroImg = '21-pomodoro-timer-2026-09-17.png';
       </figure>
 
       <ul class="project-list">
-        <li>
-          <strong>PHPStan 2 at level 8</strong> — plus 14 project-specific custom rules:
-          entity-ID safety, tenant query safety (blocks direct <code>EntityManager</code> /
-          <code>Connection</code> access outside repositories), and ADR-shape rules for the
-          Action / UseCase / QueryAdapter / Port catalog. The CQRS seam is enforced at this
-          layer.
-        </li>
-        <li>
-          <strong>PHPMD</strong> — hexagonal-tuned ruleset for code smells; complements PHPStan
-          on style and maintainability fronts that static analysis doesn't cover.
-        </li>
-        <li>
-          <strong>Deptrac on two axes</strong> — layer purity (Domain → Application →
-          Infrastructure, with vendor imports gated by layer) and a module dependency graph
-          across 13 business modules. The module-graph baseline is shrink-only: an entry can be
-          removed, never added, so a new cross-module dependency fails the build rather than
-          being absorbed.
-        </li>
-        <li>
-          <strong>Custom Twig/Tailwind lint script</strong> — 7 project rules expressing UI
-          conventions that off-the-shelf linters can't: component-only
-          <code>&lt;twig:Button&gt;</code> (no raw <code>&lt;button&gt;</code> in pages),
-          semantic-token-only Tailwind (no literal grays), required
-          <code>data-component</code> attributes, no manual <code>dark:</code> variants in
-          components, ADR-tied destructive-action wrapping, and target-naming in confirmation
-          modals. Managed baseline for staged migration with stale-entry detection.
-        </li>
+        <li><strong>PHPStan level 8 with 14 custom rules</strong>: tenant query safety, entity-ID safety, CQRS and ADR shape.</li>
+        <li><strong>Deptrac on two axes</strong>: layer purity, and a dependency graph across 13 modules. The module-graph baseline is shrink-only: an entry can be removed, never added.</li>
+        <li><strong>UI lint, 7 rules</strong>: conventions off-the-shelf linters can't express, like component-only buttons and semantic colour tokens only.</li>
       </ul>
-      <p>
-        Each layer runs independently; the baseline pattern lets new code raise the bar without
-        requiring full migration of legacy code first.
-      </p>
 
       <h2>Personal tools</h2>
       <ul class="project-list">
         <li id="pipeforge">
-          <h3 class="project-title">Pipeforge</h3>
-          <p class="project-position">Claude Code orchestration plugin and PostgreSQL MCP backend.</p>
-          <p>
-            I built it because I needed to coordinate work across multiple machines and parallel
-            worktrees, and it turned into where I try out context-engineering patterns before
-            they land on production work. Pipeline orchestration with templated commands, agent
-            dispatch, skill-based prompts, and an MCP-backed tool layer over a PostgreSQL state
-            store, plus a curated knowledge base of decisions about Pipeforge itself. Not a
-            product, just infrastructure I use daily.
-          </p>
+          <h3 class="project-title">Pipeforge + Fleetforge</h3>
+          <p class="project-position">Orchestration for Claude Code and Codex on a PostgreSQL MCP server. Both are private tools I use daily, not products.</p>
+          <p>The Education SaaS, OMS and ProfitOfExile all ship through them. Agent sessions run in a four-level hierarchy, with Fleetforge as the coordinator across projects.</p>
           <p class="project-affordances">
             <a href="/projects/pipeforge">walkthrough →</a>
           </p>
@@ -174,29 +129,27 @@ const pomodoroImg = '21-pomodoro-timer-2026-09-17.png';
             decoding="async"
           />
         </a>
-        <figcaption>
-          A <code>mini-deliver</code> run, 04.09.2026 — a deliberately reduced slice of the full
-          <code>/deliver</code> orchestration, for lower-risk work that does not need the whole
-          gate stack. Seven tasks on ProfitOfExile, each landing with its commit and its review
-          rounds. It ran unattended and stopped at the merge boundary: commits on local main,
-          tree clean, nothing pushed.
-        </figcaption>
+        <figcaption>A <code>mini-deliver</code> run on 04.09.2026: seven ProfitOfExile tasks, each with its commit and review rounds. It ran unattended and stopped at the merge boundary, with nothing pushed.</figcaption>
       </figure>
+
+      <ul class="project-list project-list-followup">
+        <li id="claude-design-playbook">
+          <h3 class="project-title">Claude Design Playbook</h3>
+          <p class="project-position">Design-to-code handoff, public on GitHub.</p>
+          <p>It turns Claude Design screens into a handoff package a coding agent builds from exactly. I use it on the OMS rebuild.</p>
+          <p class="project-affordances">
+            <a href="https://github.com/SebRogala/claude-design-playbook" target="_blank" rel="noopener">source →</a>
+          </p>
+        </li>
+      </ul>
 
       <h2>Side projects</h2>
       <ul class="project-list">
         <li id="profitofexile">
           <h3 class="project-title">ProfitOfExile</h3>
-          <p class="project-position">Open-source Path of Exile lab-farming tool.</p>
-          <p>
-            Built solo across Go / SvelteKit / Tauri (Rust) / TimescaleDB: backend, web,
-            desktop overlay. Web continuously deployed; the desktop overlay went from cold start
-            to usable release in ~2 weeks (v0.1.0 on 2026-03-31 → v0.6.x on 2026-04-13), and I've
-            kept developing it since. A single Go backend feeds both the web (zero-install
-            SvelteKit) and the Rust/Tauri desktop with OCR and in-game overlays. One source of
-            truth, two delivery surfaces. Adopted by the broader community after creator
-            coverage.
-          </p>
+          <p class="project-position">Open-source (GPL-3.0) Windows companion app for Path of Exile.</p>
+          <p>It helps players make in-game decisions using live market prices. It reads the game screen (template matching plus OCR) and shows recommendations as in-game overlays, keeping uncertain reads and stale prices visible. Modules: Lab Farming, plus Temple of Atzoatl, Mercenaries and Currency Exchange in beta.</p>
+          <p>A desktop app (Rust/Tauri, SvelteKit) and a web dashboard share one Go backend, all three stacks new to me. First commit to a usable desktop release took about two weeks. Community adoption followed creator coverage.</p>
           <p class="project-affordances">
             <a href="https://profitofexile.top" target="_blank" rel="noopener">profitofexile.top →</a>
           </p>
@@ -216,29 +169,19 @@ const pomodoroImg = '21-pomodoro-timer-2026-09-17.png';
             decoding="async"
           />
         </a>
-        <figcaption>
-          The Tauri desktop app — expected value per font across reward types and variants,
-          recomputed against live market prices, with a pool overview by price band.
-        </figcaption>
+        <figcaption>The Lab Farming module in the desktop app: expected value per font, from live prices.</figcaption>
       </figure>
 
       <ul class="project-list project-list-followup">
         <li id="milisto">
           <h3 class="project-title">Milisto</h3>
-          <p class="project-position">Personal mobile PWA shopping companion · not publicly released.</p>
-          <p>
-            Shopping lists follow shop layout instead of entry order, updates arrive live through
-            Mercure, and recipe ingredients can be added to a selected list with merge confirmation
-            when needed.
-          </p>
+          <p class="project-position">Personal mobile PWA shopping list · not released.</p>
+          <p>Lists follow the shop layout instead of entry order, and updates arrive live.</p>
         </li>
         <li id="pomodoro">
           <h3 class="project-title">Pomodoro</h3>
           <p class="project-position">Visual sequence timer for cooking and focus sessions.</p>
-          <p>
-            The countdown uses a fixed 60-minute dial: each minute is six degrees, so 15 minutes
-            fills a quarter-circle. Steps can be arranged into a sequence and shared by URL.
-          </p>
+          <p>A fixed 60-minute dial, with steps arranged into a sequence and shared by URL.</p>
           <p class="project-affordances">
             <a href="https://pomodoro.softsolution.pro" target="_blank" rel="noopener">live app →</a>
             <span class="sep">·</span>
@@ -260,38 +203,21 @@ const pomodoroImg = '21-pomodoro-timer-2026-09-17.png';
             decoding="async"
           />
         </a>
-        <figcaption>
-          Pomodoro countdown in progress: a fixed 60-minute dial with remaining time shown in red,
-          plus audio and stop controls.
-        </figcaption>
+        <figcaption>Countdown in progress on the 60-minute dial, remaining time in red.</figcaption>
       </figure>
 
       <h2>Contributions</h2>
       <ul class="project-list">
         <li>
           <h3 class="project-title">Anthropic Claude Code tracker</h3>
-          <p class="project-position">Reproducible finding contributed to an open issue in the official tracker.</p>
-          <p>
-            I isolated a compact-vs-clear instruction-override asymmetry in SessionStart hook
-            behavior, with a minimal reproduction, the mechanism, and a suggested fix.
-          </p>
+          <p>A reproducible finding on an open issue: a compact-vs-clear instruction-override asymmetry in SessionStart hooks, with a minimal reproduction and a suggested fix.</p>
           <p class="project-affordances">
             <a href="https://github.com/anthropics/claude-code/issues/6354#issuecomment-3849990217" target="_blank" rel="noopener">issue thread →</a>
           </p>
         </li>
         <li>
           <h3 class="project-title">Open-source contributions</h3>
-          <p class="project-position">Recurring contributor to community tooling.</p>
-          <p>
-            <code>veiset/poe-vendor-string</code> (Path of Exile community tool): recurring
-            contributor across map mod filtering (prefix/suffix grouping), trade-search
-            integration (map yield, quality, 8-mod filter, corrupted include/exclude, instant
-            buyout default), and bug fixes.
-          </p>
-          <p>
-            <code>obra/superpowers</code>: I proposed smart question batching, with a measured
-            reduction in <code>AskUserQuestion</code> calls.
-          </p>
+          <p>Recurring contributor to <code>veiset/poe-vendor-string</code>, a Path of Exile community tool. For <code>obra/superpowers</code> I proposed smart question batching, with a measured reduction in <code>AskUserQuestion</code> calls.</p>
           <p class="project-affordances">
             <a href="https://github.com/SebRogala" target="_blank" rel="noopener">github.com/SebRogala →</a>
           </p>
