@@ -27,16 +27,13 @@ const playbookImg = '23-claude-design-playbook-2026-10-02.png';
     </header>
 
     <section class="content">
-      <h2>Products</h2>
+      <h2>Current work</h2>
       <ul class="project-list">
         <li id="education-saas">
           <h3 class="project-title">Education SaaS</h3>
           <p class="project-position">Built for its first client. Multi-tenant education CRM, in production since 03.2026.</p>
           <p>Course management and lead operations for education businesses. It replaced manual lead handling, SMS and email follow-up and operations coordination, which freed hours of weekly staff time by the client's estimate.</p>
           <p>PHP 8 / Symfony 7, PostgreSQL, Redis, Twig, Tailwind. Hexagonal modular monolith, 13 modules, CQRS.</p>
-          <p class="project-affordances">
-            <a href="#how-quality-gets-enforced">enforcement details ↓</a>
-          </p>
         </li>
       </ul>
 
@@ -55,6 +52,31 @@ const playbookImg = '23-claude-design-playbook-2026-10-02.png';
         </a>
         <figcaption>Participant management: faceted filters and per-row group assignment. Demo tenant, generated data.</figcaption>
       </figure>
+
+      <h3 id="how-quality-gets-enforced" class="subsection-title">How quality gets enforced</h3>
+      <p>Every Education SaaS PR passes these layers in CI before it can merge. Over 11,000 automated tests sit behind them, all green (09.2026).</p>
+
+      <figure class="audit-figure" style={`max-width:${authoredWidth(auditImg)}px`}>
+        <a
+          href={`/screenshots/${auditImg}`}
+          class="lightbox-link"
+          aria-label="Open full-size screenshot"
+        >
+          <img
+            src={`/screenshots/${auditImg}`}
+            alt="Audit report, twelve gates and suites green in one run: dependency check, PHPStan level 8 over 3,253 files, frontend R1-R7 plus ESLint, PHPMD, both Deptrac axes, PHP unit 6,218, JS unit 1,321, integration 2,018, functional 1,828, smoke 238 as a subset of functional, E2E 298 passed, totalling 11,690 unique tests"
+            loading="lazy"
+            decoding="async"
+          />
+        </a>
+        <figcaption>One run, 12.09.2026: twelve gates and suites, zero failures.</figcaption>
+      </figure>
+
+      <ul class="enforcement-list">
+        <li><strong>PHPStan level 8 with 14 custom rules</strong>: tenant query safety, entity-ID safety, CQRS and ADR shape.</li>
+        <li><strong>Deptrac on two axes</strong>: layer purity, and a dependency graph across 13 modules. The module-graph baseline is shrink-only: an entry can be removed, never added.</li>
+        <li><strong>UI lint, 7 rules</strong>: conventions off-the-shelf linters can't express, like component-only buttons and semantic colour tokens only.</li>
+      </ul>
 
       <ul class="project-list project-list-followup">
         <li id="oms-backoffice">
@@ -79,31 +101,6 @@ const playbookImg = '23-claude-design-playbook-2026-10-02.png';
         </a>
         <figcaption>Design screen for the offers table, with sample data.</figcaption>
       </figure>
-
-      <h2 id="how-quality-gets-enforced">How quality gets enforced</h2>
-      <p>Every Education SaaS PR passes these layers in CI before it can merge. Over 11,000 automated tests sit behind them, all green (09.2026).</p>
-
-      <figure class="audit-figure" style={`max-width:${authoredWidth(auditImg)}px`}>
-        <a
-          href={`/screenshots/${auditImg}`}
-          class="lightbox-link"
-          aria-label="Open full-size screenshot"
-        >
-          <img
-            src={`/screenshots/${auditImg}`}
-            alt="Audit report, twelve gates and suites green in one run: dependency check, PHPStan level 8 over 3,253 files, frontend R1-R7 plus ESLint, PHPMD, both Deptrac axes, PHP unit 6,218, JS unit 1,321, integration 2,018, functional 1,828, smoke 238 as a subset of functional, E2E 298 passed, totalling 11,690 unique tests"
-            loading="lazy"
-            decoding="async"
-          />
-        </a>
-        <figcaption>One run, 12.09.2026: twelve gates and suites, zero failures.</figcaption>
-      </figure>
-
-      <ul class="project-list">
-        <li><strong>PHPStan level 8 with 14 custom rules</strong>: tenant query safety, entity-ID safety, CQRS and ADR shape.</li>
-        <li><strong>Deptrac on two axes</strong>: layer purity, and a dependency graph across 13 modules. The module-graph baseline is shrink-only: an entry can be removed, never added.</li>
-        <li><strong>UI lint, 7 rules</strong>: conventions off-the-shelf linters can't express, like component-only buttons and semantic colour tokens only.</li>
-      </ul>
 
       <h2>Personal tools</h2>
       <ul class="project-list">
@@ -130,7 +127,7 @@ const playbookImg = '23-claude-design-playbook-2026-10-02.png';
             decoding="async"
           />
         </a>
-        <figcaption>A <code>mini-deliver</code> run on 04.09.2026: seven ProfitOfExile tasks, each with its commit and review rounds. It ran unattended and stopped at the merge boundary, with nothing pushed.</figcaption>
+        <figcaption>An unattended run on 04.09.2026: seven ProfitOfExile tasks, each reviewed and committed. It stopped before merging and pushed nothing.</figcaption>
       </figure>
 
       <ul class="project-list project-list-followup">
@@ -359,16 +356,25 @@ const playbookImg = '23-claude-design-playbook-2026-10-02.png';
     border-top: 1px solid var(--rule);
     padding-top: 22px;
   }
-  /* When the enforcement section uses .project-list, its items are
-     short bulleted entries — restore list markers and tighten spacing. */
-  #how-quality-gets-enforced + p + .project-list {
+  /* Enforcement layers: short bulleted entries, so list markers and tight
+     spacing instead of the bordered project rows. */
+  .enforcement-list {
     list-style: disc;
     padding-left: 22px;
+    margin: 0 0 28px;
   }
-  #how-quality-gets-enforced + p + .project-list > li {
-    border-top: none;
-    padding: 0;
+  .enforcement-list > li {
     margin-bottom: 8px;
+    text-wrap: pretty;
+  }
+  /* Sub-heading inside a project entry (the Education SaaS quality block). */
+  .subsection-title {
+    font-family: var(--serif);
+    font-weight: 500;
+    font-size: 1.375rem;
+    color: var(--fg);
+    margin: 28px 0 10px;
+    letter-spacing: -0.005em;
   }
 
   .project-title {
