@@ -17,6 +17,7 @@ export const pastTalks: PastTalk[] = [
   },
   {
     event: 'Agentic Jams (Rzeszów, first edition)',
+    href: 'https://agenticjams.com/',
     date: '17.06.2026',
     title: 'How I Stopped Compacting — MCP as durable memory for an AI delivery pipeline',
   },
