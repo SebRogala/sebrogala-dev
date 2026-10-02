@@ -10,7 +10,7 @@ export const talkTopics: TalkTopic[] = [
   {
     title: 'From anti-AI to an autonomous workflow',
     description:
-      "A year ago I was anti-AI, sure that no machine would tell me how to write code I had to think through myself. Now an autonomous workflow delivers what's needed.",
+      "Before 2026 I was anti-AI, sure that no machine would tell me how to write code I had to think through myself. Now an autonomous workflow delivers what's needed.",
   },
   {
     title: 'Think first, then delegate',
