@@ -19,6 +19,7 @@ const tiles = [
     title: 'Education SaaS',
     tagline: 'own product',
     body: 'Multi-tenant education CRM. Hexagonal modular monolith on Symfony, gated on every merge.',
+    stack: 'PHP/Symfony · PostgreSQL · Redis · Twig',
     href: '/projects#education-saas',
     linkLabel: 'details',
     live: null,
@@ -29,6 +30,7 @@ const tiles = [
     title: 'OMS / backoffice',
     tagline: 'client project',
     body: `Order management for a building-materials e-shop. ${capitalize(omsScopeVerb)} the most-used ~80% of a legacy admin.`,
+    stack: 'Symfony · Symfony UX · Tailwind · PostgreSQL',
     href: '/projects#oms-backoffice',
     linkLabel: 'details',
     live: null,
@@ -39,6 +41,7 @@ const tiles = [
     title: 'Pipeforge + Fleetforge',
     tagline: 'delivery tooling',
     body: 'Orchestration for Claude Code and Codex on a PostgreSQL MCP server. Every project here ships through it.',
+    stack: 'Claude Code · Codex · MCP · PostgreSQL',
     href: '/projects/pipeforge',
     linkLabel: 'walkthrough',
     live: null,
@@ -49,6 +52,7 @@ const tiles = [
     title: 'ProfitOfExile',
     tagline: 'side project',
     body: 'Windows companion app for Path of Exile that helps players decide using live market prices.',
+    stack: 'Go · Rust/Tauri · SvelteKit · TimescaleDB',
     href: '/projects#profitofexile',
     linkLabel: 'details',
     live: null,
@@ -102,6 +106,7 @@ const tiles = [
                 <span class="tile-tagline"> · {t.tagline}</span>
               </div>
               <div class="tile-body">{t.body}</div>
+              <div class="tile-stack">{t.stack}</div>
             </div>
             <div class="tile-side">
               <div class="tile-arrow">{t.linkLabel} →</div>
@@ -398,6 +403,14 @@ const tiles = [
     color: var(--fg);
     opacity: 0.78;
     text-wrap: pretty;
+  }
+  /* One-line stack, set like the other mono meta lines on the page. */
+  .tile-stack {
+    margin-top: 6px;
+    font-family: var(--mono);
+    font-size: 0.84375rem;
+    line-height: 1.5;
+    color: var(--fg-nav);
   }
   .tile-arrow {
     font-family: var(--mono);
