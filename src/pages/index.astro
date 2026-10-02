@@ -69,7 +69,8 @@ const tiles = [
   <TopNav current="home" />
 
   <main class="frame">
-    <!-- ── Hero ──────────────────────────────────────────────── -->
+    <!-- ── Hero: text left, illustration right on desktop ────── -->
+    <div class="hero-row">
     <section class="hero">
       <h1>Sebastian Rogala</h1>
       <p class="tagline">AI-First Software Engineer | AI-native SDLC</p>
@@ -84,6 +85,7 @@ const tiles = [
         height="1024"
         alt="Illustration: Sebastian facing a coordinator agent that fans out to supervisors, orchestrators and many working agents."
       />
+    </div>
     </div>
 
     <!-- ── Pitch + pull-quote ────────────────────────────────── -->
@@ -267,6 +269,31 @@ const tiles = [
       linear-gradient(to right, transparent 0, #000 6%, #000 94%, transparent 100%),
       linear-gradient(to bottom, transparent 0, #000 8%, #000 92%, transparent 100%);
     mask-composite: intersect;
+  }
+
+  /* From 900px the hero text (45%) and the illustration (55%) sit side by
+     side, so the image fills the right of the frame instead of a row of its
+     own and "What I do" lands above the fold at 1440x900. Below 900px they
+     stack as before. The h1 is 3.5rem here (3.84rem stacked) because the
+     name did not fit the 45% column on one line. */
+  @media (min-width: 900px) {
+    .hero-row {
+      display: grid;
+      grid-template-columns: minmax(0, 45fr) minmax(0, 55fr);
+      column-gap: 32px;
+      align-items: center;
+      padding: 48px 0 32px;
+    }
+    .hero-row .hero,
+    .hero-row .hero-art {
+      padding: 0;
+    }
+    .hero-row .hero h1 {
+      font-size: 3.5rem;
+    }
+    .hero-row .hero-art img {
+      max-width: 100%;
+    }
   }
 
   /* ─── Pitch section ────────────────────────────────────── */
