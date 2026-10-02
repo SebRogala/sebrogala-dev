@@ -28,7 +28,7 @@ agent-only. The pages themselves are the source of truth.
 
 - A multi-tenant Education SaaS, in daily production with a paying customer since 03.2026.
 - OMS / backoffice: ${omsStatus}. Order management and catalogue import for a building-materials e-shop. ${capitalize(omsScopeVerb)} the most-used ~80% of a legacy admin.
-- ProfitOfExile — an open-source (MIT) desktop overlay for the Path of Exile community, shipped across Go / SvelteKit / Tauri.
+- ProfitOfExile — an open-source (GPL-3.0) desktop overlay for the Path of Exile community, shipped across Go / SvelteKit / Tauri.
 - Pipeforge — his Claude Code orchestration and MCP-backed workflow infrastructure, used daily.
 
 ## Smaller practical apps
