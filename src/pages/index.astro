@@ -75,24 +75,13 @@ const tiles = [
     <section class="section pitch-section">
       <div class="main-col">
         <h2 class="eyebrow">What I do</h2>
-        <p class="pitch">I'm a software engineer with over a decade of broad experience, fully AI-directed since early 2026. Right now I'm working on an Education SaaS in production, an OMS client system {omsPhase}, ProfitOfExile, and Pipeforge and Fleetforge, the tooling they ship through. Verification is structural, and I check outcomes against intent.</p>
+        <p class="pitch">I'm a software engineer with over a decade of broad experience, fully AI-directed since early 2026. I build software by directing AI agents and verifying the outcome. I also give talks, run workshops and consult on AI-native delivery. Outside coding I explore other uses of AI too, like local Whisper turning client meetings into tasks and Demucs separating audio stems.</p>
       </div>
       <div class="side-col">
         <div class="pull-quote">
           “AI failures are spec gaps, not agent shortcomings.”
           <div class="pull-quote-attr">how I read most agent failures</div>
         </div>
-      </div>
-    </section>
-
-    <!-- ── How it holds up ───────────────────────────────────── -->
-    <!-- Qualitative by design: named, falsifiable, binding mechanisms instead
-         of counts a stranger cannot price. /projects carries the detail. -->
-    <section class="section gates-section">
-      <div class="main-col">
-        <h2 class="eyebrow">How it holds up</h2>
-        <p class="gates">Every Education SaaS merge has to pass gates written for its codebase, and any one can block it. A cross-tenant query fails static analysis. Dependency direction is checked on two axes, the module-graph baseline is <strong>shrink-only</strong>, and a UI lint guards the design system.</p>
-        <p class="gates-meta">All green as of 12.09.2026. <a href="/projects#how-quality-gets-enforced">what each layer does →</a></p>
       </div>
     </section>
 
@@ -314,36 +303,6 @@ const tiles = [
     letter-spacing: 0.04em;
   }
 
-  /* ─── Gates ────────────────────────────────────────────── */
-  /* Spans the whole frame: nothing occupies the right column here, so capping
-     at the 740px body width just wrapped the text early. */
-  .gates-section .main-col {
-    grid-column: 1 / -1;
-  }
-  .gates {
-    font-family: var(--sans);
-    font-size: 1.09375rem;
-    line-height: 1.7;
-    color: var(--fg);
-    text-wrap: pretty;
-  }
-  .gates strong {
-    font-weight: 600;
-    color: var(--accent);
-  }
-  .gates-meta {
-    margin-top: 16px;
-    font-family: var(--mono);
-    font-size: 0.90625rem;
-    color: var(--fg-nav);
-  }
-  .gates-meta a {
-    color: var(--accent);
-    text-decoration: underline;
-    text-underline-offset: 3px;
-    text-decoration-color: rgba(125, 179, 108, 0.33);
-  }
-
   /* ─── Tiles header ─────────────────────────────────────── */
   .tiles-header {
     border-top: 1px solid var(--rule);
@@ -483,7 +442,8 @@ const tiles = [
   }
 
   /* ─── Speaking ─────────────────────────────────────────── */
-  /* Full frame width — see .gates-section .main-col. */
+  /* Full frame width: nothing occupies the right column here, so capping
+     at the 740px body width just wrapped the text early. */
   .speaking-section .main-col {
     grid-column: 1 / -1;
   }
@@ -704,9 +664,6 @@ const tiles = [
     }
     .pitch {
       font-size: 1.15625rem;
-    }
-    .gates {
-      font-size: 1.03125rem;
     }
     .speaking {
       font-size: 1rem;
