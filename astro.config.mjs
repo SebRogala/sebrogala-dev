@@ -7,7 +7,10 @@ export default defineConfig({
   // (/pipeforge, /kb) redirect to keep any in-flight links working.
   redirects: {
     '/pipeforge': '/projects/pipeforge',
-    '/kb': '/projects/kb',
+    // The knowledge-base showcase was retired (02.10.2026). Its summary now
+    // lives on the Pipeforge page, so both of its URLs land there.
+    '/kb': '/projects/pipeforge',
+    '/projects/kb': '/projects/pipeforge',
     // /about was collapsed into the home page. Kept so existing links —
     // LinkedIn, CV references, anything already indexed — do not 404.
     '/about': '/',

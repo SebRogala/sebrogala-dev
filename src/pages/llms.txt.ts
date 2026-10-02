@@ -22,7 +22,6 @@ agent-only. The pages themselves are the source of truth.
 ## Project showcases
 
 - [Pipeforge](https://sebrogala.dev/projects/pipeforge): Personal AI delivery infrastructure: a Claude Code orchestration plugin with a PostgreSQL MCP backend, agent dispatch, verification, and fidelity audits. Screenshot walkthrough of real runs.
-- [Knowledge base](https://sebrogala.dev/projects/kb): Selected entries from the Pipeforge knowledge base: architectural decisions with rationale, rejected alternatives, and source-file citations.
 
 ## Current work
 
