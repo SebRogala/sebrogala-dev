@@ -20,8 +20,7 @@ import { talkTopics } from '../data/talk-topics';
 
     <section class="content">
       <h2 id="topics">Topics</h2>
-      <!-- Topic data: src/data/talk-topics.ts. Card styling is a placeholder
-           until the design pass; the class names are the hooks for it. -->
+      <!-- Topic data: src/data/talk-topics.ts. -->
       <ul class="topic-list">
         {
           talkTopics.map((topic) => (
@@ -111,26 +110,28 @@ import { talkTopics } from '../data/talk-topics';
     text-decoration-color: rgba(125, 179, 108, 0.4);
   }
 
-  /* Two-column grid of topics, one column on narrow screens. */
+  /* Grid of topic cards; auto-fill gives three columns at full frame width,
+     one column on narrow screens. Rows stretch, so cards in a row match height. */
   .topic-list {
     list-style: none;
     padding: 0;
     margin: 0;
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-    gap: 0 32px;
+    gap: 16px;
   }
   .topic {
-    padding: 18px 0;
-    border-top: 1px solid var(--rule);
+    background: var(--bg-raise);
+    border-radius: 6px;
+    padding: 20px 22px;
     text-wrap: pretty;
   }
   .topic-title {
     font-family: var(--serif);
     font-weight: 500;
     font-size: 1.25rem;
-    color: var(--fg);
-    margin: 0 0 4px;
+    color: var(--accent);
+    margin: 0 0 8px;
     letter-spacing: -0.005em;
   }
   .topic-description {
