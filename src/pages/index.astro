@@ -17,10 +17,10 @@ const tiles = [
   {
     n: '01',
     title: 'Education SaaS',
-    tagline: 'the product this workflow ships',
-    body: 'A multi-tenant education CRM, in production with a paying customer. Hexagonal modular monolith on PHP 8.4 / Symfony 7.4, full CQRS at the UseCase layer, and enforcement layers every merge has to pass.',
+    tagline: 'own product',
+    body: 'Multi-tenant education CRM. Hexagonal modular monolith on Symfony, gated on every merge.',
     href: '/projects#education-saas',
-    linkLabel: 'how it is built',
+    linkLabel: 'details',
     live: null,
     durable: 'in production since 03.2026',
   },
@@ -28,7 +28,7 @@ const tiles = [
     n: '02',
     title: 'OMS / backoffice',
     tagline: 'client project',
-    body: `Order management and catalogue import for a building-materials e-shop. ${capitalize(omsScopeVerb)} the most-used ~80% of a legacy admin, with over 1,300 tests.`,
+    body: `Order management for a building-materials e-shop. ${capitalize(omsScopeVerb)} the most-used ~80% of a legacy admin.`,
     href: '/projects#oms-backoffice',
     linkLabel: 'details',
     live: null,
@@ -36,21 +36,21 @@ const tiles = [
   },
   {
     n: '03',
-    title: 'Pipeforge',
-    tagline: 'the delivery machinery',
-    body: 'My Claude Code orchestration plugin over a PostgreSQL MCP backend: templated commands, agent dispatch, verification and fidelity audits. Screenshot walkthrough of real runs.',
+    title: 'Pipeforge + Fleetforge',
+    tagline: 'delivery tooling',
+    body: 'Orchestration for Claude Code and Codex on a PostgreSQL MCP server. Every project here ships through it.',
     href: '/projects/pipeforge',
     linkLabel: 'walkthrough',
     live: null,
-    durable: 'private tool · used daily',
+    durable: 'private · used daily',
   },
   {
     n: '04',
     title: 'ProfitOfExile',
-    tagline: 'open source, in the wild',
-    body: 'An open-source desktop overlay and web app for the Path of Exile community, built across Go / SvelteKit / Tauri, with one Go backend feeding two delivery surfaces. Adopted by the community after creator coverage.',
+    tagline: 'side project',
+    body: 'Windows companion app for Path of Exile that helps players decide using live market prices.',
     href: '/projects#profitofexile',
-    linkLabel: 'project details',
+    linkLabel: 'details',
     live: null,
     durable: 'GPL-3.0 · community-adopted',
   },
@@ -68,16 +68,14 @@ const tiles = [
     <section class="hero">
       <h1>Sebastian Rogala</h1>
       <p class="tagline">AI-First Software Engineer | AI-native SDLC</p>
-      <p class="subline">
-        I direct AI agents to build software — product intent in, verified software out.
-      </p>
+      <p class="subline">AI agents build the software. I direct them and verify it works.</p>
     </section>
 
     <!-- ── Pitch + pull-quote ────────────────────────────────── -->
     <section class="section pitch-section">
       <div class="main-col">
         <h2 class="eyebrow">What I do</h2>
-        <p class="pitch">I'm a software engineer with over a decade of broad experience, fully AI-directed since early 2026. Right now I'm working on an Education SaaS in production, an OMS client system {omsPhase}, ProfitOfExile, and Pipeforge and Fleetforge, the tooling they all ship through. Verification is structural, and I check outcomes against intent.</p>
+        <p class="pitch">I'm a software engineer with over a decade of broad experience, fully AI-directed since early 2026. Right now I'm working on an Education SaaS in production, an OMS client system {omsPhase}, ProfitOfExile, and Pipeforge and Fleetforge, the tooling they ship through. Verification is structural, and I check outcomes against intent.</p>
       </div>
       <div class="side-col">
         <div class="pull-quote">
@@ -93,23 +91,14 @@ const tiles = [
     <section class="section gates-section">
       <div class="main-col">
         <h2 class="eyebrow">How it holds up</h2>
-        <p class="gates">
-          Every merge passes gates I wrote for this codebase. A cross-tenant query fails static
-          analysis, and so does comparing entity identities by object. Dependency direction gets
-          checked on two axes, architectural layers and the module graph, and a UI lint enforces
-          the design system's own conventions. The module-graph baseline is
-          <strong>shrink-only</strong>: it can go down, never up. None of it is a dashboard.
-          Each one blocks the merge.
-        </p>
-        <p class="gates-meta">
-          All green as of 12.09.2026. <a href="/projects#how-quality-gets-enforced">what each layer does →</a>
-        </p>
+        <p class="gates">Every Education SaaS merge has to pass gates written for its codebase, and any one can block it. A cross-tenant query fails static analysis. Dependency direction is checked on two axes, the module-graph baseline is <strong>shrink-only</strong>, and a UI lint guards the design system.</p>
+        <p class="gates-meta">All green as of 12.09.2026. <a href="/projects#how-quality-gets-enforced">what each layer does →</a></p>
       </div>
     </section>
 
     <!-- ── Tiles header ─────────────────────────────────────── -->
     <section class="section tiles-header">
-      <h2 class="eyebrow">Things I'm working on / pointing to</h2>
+      <h2 class="eyebrow">Current work</h2>
     </section>
 
     <!-- ── Work tiles ────────────────────────────────────────── -->
@@ -171,41 +160,29 @@ const tiles = [
         </div>
       </div>
       <div class="avail-right">
-        <p class="avail-text">
-          I'm available for standalone custom software projects, taking a business problem from
-          defining the need through working software, launch, and handover. AI-directed delivery is
-          how I build it. I'm also open to fractional / contract delivery, advisory, and team
-          workshops or training on AI-directed development. Full-time for the right fit. Based in
-          Rzeszów, Poland (UTC+2).
-        </p>
         <ul class="shapes">
           <li>
-            <span class="shape-name">Custom software projects</span> — I take a business problem
-            from defining what is needed through implementation, verification, launch, and handover.
-            Examples include an <a href="/projects#education-saas">education CRM</a> and an
-            <a href="/projects#oms-backoffice">OMS/backoffice project</a>.
+            <span class="shape-name">Custom software projects</span>
+            From defining the need to launch and handover, like the <a href="/projects#education-saas">Education SaaS</a> and the <a href="/projects#oms-backoffice">OMS</a>.
           </li>
           <li>
-            <span class="shape-name">Fractional delivery</span> — I run delivery on your codebase:
-            I turn intent into specs, decompose the work for agents, and build the verification
-            that makes the output reviewable.
+            <span class="shape-name">Fractional delivery</span>
+            I run delivery on your codebase.
           </li>
           <li>
-            <span class="shape-name">Advisory</span> — I look at an AI-directed setup you already
-            have and say where the review bottleneck actually sits, and what to enforce
-            structurally instead of by discipline.
+            <span class="shape-name">Advisory</span>
+            Where your review bottleneck sits, and what to enforce structurally.
           </li>
           <li>
-            <span class="shape-name">Team workshop / training</span> — how a team moves from
-            prompting to directing agents, with a codebase that ships to a paying customer as the
-            worked example.
+            <span class="shape-name">Workshops and training</span>
+            How a team moves from prompting to directing agents.
           </li>
         </ul>
+        <p class="avail-note">Full-time for the right fit. Based in Rzeszów, Poland.</p>
         <p class="cta">
           <a class="cta-link" href="mailto:sebrogala@gmail.com?subject=Custom%20software%20%2F%20delivery%20work">
             Tell me what you're shipping →
           </a>
-          <span class="cta-note">The workflow is usually the unfamiliar part. Happy to walk through it.</span>
         </p>
       </div>
     </section>
@@ -577,14 +554,13 @@ const tiles = [
   .avail-right {
     grid-column: 2;
   }
-  .avail-text {
-    font-family: var(--serif);
-    /* Bumped to weight 500 to match pitch (consistent identity hierarchy) */
-    font-weight: 500;
-    font-size: 1.1875rem;
+  .avail-note {
+    margin-top: 18px;
+    font-family: var(--sans);
+    font-size: 1rem;
     line-height: 1.6;
     color: var(--fg);
-    text-wrap: pretty;
+    opacity: 0.86;
   }
 
   /* Engagement shapes: the page's one conversion surface, so it answers
@@ -592,7 +568,7 @@ const tiles = [
   .shapes {
     list-style: none;
     padding: 0;
-    margin: 22px 0 0;
+    margin: 0;
     border-top: 1px solid var(--rule);
   }
   .shapes li {
@@ -605,7 +581,9 @@ const tiles = [
     opacity: 0.86;
     text-wrap: pretty;
   }
+  /* Name on its own line above its one-line description. */
   .shape-name {
+    display: block;
     font-family: var(--mono);
     font-size: 0.90625rem;
     color: var(--accent);
@@ -638,12 +616,6 @@ const tiles = [
   .cta-link:hover {
     background: var(--accent);
     color: var(--bg-base);
-  }
-  .cta-note {
-    font-family: var(--sans);
-    font-size: 0.9375rem;
-    color: var(--muted);
-    text-wrap: pretty;
   }
 
   /* ─── Footer ───────────────────────────────────────────── */
@@ -794,9 +766,6 @@ const tiles = [
       /* Reset desktop's grid-column: 2 so the block stacks under the
          eyebrow + pill in the single-column mobile layout. */
       grid-column: 1;
-    }
-    .avail-text {
-      font-size: 1.09375rem;
     }
     .shapes li {
       font-size: 0.96875rem;
