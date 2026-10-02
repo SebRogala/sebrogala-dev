@@ -76,6 +76,16 @@ const tiles = [
       <p class="subline">AI agents build the software. I direct them and verify it works.</p>
     </section>
 
+    <!-- ── Fan-out illustration (no caption; alt carries it) ─── -->
+    <div class="hero-art">
+      <img
+        src="/site-hero-fleet-v1.webp"
+        width="1536"
+        height="1024"
+        alt="Illustration: Sebastian facing a coordinator agent that fans out to supervisors, orchestrators and many working agents."
+      />
+    </div>
+
     <!-- ── Pitch + pull-quote ────────────────────────────────── -->
     <section class="section pitch-section">
       <div class="main-col">
@@ -232,6 +242,31 @@ const tiles = [
     line-height: 1.5;
     color: var(--fg);
     text-wrap: pretty;
+  }
+
+  /* ─── Hero illustration ────────────────────────────────── */
+  /* Capped at the 740px main track and at 60vh so the whole fan-out stays
+     visible, scaled, never cropped. The painted background came out warmer
+     than --bg-base (~#21160a); the WebP has its dark tones shifted toward
+     #1f1a14, and the mask fades the edges so no box shows. */
+  .hero-art {
+    padding: 0 0 32px;
+  }
+  .hero-art img {
+    display: block;
+    width: auto;
+    height: auto;
+    max-width: min(100%, 740px);
+    max-height: 60vh;
+    object-fit: contain;
+    -webkit-mask-image:
+      linear-gradient(to right, transparent 0, #000 6%, #000 94%, transparent 100%),
+      linear-gradient(to bottom, transparent 0, #000 8%, #000 92%, transparent 100%);
+    -webkit-mask-composite: source-in;
+    mask-image:
+      linear-gradient(to right, transparent 0, #000 6%, #000 94%, transparent 100%),
+      linear-gradient(to bottom, transparent 0, #000 8%, #000 92%, transparent 100%);
+    mask-composite: intersect;
   }
 
   /* ─── Pitch section ────────────────────────────────────── */
@@ -606,6 +641,9 @@ const tiles = [
 
     .hero {
       padding: 36px 0 18px;
+    }
+    .hero-art {
+      padding-bottom: 20px;
     }
     .hero h1 {
       font-size: 2.46875rem;
