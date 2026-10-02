@@ -18,7 +18,7 @@ A map of the site for automated readers. Everything here is also on the linked p
 
 ## Current work
 
-- Education SaaS: multi-tenant education CRM, his own product, in production since 03.2026.
+- Education SaaS: multi-tenant education CRM built for its first client, in production since 03.2026.
 - OMS / backoffice: ${omsStatus}. Order management and catalogue import for a building-materials e-shop. ${capitalize(omsScopeVerb)} the most-used ~80% of a legacy admin.
 - ProfitOfExile: open-source (GPL-3.0) Windows companion app for Path of Exile.
 - Pipeforge and Fleetforge: private orchestration tooling, used daily. Every project above ships through it.
