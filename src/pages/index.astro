@@ -1,6 +1,7 @@
 ---
 import Base from '../layouts/Base.astro';
 import TopNav from '../components/TopNav.astro';
+import PastTalks from '../components/PastTalks.astro';
 import { omsLive, omsPhase, omsScopeVerb, capitalize } from '../lib/oms';
 
 // ─── Live (build-time) values ────────────────────────────────────
@@ -127,20 +128,7 @@ const tiles = [
     <section class="section speaking-section">
       <div class="main-col">
         <h2 class="eyebrow">Speaking</h2>
-        <ul class="speaking">
-          <li>
-            <a href="https://www.meetup.com/rg-dev/events/316407562" target="_blank" rel="noopener">rg-dev Meetup #67</a>, 23.09.2026: <em>From Directing Agents to Autonomous Delivery: mini-deliver — One Skill, the Whole Loop</em>
-          </li>
-          <li>
-            Agentic Jams (Rzeszów, first edition), 17.06.2026: <em>How I Stopped Compacting — MCP as durable memory for an AI delivery pipeline</em>
-          </li>
-          <li>
-            <a href="https://www.meetup.com/rg-dev/events/314750399" target="_blank" rel="noopener">rg-dev Meetup #66</a>, 27.05.2026: <em>From Prompting to Directing Agents: Practical AI-Native Development</em>
-          </li>
-          <li>
-            Xebia Internal Conference, 11.2023: <em>GitHub Actions &amp; Continuous Delivery on Shared Hosting</em>
-          </li>
-        </ul>
+        <PastTalks />
       </div>
     </section>
 
@@ -460,39 +448,7 @@ const tiles = [
   .speaking-section .main-col {
     grid-column: 1 / -1;
   }
-  .speaking {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    font-family: var(--sans);
-    font-size: 1.03125rem;
-    line-height: 1.6;
-    color: var(--fg);
-  }
-  .speaking li {
-    padding-left: 16px;
-    position: relative;
-    text-wrap: pretty;
-  }
-  .speaking li + li {
-    margin-top: 8px;
-  }
-  .speaking li::before {
-    content: '·';
-    position: absolute;
-    left: 2px;
-    color: var(--muted);
-  }
-  .speaking em {
-    color: var(--muted);
-    font-style: italic;
-  }
-  .speaking a {
-    color: var(--accent);
-    text-decoration: underline;
-    text-underline-offset: 3px;
-    text-decoration-color: rgba(125, 179, 108, 0.33);
-  }
+  /* List styles live in src/components/PastTalks.astro. */
 
   /* ─── Availability ─────────────────────────────────────── */
   .availability {
@@ -677,9 +633,6 @@ const tiles = [
     }
     .pitch {
       font-size: 1.15625rem;
-    }
-    .speaking {
-      font-size: 1rem;
     }
     .pull-quote {
       font-size: 0.96875rem;

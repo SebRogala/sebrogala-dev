@@ -1,0 +1,57 @@
+---
+// Past-talks list, shared by the home Speaking section and /talks.
+// Data lives in src/data/past-talks.ts.
+import { pastTalks } from '../data/past-talks';
+---
+
+<ul class="speaking">
+  {
+    pastTalks.map((t) => (
+      <li>
+        {t.href ? <a href={t.href} target="_blank" rel="noopener">{t.event}</a> : t.event}, {t.date}: <em>{t.title}</em>
+      </li>
+    ))
+  }
+</ul>
+
+<style>
+  .speaking {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    font-family: var(--sans);
+    font-size: 1.03125rem;
+    line-height: 1.6;
+    color: var(--fg);
+  }
+  .speaking li {
+    padding-left: 16px;
+    position: relative;
+    text-wrap: pretty;
+  }
+  .speaking li + li {
+    margin-top: 8px;
+  }
+  .speaking li::before {
+    content: '·';
+    position: absolute;
+    left: 2px;
+    color: var(--muted);
+  }
+  .speaking em {
+    color: var(--muted);
+    font-style: italic;
+  }
+  .speaking a {
+    color: var(--accent);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    text-decoration-color: rgba(125, 179, 108, 0.33);
+  }
+
+  @media (max-width: 640px) {
+    .speaking {
+      font-size: 1rem;
+    }
+  }
+</style>
