@@ -52,35 +52,20 @@ const panels = [
       <div class="eyebrow">Walkthrough</div>
       <h1>Pipeforge + Fleetforge</h1>
       <p class="lede">Orchestration for Claude Code and Codex on a PostgreSQL MCP server, with Fleetforge as the coordinator layer across projects. The Education SaaS, OMS and ProfitOfExile all ship through them. Both are private tools I use daily, not products.</p>
-      <p class="sub-lede">Public tracker IDs (<code>POE-###</code>) stay visible in the screenshots. Private ones are replaced with <code>[TSK-000]</code>.</p>
     </header>
 
     <section class="prose">
       <h2>How it runs</h2>
-      <p>Agent sessions run in four levels: coordinator (Fleetforge), supervisor, orchestrators and implementers. Questions escalate one level at a time, and sessions hand over at a set context threshold.</p>
+      <p>Agent sessions run in four levels: coordinator (Fleetforge), supervisor, orchestrators and implementers. Questions escalate one level at a time, and a session hands its work to a fresh one before its context runs full.</p>
       <p>That setup carried the first long run, in 09.2026: about four days across three projects, in two stretches. On the client system alone it landed 73 reviewed work items in about 56 active hours.</p>
-      <p>I pick the models with blind A/B tests on real work items, using hidden tests and blind cross-vendor judges. In 09.2026 Claude Opus 5.5 (low) replaced GPT-6 Luna as implementer, at 2–8× the speed with equal results. GPT-6 Sol stayed as reviewer, so no model checks its own work.</p>
-      <p>Review also runs through custom auditor agents for fidelity, delivery, security and architecture. I added the fidelity auditor after an AI silently cut a 491-line spec to 122 lines. It checks that behaviour survives moves and splits, and I use it on refactors and AI meta-work, not as a constant guard.</p>
+      <p>I pick the models with blind A/B tests on real work items, using hidden tests and blind cross-vendor judges. In 09.2026 Claude Opus 5.5 at low reasoning effort replaced GPT-6 Luna as implementer, at 2–8× the speed with equal results. GPT-6 Sol stayed as reviewer, so no model checks its own work.</p>
+      <p>Review also runs through custom auditor agents for fidelity, delivery, security and architecture. I added the fidelity auditor after an AI silently cut a 491-line spec to 122 lines. It checks that behaviour survives moves and splits. I run it on refactors and spec rewrites, not on every change.</p>
     </section>
 
-    <section class="prose" id="knowledge-base">
-      <h2>Knowledge base</h2>
-      <p>Pipeforge's own design decisions go into a knowledge base, each with its rationale, rejected alternatives and source files, written at the moment of decision. It exists so I stop re-explaining why something works the way it does. For now it covers Pipeforge itself.</p>
-      <figure class="panel-figure" style={`max-width:${authoredWidth(kbImg)}px`}>
-        <a
-          href={`/screenshots/${kbImg}`}
-          class="lightbox-link"
-          aria-label="Open full-size screenshot"
-        >
-          <img
-            src={`/screenshots/${kbImg}`}
-            alt="Pipeforge's CLAUDE.md in an editor. KB-first rule: call queryKnowledge() or listKnowledgeConcepts() via MCP as the first action whenever a prompt names a skill, agent, manifest, gate, contract, route, pipeline type or worker, contains terms such as autonomy, dispatch, orchestrator or triage, asks how or why something works, or proposes editing plugin files. Code exploration fills gaps after the KB, not before. KB degradation heuristic: after the KB call on a single-concept question, check whether the KB alone gave a correct, complete answer, and if not, write or enrich the entry"
-            loading="lazy"
-            decoding="async"
-          />
-        </a>
-        <figcaption>Pipeforge's CLAUDE.md: agents check the KB first and fill gaps when it falls short.</figcaption>
-      </figure>
+    <section class="prose" id="walkthrough">
+      <h2>Pipeline walkthrough</h2>
+      <p>The screenshots below follow one task through the pipeline.</p>
+      <p class="note">Public tracker IDs (<code>POE-###</code>) stay visible. Private ones are replaced with <code>[TSK-000]</code>.</p>
     </section>
 
     {
@@ -108,6 +93,26 @@ const panels = [
         </section>
       ))
     }
+
+    <section class="prose" id="knowledge-base">
+      <h2>Knowledge base</h2>
+      <p>Pipeforge's own design decisions go into a knowledge base, each with its rationale, rejected alternatives and source files. It exists so I stop re-explaining why something works the way it does.</p>
+      <figure class="panel-figure" style={`max-width:${authoredWidth(kbImg)}px`}>
+        <a
+          href={`/screenshots/${kbImg}`}
+          class="lightbox-link"
+          aria-label="Open full-size screenshot"
+        >
+          <img
+            src={`/screenshots/${kbImg}`}
+            alt="Pipeforge's CLAUDE.md in an editor. KB-first rule: call queryKnowledge() or listKnowledgeConcepts() via MCP as the first action whenever a prompt names a skill, agent, manifest, gate, contract, route, pipeline type or worker, contains terms such as autonomy, dispatch, orchestrator or triage, asks how or why something works, or proposes editing plugin files. Code exploration fills gaps after the KB, not before. KB degradation heuristic: after the KB call on a single-concept question, check whether the KB alone gave a correct, complete answer, and if not, write or enrich the entry"
+            loading="lazy"
+            decoding="async"
+          />
+        </a>
+        <figcaption>Pipeforge's CLAUDE.md: agents check the KB first and fill gaps when it falls short.</figcaption>
+      </figure>
+    </section>
 
     <footer class="page-footer">
       <a href="/">← back home</a>
@@ -162,20 +167,10 @@ const panels = [
     text-wrap: pretty;
     margin-bottom: 16px;
   }
-  .sub-lede {
-    font-family: var(--sans);
-    font-size: 0.96875rem;
-    line-height: 1.6;
+  /* Small print under a section heading (the screenshot redaction note). */
+  .prose .note {
+    font-size: 0.90625rem;
     color: var(--fg-nav);
-    text-wrap: pretty;
-  }
-  .sub-lede code {
-    font-family: var(--mono);
-    font-size: 0.875rem;
-    color: var(--fg-nav);
-    background: var(--bg-raise);
-    padding: 1px 5px;
-    border-radius: 3px;
   }
 
 
@@ -241,6 +236,13 @@ const panels = [
     text-decoration: underline;
     text-underline-offset: 3px;
     text-decoration-color: rgba(125, 179, 108, 0.4);
+  }
+
+  /* The KB block follows the last panel, so it takes the panels' rule line. */
+  #knowledge-base {
+    border-top: 1px solid var(--rule);
+    margin-top: 0;
+    padding-top: 36px;
   }
 
   .panel {
@@ -322,9 +324,6 @@ const panels = [
     }
     .lede {
       font-size: 1.09375rem;
-    }
-    .sub-lede {
-      font-size: 0.90625rem;
     }
 
 
