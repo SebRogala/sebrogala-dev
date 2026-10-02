@@ -3,6 +3,8 @@ import Base from '../../layouts/Base.astro';
 import TopNav from '../../components/TopNav.astro';
 import { authoredWidth } from '../../lib/authoredWidth';
 
+const kbImg = '24-pipeforge-kb-first-rule-2026-10-02.png';
+
 // Each panel: image filename in /screenshots, a short section label, alt text
 // and a one-line caption. Kept in execution order.
 const panels = [
@@ -64,6 +66,21 @@ const panels = [
     <section class="prose" id="knowledge-base">
       <h2>Knowledge base</h2>
       <p>Pipeforge's own design decisions go into a knowledge base, each with its rationale, rejected alternatives and source files, written at the moment of decision. It exists so I stop re-explaining why something works the way it does. For now it covers Pipeforge itself.</p>
+      <figure class="panel-figure" style={`max-width:${authoredWidth(kbImg)}px`}>
+        <a
+          href={`/screenshots/${kbImg}`}
+          class="lightbox-link"
+          aria-label="Open full-size screenshot"
+        >
+          <img
+            src={`/screenshots/${kbImg}`}
+            alt="Pipeforge's CLAUDE.md in an editor. KB-first rule: call queryKnowledge() or listKnowledgeConcepts() via MCP as the first action whenever a prompt names a skill, agent, manifest, gate, contract, route, pipeline type or worker, contains terms such as autonomy, dispatch, orchestrator or triage, asks how or why something works, or proposes editing plugin files. Code exploration fills gaps after the KB, not before. KB degradation heuristic: after the KB call on a single-concept question, check whether the KB alone gave a correct, complete answer, and if not, write or enrich the entry"
+            loading="lazy"
+            decoding="async"
+          />
+        </a>
+        <figcaption>Pipeforge's CLAUDE.md: agents check the KB first and fill gaps when it falls short.</figcaption>
+      </figure>
     </section>
 
     {
@@ -189,6 +206,9 @@ const panels = [
   .prose p + ul,
   .prose ul + p {
     margin-top: 14px;
+  }
+  .prose p + .panel-figure {
+    margin-top: 20px;
   }
   .prose ul {
     padding-left: 22px;
