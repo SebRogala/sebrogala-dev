@@ -1,4 +1,8 @@
-# Sebastian Rogala
+// Served at /llms.txt. An endpoint rather than a file in public/ so the text can
+// import shared values (the OMS status in src/lib/oms.ts) instead of repeating them.
+import type { APIRoute } from 'astro';
+
+const body = `# Sebastian Rogala
 
 > AI Delivery Engineer. He directs AI agents to build software — product intent
 > in, verified software out. Over a decade of broad software engineering
@@ -41,3 +45,7 @@ agent-only. The pages themselves are the source of truth.
 
 - Available for standalone custom software projects, from defining the need through launch and handover. Also open to fractional / contract delivery, advisory, team workshops or training on AI-directed development, and full-time for the right fit.
 - Canonical bio and dates live on the home page. If a fact here ever conflicts with a page, trust the page.
+`;
+
+export const GET: APIRoute = () =>
+  new Response(body, { headers: { 'Content-Type': 'text/plain; charset=utf-8' } });
