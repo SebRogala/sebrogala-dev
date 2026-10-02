@@ -60,7 +60,16 @@ const panels = [
       <p>Agent sessions run in four levels: coordinator (Fleetforge), supervisor, orchestrators and implementers. Questions escalate one level at a time, and a session hands its work to a fresh one before its context runs full.</p>
       <p>That setup carried the first long run, in 09.2026: about four days across three projects, in two stretches. On the client system alone it landed 73 reviewed work items in about 56 active hours.</p>
       <p>I pick the models with blind A/B tests on real work items, using hidden tests and blind cross-vendor judges. In 09.2026 Claude Opus 5.5 at low reasoning effort replaced GPT-6 Luna as implementer, at 2–8× the speed with equal results. GPT-6 Sol stayed as reviewer, so no model checks its own work.</p>
-      <p>Review also runs through custom auditor agents for fidelity, delivery, security, architecture and prompt logic. I added the fidelity auditor after an AI silently cut a 491-line spec to 122 lines. It checks that behaviour survives moves and splits. I run it on refactors and on rewrites of specs, skills and agent prompts, not on every change. The prompt-logic auditor runs on every change to agent instructions, skills and agent definitions included, and flags wording an agent would misread.</p>
+      <h3>Who checks what</h3>
+      <ul class="checks-list">
+        <li><strong>Before planning:</strong> an architecture review flags invariants and where new code should live. A security review joins when switched on.</li>
+        <li><strong>Plan:</strong> a plan reviewer looks for gaps, edge cases and missed business rules.</li>
+        <li><strong>Build:</strong> tests after every step. Each work item gets an independent reviewer, and a fresh re-check after fixes.</li>
+        <li><strong>Branch:</strong> code reviewers picked by what changed, security if switched on. Findings go into an automatic fix loop.</li>
+        <li><strong>Before merge:</strong> a delivery audit (did it do what was asked?), a fidelity audit when code was moved or split, then green CI.</li>
+        <li><strong>Pipeforge's own instructions:</strong> every rule change in its skills and agents gets a fidelity audit and a prompt-logic audit in parallel, each blind to the other.</li>
+      </ul>
+      <p>I added the fidelity auditor after an AI silently cut a 491-line spec to 122 lines.</p>
     </section>
 
     <section class="prose" id="walkthrough">
@@ -126,6 +135,10 @@ const panels = [
 </Base>
 
 <style>
+  .checks-list { margin: 12px 0 16px; padding-left: 1.2em; }
+  .checks-list li { margin: 6px 0; }
+  .checks-list strong { color: var(--accent); font-weight: 600; }
+
   .frame {
     max-width: 1140px;
     margin: 0 auto;
