@@ -10,6 +10,7 @@ const omsImg = '22-oms-backoffice-design-preview-2026-09-17.png';
 const poeImg = '18-profitofexile-lab-dashboard-2026-09-12.png';
 const deliverImg = '19-mini-deliver-2026-09-04.png';
 const pomodoroImg = '21-pomodoro-timer-2026-09-17.png';
+const playbookImg = '23-claude-design-playbook-2026-10-02.png';
 ---
 
 <Base
@@ -142,6 +143,22 @@ const pomodoroImg = '21-pomodoro-timer-2026-09-17.png';
           </p>
         </li>
       </ul>
+
+      <figure class="audit-figure" style={`max-width:${authoredWidth(playbookImg)}px`}>
+        <a
+          href={`/screenshots/${playbookImg}`}
+          class="lightbox-link"
+          aria-label="Open full-size screenshot"
+        >
+          <img
+            src={`/screenshots/${playbookImg}`}
+            alt="Claude Design session. Left, the chat: a prompt to init the project from github.com/SebRogala/claude-design-playbook, the steps that read the repo and build the design, and a summary of three visual directions. Right, the generated design Fleetforge, Fleet dashboard, Run overview: direction 1a Ledger, a dark terminal-style board with a tree of runs, lanes and sessions, and a detail panel for the catalog-sync run with stage, items, questions waiting on a person and recent events, marked as fixture data"
+            loading="lazy"
+            decoding="async"
+          />
+        </a>
+        <figcaption>Claude Design, initialised from the playbook, drafts a Fleetforge dashboard on fixture data.</figcaption>
+      </figure>
 
       <h2>Side projects</h2>
       <ul class="project-list">
