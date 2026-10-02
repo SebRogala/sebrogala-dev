@@ -1,7 +1,7 @@
 ---
 import Base from '../layouts/Base.astro';
 import TopNav from '../components/TopNav.astro';
-import { omsPhase, omsScopeVerb, capitalize } from '../lib/oms';
+import { omsLive, omsPhase, omsScopeVerb, capitalize } from '../lib/oms';
 
 // ─── Live (build-time) values ────────────────────────────────────
 // Regenerated on every Coolify rebuild. If these go stale, redeploy.
@@ -138,7 +138,7 @@ const tiles = [
             <a href="https://www.meetup.com/rg-dev/events/316407562" target="_blank" rel="noopener">rg-dev Meetup #67</a>, 23.09.2026: <em>From Directing Agents to Autonomous Delivery: mini-deliver — One Skill, the Whole Loop</em>
           </li>
           <li>
-            Agentic Jams (Rzeszów, first edition), 17.06.2026: <em>How I stopped compacting — MCP as durable memory for an AI delivery pipeline</em>
+            Agentic Jams (Rzeszów, first edition), 17.06.2026: <em>How I Stopped Compacting — MCP as durable memory for an AI delivery pipeline</em>
           </li>
           <li>
             <a href="https://www.meetup.com/rg-dev/events/314750399" target="_blank" rel="noopener">rg-dev Meetup #66</a>, 27.05.2026: <em>From Prompting to Directing Agents: Practical AI-Native Development</em>
@@ -163,7 +163,7 @@ const tiles = [
         <ul class="shapes">
           <li>
             <span class="shape-name">Custom software projects</span>
-            From defining the need to launch and handover, like the <a href="/projects#education-saas">Education SaaS</a> and the <a href="/projects#oms-backoffice">OMS</a>.
+            From defining the need to launch and handover, like the <a href="/projects#education-saas">Education SaaS</a>{omsLive && <> and the <a href="/projects#oms-backoffice">OMS</a></>}.
           </li>
           <li>
             <span class="shape-name">Fractional delivery</span>
