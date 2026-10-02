@@ -4,7 +4,10 @@ import TopNav from '../components/TopNav.astro';
 
 // ─── Live (build-time) values ────────────────────────────────────
 // Regenerated on every Coolify rebuild. If these go stale, redeploy.
-const buildDate = new Date().toISOString().slice(0, 10); // YYYY-MM-DD
+// DD.MM.YYYY: the site writes every visible date numerically, day first.
+const now = new Date();
+const pad = (n: number) => String(n).padStart(2, '0');
+const buildDate = `${pad(now.getUTCDate())}.${pad(now.getUTCMonth() + 1)}.${now.getUTCFullYear()}`;
 
 // ─── Tile data ───────────────────────────────────────────────────
 // Ranked the way a buyer reads them: shipped and in-progress custom software
@@ -18,7 +21,7 @@ const tiles = [
     href: '/projects#education-saas',
     linkLabel: 'how it is built',
     live: null,
-    durable: 'in production since 2026‑03',
+    durable: 'in production since 03.2026',
   },
   {
     n: '02',
@@ -109,7 +112,7 @@ const tiles = [
           Each one blocks the merge.
         </p>
         <p class="gates-meta">
-          All green as of 2026-09-12. <a href="/projects#how-quality-gets-enforced">what each layer does →</a>
+          All green as of 12.09.2026. <a href="/projects#how-quality-gets-enforced">what each layer does →</a>
         </p>
       </div>
     </section>
@@ -162,7 +165,7 @@ const tiles = [
             <a href="https://www.meetup.com/rg-dev/events/314750399" target="_blank" rel="noopener">rg-dev Meetup #66</a>, 27.05.2026 — <em>From Prompting to Directing Agents: Practical AI-Native Development</em>
           </li>
           <li>
-            Xebia Internal Conference, Nov 2023 — <em>GitHub Actions &amp; Continuous Delivery on Shared Hosting</em>
+            Xebia Internal Conference, 11.2023 — <em>GitHub Actions &amp; Continuous Delivery on Shared Hosting</em>
           </li>
         </ul>
       </div>

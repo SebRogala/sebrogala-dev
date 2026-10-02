@@ -25,7 +25,7 @@ agent-only. The pages themselves are the source of truth.
 
 ## Current work
 
-- A multi-tenant Education SaaS, in daily production with a paying customer since 2026-03.
+- A multi-tenant Education SaaS, in daily production with a paying customer since 03.2026.
 - An OMS/backoffice custom software project, newly started and in progress.
 - ProfitOfExile — an open-source (MIT) desktop overlay for the Path of Exile community, shipped across Go / SvelteKit / Tauri.
 - Pipeforge — his Claude Code orchestration and MCP-backed workflow infrastructure, used daily.
