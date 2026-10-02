@@ -8,7 +8,7 @@ interface Props {
 }
 
 const {
-  title = 'Sebastian Rogala — AI Delivery Engineer',
+  title = 'Sebastian Rogala — AI-First Software Engineer | AI-native SDLC',
   description = 'Custom software delivery from business need through launch and handover, using AI-directed development. Current work includes an education CRM and an OMS/backoffice project.',
 } = Astro.props;
 
@@ -17,7 +17,7 @@ const canonical = new URL(Astro.url.pathname.replace(/\/+$/, '') || '/', Astro.s
 
 // Social card. Versioned filename: a future swap gets a new URL, so platform and
 // CDN caches never serve a stale card. LinkedIn caches previews for 7 days.
-const ogImage = new URL('/og-card-v1.png', Astro.site ?? Astro.url.origin).href;
+const ogImage = new URL('/og-card-v2.png', Astro.site ?? Astro.url.origin).href;
 ---
 
 <!doctype html>
@@ -39,7 +39,7 @@ const ogImage = new URL('/og-card-v1.png', Astro.site ?? Astro.url.origin).href;
     <meta property="og:image" content={ogImage} />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
-    <meta property="og:image:alt" content="Sebastian Rogala — AI Delivery Engineer" />
+    <meta property="og:image:alt" content="Sebastian Rogala, AI-First Software Engineer" />
 
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:image" content={ogImage} />

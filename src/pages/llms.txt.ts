@@ -4,7 +4,7 @@ import type { APIRoute } from 'astro';
 
 const body = `# Sebastian Rogala
 
-> AI Delivery Engineer. He directs AI agents to build software — product intent
+> AI-First Software Engineer | AI-native SDLC. He directs AI agents to build software — product intent
 > in, verified software out. Over a decade of broad software engineering
 > experience, fully AI-directed since early 2026. Based in Rzeszów (UTC+2).
 
