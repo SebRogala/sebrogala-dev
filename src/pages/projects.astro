@@ -1,6 +1,7 @@
 ---
 import Base from '../layouts/Base.astro';
 import TopNav from '../components/TopNav.astro';
+import ContactBlock from '../components/ContactBlock.astro';
 import { authoredWidth } from '../lib/authoredWidth';
 import { omsPhase, omsStatus, omsScopeVerbFirstPerson, capitalize } from '../lib/oms';
 
@@ -238,6 +239,8 @@ const playbookImg = '23-claude-design-playbook-2026-10-02.png';
         </li>
       </ul>
     </section>
+
+    <ContactBlock />
 
     <footer class="page-footer">
       <a href="/">← back home</a>

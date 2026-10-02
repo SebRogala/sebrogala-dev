@@ -2,6 +2,7 @@
 import Base from '../layouts/Base.astro';
 import TopNav from '../components/TopNav.astro';
 import PastTalks from '../components/PastTalks.astro';
+import ContactBlock from '../components/ContactBlock.astro';
 import { talkTopics } from '../data/talk-topics';
 ---
 
@@ -35,9 +36,7 @@ import { talkTopics } from '../data/talk-topics';
       <h2 id="past-talks">Past talks</h2>
       <PastTalks />
 
-      <p class="talks-contact">
-        Talk or workshop in mind? <a href="mailto:sebrogala@gmail.com">sebrogala@gmail.com</a>
-      </p>
+      <ContactBlock lead="Talk or workshop in mind?" talksLink={false} />
     </section>
 
     <footer class="page-footer">
@@ -137,13 +136,6 @@ import { talkTopics } from '../data/talk-topics';
   .topic-description {
     color: var(--fg);
     opacity: 0.86;
-  }
-
-  .talks-contact {
-    margin-top: 32px;
-    font-family: var(--mono);
-    font-size: 0.90625rem;
-    color: var(--fg-nav);
   }
 
   .page-footer {
