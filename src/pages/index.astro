@@ -141,6 +141,7 @@ const tiles = [
       <div class="main-col">
         <h2 class="eyebrow">Speaking</h2>
         <PastTalks />
+        <p class="speaking-more"><a href="/talks">talks &amp; workshops →</a></p>
       </div>
     </section>
 
@@ -504,6 +505,18 @@ const tiles = [
     grid-column: 1 / -1;
   }
   /* List styles live in src/components/PastTalks.astro. */
+  .speaking-more {
+    margin-top: 16px;
+    font-family: var(--mono);
+    font-size: 0.9375rem;
+  }
+  .speaking-more a {
+    color: var(--accent);
+    font-weight: 500;
+  }
+  .speaking-more a:hover {
+    color: var(--fg);
+  }
 
   /* ─── Availability ─────────────────────────────────────── */
   .availability {
