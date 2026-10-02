@@ -40,7 +40,7 @@ export const talkTopics: TalkTopic[] = [
   {
     title: 'Contracts for repeatable work',
     description:
-      'Anything repeatable in my workflow becomes a contract, for example for tests or for writing a plan.',
+      'A contract is a set of written rules an agent must follow. Anything repeatable in my workflow becomes one, for example for tests or for writing a plan.',
   },
   {
     title: "Tests an AI can't fake",
