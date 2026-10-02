@@ -14,6 +14,7 @@ A map of the site for automated readers. Everything here is also on the linked p
 - [Home](https://sebrogala.dev): what he does, current work, speaking, availability.
 - [Projects](https://sebrogala.dev/projects): every project below, plus small apps and open-source contributions.
 - [Pipeforge and Fleetforge](https://sebrogala.dev/projects/pipeforge): orchestration for Claude Code and Codex on a PostgreSQL MCP server. Screenshot walkthrough of real runs.
+- [Talks & workshops](https://sebrogala.dev/talks): talk and workshop topics on AI-native software delivery, in Polish or English, plus past talks.
 
 ## Current work
 

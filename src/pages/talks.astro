@@ -1,0 +1,187 @@
+---
+import Base from '../layouts/Base.astro';
+import TopNav from '../components/TopNav.astro';
+import PastTalks from '../components/PastTalks.astro';
+import { talkTopics } from '../data/talk-topics';
+---
+
+<Base
+  title="Talks & workshops · Sebastian Rogala"
+  description="Talks and workshops on AI-native software delivery, in Polish or English: topics, past talks and contact."
+>
+  <TopNav current="talks" />
+
+  <main class="frame">
+    <header class="page-header">
+      <div class="eyebrow">Speaking</div>
+      <h1>Talks &amp; workshops</h1>
+      <p class="lede">I give talks and run workshops on AI-native software delivery, in Polish or English.</p>
+    </header>
+
+    <section class="content">
+      <h2 id="topics">Topics</h2>
+      <!-- Topic data: src/data/talk-topics.ts. Card styling is a placeholder
+           until the design pass; the class names are the hooks for it. -->
+      <ul class="topic-list">
+        {
+          talkTopics.map((topic) => (
+            <li class="topic">
+              <h3 class="topic-title">{topic.title}</h3>
+              <p class="topic-description">{topic.description}</p>
+            </li>
+          ))
+        }
+      </ul>
+
+      <h2 id="past-talks">Past talks</h2>
+      <PastTalks />
+
+      <p class="talks-contact">
+        Talk or workshop in mind? <a href="mailto:sebrogala@gmail.com">sebrogala@gmail.com</a>
+      </p>
+    </section>
+
+    <footer class="page-footer">
+      <a href="/">← back home</a>
+    </footer>
+  </main>
+</Base>
+
+<style>
+  .frame {
+    max-width: 1140px;
+    margin: 0 auto;
+    padding: 48px 32px;
+  }
+
+  .page-header {
+    margin-bottom: 36px;
+  }
+  .eyebrow {
+    font-family: var(--mono);
+    font-size: 0.78125rem;
+    color: var(--muted);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    margin-bottom: 18px;
+  }
+  h1 {
+    font-family: var(--serif);
+    font-weight: 500;
+    font-size: 3.03125rem;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    color: var(--fg);
+    margin-bottom: 16px;
+  }
+  .lede {
+    font-family: var(--serif);
+    font-weight: 500;
+    font-size: 1.3125rem;
+    line-height: 1.55;
+    color: var(--fg);
+    text-wrap: pretty;
+  }
+
+  .content {
+    border-top: 1px solid var(--rule);
+    padding-top: 32px;
+    font-family: var(--sans);
+    font-size: 1.0625rem;
+    line-height: 1.65;
+    color: var(--fg);
+  }
+  .content h2 {
+    font-family: var(--serif);
+    font-weight: 500;
+    font-size: 1.9375rem;
+    color: var(--fg);
+    margin: 56px 0 20px;
+    letter-spacing: -0.015em;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--rule);
+  }
+  .content h2:first-child {
+    margin-top: 0;
+  }
+  .content a {
+    color: var(--accent);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    text-decoration-color: rgba(125, 179, 108, 0.4);
+  }
+
+  /* Two-column grid of topics, one column on narrow screens. */
+  .topic-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 0 32px;
+  }
+  .topic {
+    padding: 18px 0;
+    border-top: 1px solid var(--rule);
+    text-wrap: pretty;
+  }
+  .topic-title {
+    font-family: var(--serif);
+    font-weight: 500;
+    font-size: 1.25rem;
+    color: var(--fg);
+    margin: 0 0 4px;
+    letter-spacing: -0.005em;
+  }
+  .topic-description {
+    color: var(--fg);
+    opacity: 0.86;
+  }
+
+  .talks-contact {
+    margin-top: 32px;
+    font-family: var(--mono);
+    font-size: 0.90625rem;
+    color: var(--fg-nav);
+  }
+
+  .page-footer {
+    margin-top: 56px;
+    padding-top: 22px;
+    border-top: 1px solid var(--rule);
+    font-family: var(--mono);
+    font-size: 0.90625rem;
+  }
+  .page-footer a {
+    color: var(--accent);
+    transition: color 160ms ease;
+  }
+  .page-footer a:hover {
+    color: var(--fg);
+  }
+
+  @media (max-width: 640px) {
+    .frame {
+      padding: 36px 22px;
+    }
+    h1 {
+      font-size: 2.1875rem;
+    }
+    .lede {
+      font-size: 1.09375rem;
+    }
+    .content h2 {
+      font-size: 1.59375rem;
+      margin-top: 40px;
+    }
+    .content {
+      font-size: 1rem;
+    }
+    .topic-list {
+      grid-template-columns: 1fr;
+    }
+    .topic-title {
+      font-size: 1.15625rem;
+    }
+  }
+</style>
