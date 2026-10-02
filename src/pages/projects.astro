@@ -2,6 +2,7 @@
 import Base from '../layouts/Base.astro';
 import TopNav from '../components/TopNav.astro';
 import { authoredWidth } from '../lib/authoredWidth';
+import { omsPhase, omsStatus, omsScopeVerbFirstPerson, capitalize } from '../lib/oms';
 
 const auditImg = '20-full-audit-2026-09-12.png';
 const productImg = '17-education-saas-participants-2026-09-12.png';
@@ -13,7 +14,7 @@ const pomodoroImg = '21-pomodoro-timer-2026-09-17.png';
 
 <Base
   title="Projects — Sebastian Rogala"
-  description="Education CRM in production, OMS/backoffice project in progress, Pipeforge, ProfitOfExile, smaller practical apps, and open-source contributions."
+  description={`Education CRM in production, OMS/backoffice client project ${omsPhase}, Pipeforge, ProfitOfExile, smaller practical apps, and open-source contributions.`}
 >
   <TopNav current="projects" />
 
@@ -22,7 +23,7 @@ const pomodoroImg = '21-pomodoro-timer-2026-09-17.png';
       <div class="eyebrow">Projects</div>
       <h1>Projects</h1>
       <p class="lede">
-        An education CRM in production, an OMS / backoffice project in progress, a personal tool I
+        An education CRM in production, an OMS client project {omsPhase}, a personal tool I
         rely on daily, a community side project, smaller practical apps built around specific
         needs, and recurring open-source contributions. The Pipeforge walkthrough and a
         knowledge-base sample sit underneath if you want to go deeper.
@@ -72,11 +73,8 @@ const pomodoroImg = '21-pomodoro-timer-2026-09-17.png';
       <ul class="project-list project-list-followup">
         <li id="oms-backoffice">
           <h3 class="project-title">OMS / backoffice</h3>
-          <p class="project-position">In progress.</p>
-          <p>
-            I have just started this custom software project. The screen below is a design preview
-            using made-up fixture data.
-          </p>
+          <p class="project-position">{capitalize(omsStatus)}.</p>
+          <p>Order management and catalogue import for a building-materials e-shop. {omsScopeVerbFirstPerson} the most-used ~80% of a legacy admin from the client's own requirement diagrams, with Claude Design screens handed to the coding agents through my <a href="#claude-design-playbook">Claude Design Playbook</a>. PHPStan max with 12 custom rules, Deptrac, PHPMD and a UI lint. Over 1,300 green tests (09.2026), each new test proven to fail against deliberately broken code.</p>
         </li>
       </ul>
 
@@ -93,7 +91,7 @@ const pomodoroImg = '21-pomodoro-timer-2026-09-17.png';
             decoding="async"
           />
         </a>
-        <figcaption>OMS/backoffice design preview with sample data.</figcaption>
+        <figcaption>Design screen for the offers table, with sample data.</figcaption>
       </figure>
 
       <h2 id="how-quality-gets-enforced">How quality gets enforced</h2>

@@ -1,6 +1,7 @@
 // Served at /llms.txt. An endpoint rather than a file in public/ so the text can
 // import shared values (the OMS status in src/lib/oms.ts) instead of repeating them.
 import type { APIRoute } from 'astro';
+import { omsPhase, omsStatus, omsScopeVerb, capitalize } from '../lib/oms';
 
 const body = `# Sebastian Rogala
 
@@ -16,7 +17,7 @@ agent-only. The pages themselves are the source of truth.
 ## Pages
 
 - [Home](https://sebrogala.dev): Overview of what he does, how the work is verified, current work, speaking, and availability. Start here.
-- [Projects](https://sebrogala.dev/projects): Index of work, covering the Education SaaS/CRM, an OMS/backoffice project in progress, Pipeforge, ProfitOfExile, smaller practical apps, and open-source contributions.
+- [Projects](https://sebrogala.dev/projects): Index of work, covering the Education SaaS/CRM, an OMS/backoffice client project ${omsPhase}, Pipeforge, ProfitOfExile, smaller practical apps, and open-source contributions.
 
 ## Project showcases
 
@@ -26,7 +27,7 @@ agent-only. The pages themselves are the source of truth.
 ## Current work
 
 - A multi-tenant Education SaaS, in daily production with a paying customer since 03.2026.
-- An OMS/backoffice custom software project, newly started and in progress.
+- OMS / backoffice: ${omsStatus}. Order management and catalogue import for a building-materials e-shop. ${capitalize(omsScopeVerb)} the most-used ~80% of a legacy admin.
 - ProfitOfExile — an open-source (MIT) desktop overlay for the Path of Exile community, shipped across Go / SvelteKit / Tauri.
 - Pipeforge — his Claude Code orchestration and MCP-backed workflow infrastructure, used daily.
 

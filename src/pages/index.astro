@@ -1,6 +1,7 @@
 ---
 import Base from '../layouts/Base.astro';
 import TopNav from '../components/TopNav.astro';
+import { omsPhase, omsScopeVerb, capitalize } from '../lib/oms';
 
 // ─── Live (build-time) values ────────────────────────────────────
 // Regenerated on every Coolify rebuild. If these go stale, redeploy.
@@ -26,12 +27,12 @@ const tiles = [
   {
     n: '02',
     title: 'OMS / backoffice',
-    tagline: 'custom software, in progress',
-    body: 'A newly started OMS / backoffice project. Its current visual is a design preview using made-up fixture data.',
+    tagline: 'client project',
+    body: `Order management and catalogue import for a building-materials e-shop. ${capitalize(omsScopeVerb)} the most-used ~80% of a legacy admin, with over 1,300 tests.`,
     href: '/projects#oms-backoffice',
-    linkLabel: 'project status',
+    linkLabel: 'details',
     live: null,
-    durable: 'in progress',
+    durable: omsPhase,
   },
   {
     n: '03',
@@ -76,18 +77,7 @@ const tiles = [
     <section class="section pitch-section">
       <div class="main-col">
         <h2 class="eyebrow">What I do</h2>
-        <p class="pitch">
-          I design AI-directed delivery systems. Over a decade of broad software engineering
-          experience; fully AI-directed since early 2026. Currently shipping a multi-tenant
-          Education SaaS in production, an open-source community tool, and Pipeforge, my Claude
-          Code orchestration and MCP-backed workflow infrastructure.
-        </p>
-        <p class="pitch-detail">
-          In practice I turn product intent into specs agents can build from, decompose the work
-          for them, and wrap verification loops around it. Verification is structural: review
-          agents, audit tools, hooks, durable state, source-cited knowledge. Then I check the
-          shipped outcome against what was actually asked for.
-        </p>
+        <p class="pitch">I'm a software engineer with over a decade of broad experience, fully AI-directed since early 2026. Right now I'm working on an Education SaaS in production, an OMS client system {omsPhase}, ProfitOfExile, and Pipeforge and Fleetforge, the tooling they all ship through. Verification is structural, and I check outcomes against intent.</p>
       </div>
       <div class="side-col">
         <div class="pull-quote">
@@ -320,16 +310,6 @@ const tiles = [
     font-size: 1.5rem;
     line-height: 1.55;
     color: var(--fg);
-    text-wrap: pretty;
-  }
-
-  .pitch-detail {
-    margin-top: 18px;
-    font-family: var(--sans);
-    font-size: 1.0625rem;
-    line-height: 1.65;
-    color: var(--fg);
-    opacity: 0.86;
     text-wrap: pretty;
   }
 
@@ -756,7 +736,6 @@ const tiles = [
     .gates {
       font-size: 1.03125rem;
     }
-    .pitch-detail,
     .speaking {
       font-size: 1rem;
     }
