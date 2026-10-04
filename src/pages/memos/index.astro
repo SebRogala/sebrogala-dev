@@ -1,0 +1,189 @@
+---
+import Base from '../../layouts/Base.astro';
+import TopNav from '../../components/TopNav.astro';
+import SiteFooter from '../../components/SiteFooter.astro';
+import { getMemos, formatDate, renderTitle, excerptHtml } from '../../lib/memos';
+
+const memos = await getMemos();
+---
+
+<Base title="Memos · Sebastian Rogala" description="How I build software with AI agents: my setup and what's changing.">
+  <TopNav current="memos" />
+
+  <main class="frame">
+    <header class="page-header">
+      <h1>Memos</h1>
+    </header>
+
+    <!-- Each row IS the link (same mechanics as the home tile rows), so the
+         excerpt shows link text as plain text: no link inside a link. -->
+    <ul class="memo-list">
+      {
+        memos.map((memo) => (
+          <li>
+            <a href={`/memos/${memo.id}`} class:list={['memo-row', { 'no-cover': !memo.data.cover }]}>
+              <div>
+                <div class="memo-date">{formatDate(memo.data.published)}</div>
+                <h2 class="memo-title" set:html={renderTitle(memo.data.title)} />
+                <p class="memo-excerpt" set:html={excerptHtml(memo)} />
+              </div>
+              {memo.data.cover && (
+                <figure class="memo-thumb">
+                  <img
+                    src={memo.data.cover.src}
+                    width={memo.data.cover.width}
+                    height={memo.data.cover.height}
+                    alt={memo.data.cover.alt}
+                    loading="lazy"
+                  />
+                </figure>
+              )}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+
+    <SiteFooter>
+      <a href="/">← back home</a>
+    </SiteFooter>
+  </main>
+</Base>
+
+<style>
+  .frame {
+    max-width: 1140px;
+    margin: 0 auto;
+    padding: 48px 32px;
+  }
+
+  .page-header {
+    margin-bottom: 36px;
+  }
+  h1 {
+    font-family: var(--serif);
+    font-weight: 500;
+    font-size: 3.03125rem;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    color: var(--fg);
+  }
+
+  .memo-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    border-top: 1px solid var(--rule);
+  }
+  .memo-row {
+    position: relative;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 200px;
+    gap: 32px;
+    padding: 24px 12px;
+    margin: 0 -12px;
+    align-items: center;
+    border-radius: 4px;
+    transition: background 160ms ease;
+  }
+  .memo-row.no-cover {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .memo-row::after {
+    content: '';
+    position: absolute;
+    left: 12px;
+    right: 12px;
+    bottom: 0;
+    height: 1px;
+    background: var(--rule);
+  }
+  .memo-row:hover {
+    background: var(--bg-raise);
+  }
+  .memo-row:hover .memo-title {
+    color: var(--accent);
+  }
+  .memo-row:hover .memo-thumb {
+    border-color: var(--accent);
+  }
+
+  .memo-date {
+    font-family: var(--mono);
+    font-size: 0.84375rem;
+    color: var(--fg-nav);
+    margin-bottom: 8px;
+  }
+  .memo-title {
+    font-family: var(--serif);
+    font-weight: 500;
+    font-size: 1.78125rem;
+    letter-spacing: -0.018em;
+    line-height: 1.2;
+    color: var(--fg);
+    margin-bottom: 8px;
+    text-wrap: balance;
+    transition: color 160ms ease;
+  }
+  .memo-title :global(.cmd) {
+    font-family: var(--mono);
+    font-weight: 400;
+    font-size: 0.84em;
+    letter-spacing: -0.01em;
+  }
+  .memo-excerpt {
+    font-size: 1rem;
+    line-height: 1.55;
+    color: var(--fg);
+    opacity: 0.78;
+    max-width: 68ch;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  .memo-excerpt :global(code) {
+    font-family: var(--mono);
+    font-size: 0.84em;
+  }
+
+  .memo-thumb {
+    margin: 0;
+    border: 1px solid var(--rule-2);
+    border-radius: 4px;
+    overflow: hidden;
+    background: var(--bg-raise);
+    transition: border-color 160ms ease;
+  }
+  .memo-thumb img {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  @media (max-width: 640px) {
+    .frame {
+      padding: 36px 22px;
+    }
+    h1 {
+      font-size: 2.1875rem;
+    }
+    .memo-row {
+      grid-template-columns: 1fr;
+      gap: 6px;
+      padding: 20px 0;
+      margin: 0;
+    }
+    .memo-row::after {
+      left: 0;
+      right: 0;
+    }
+    .memo-title {
+      font-size: 1.5rem;
+    }
+    .memo-thumb {
+      order: -1;
+      margin-bottom: 10px;
+    }
+  }
+</style>

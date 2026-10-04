@@ -2,8 +2,10 @@
 // Shared top navigation. Pass `current` to highlight the active page.
 // Showcase sub-pages (/projects/pipeforge) pass current="projects"
 // so the Projects nav slot highlights when the visitor is inside the hub.
+// The default slot renders inside the sticky stack, under the mobile sub-nav
+// (memo pages put their phone reading-progress bar there).
 interface Props {
-  current?: 'home' | 'projects' | 'talks';
+  current?: 'home' | 'projects' | 'memos' | 'talks';
 }
 const { current = 'home' } = Astro.props;
 const isActive = (page: Props['current']) => current === page;
@@ -27,6 +29,7 @@ const isActive = (page: Props['current']) => current === page;
     </a>
     <div class="nav-links">
       <a href="/projects" class:list={['nav-link', { active: isActive('projects') }]}>Projects</a>
+      <a href="/memos" class:list={['nav-link', { active: isActive('memos') }]}>Memos</a>
       <a href="/talks" class:list={['nav-link', { active: isActive('talks') }]}>Talks &amp; workshops</a>
     </div>
     <div class="nav-icons">
@@ -63,8 +66,10 @@ const isActive = (page: Props['current']) => current === page;
 <!-- Mobile sub-nav: hidden by default, shown on narrow viewports. -->
   <nav class="mobile-subnav">
     <a href="/projects" class:list={['nav-link', { active: isActive('projects') }]}>Projects</a>
+    <a href="/memos" class:list={['nav-link', { active: isActive('memos') }]}>Memos</a>
     <a href="/talks" class:list={['nav-link', { active: isActive('talks') }]}>Talks &amp; workshops</a>
   </nav>
+  <slot />
 </div>
 
 <style>

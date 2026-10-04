@@ -1,0 +1,76 @@
+<!doctype html>
+<!--
+  Memo social card (og:image), 1200x630, one per memo. Rendered by
+  render-memos.mjs through render.sh; reads ?title=…&date=DD.MM.YYYY.
+  Mark, rule and tag geometry are identical to og-card.html; the tag reads
+  MEMO · DD.MM.YYYY. Title size starts from the character count (up to 80 → 64px,
+  up to 110 → 52px, longer → 44px), then steps down while the title would come
+  within 24px of the name line: DejaVu Serif runs wider than the fonts the count
+  thresholds were set with. If 44px still collides, <body> gets data-overflow and
+  render-memos.mjs refuses the card.
+  /command tokens in the title are set in the mono face at 0.86em.
+  DejaVu fonts are named explicitly so the render does not depend on a fallback.
+-->
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+  html, body { margin: 0; width: 1200px; height: 630px; overflow: hidden; background: #1f1a14; position: relative; }
+  .mark { position: absolute; left: 96px; top: 150px; width: 152px; }
+  .rule { position: absolute; left: 274px; top: 213px; height: 2px; background: #372f26; }
+  .tag {
+    position: absolute; right: 95.5px; top: 195px;
+    font-family: 'DejaVu Sans Mono'; font-size: 40px; line-height: 1;
+    letter-spacing: 3px; margin-right: -3px;
+    color: #7db36c; white-space: nowrap;
+  }
+  .title {
+    position: absolute; left: 96px; right: 96px; top: 330px;
+    font-family: 'DejaVu Serif'; line-height: 1.12;
+    color: #ede3d1; text-wrap: balance;
+  }
+  .title .cmd { font-family: 'DejaVu Sans Mono'; font-size: 0.86em; }
+  .name {
+    position: absolute; left: 96px; bottom: 56px;
+    font-family: 'DejaVu Sans Mono'; font-size: 24px; letter-spacing: 1px;
+    color: #beb6a7; white-space: nowrap;
+  }
+</style>
+</head>
+<body>
+  <img class="mark" src="../svg/sebrogala-1.2A-exact-light.svg" alt="">
+  <div class="rule" id="rule"></div>
+  <div class="tag" id="tag"></div>
+  <div class="title" id="title"></div>
+  <div class="name">Sebastian Rogala · sebrogala.dev</div>
+  <script>
+    var params = new URLSearchParams(location.search);
+    var title = params.get('title') || '';
+    document.getElementById('tag').textContent = 'MEMO · ' + (params.get('date') || '');
+
+    // Title built from text nodes (never innerHTML); command tokens get a span.
+    var el = document.getElementById('title');
+    title.split(/((?:^|\s)\/[a-z][a-z0-9-]*\b)/).forEach(function (part) {
+      var cmd = part.match(/^(\s?)(\/[a-z][a-z0-9-]*)$/);
+      if (!cmd) { el.appendChild(document.createTextNode(part)); return; }
+      el.appendChild(document.createTextNode(cmd[1]));
+      var span = document.createElement('span');
+      span.className = 'cmd';
+      span.textContent = cmd[2];
+      el.appendChild(span);
+    });
+
+    var sizes = [64, 52, 44];
+    var limit = document.querySelector('.name').getBoundingClientRect().top - 24;
+    var i = title.length <= 80 ? 0 : title.length <= 110 ? 1 : 2;
+    el.style.fontSize = sizes[i] + 'px';
+    while (el.getBoundingClientRect().bottom > limit && i < sizes.length - 1) {
+      el.style.fontSize = sizes[++i] + 'px';
+    }
+    if (el.getBoundingClientRect().bottom > limit) document.body.setAttribute('data-overflow', '');
+
+    var tag = document.getElementById('tag').getBoundingClientRect();
+    document.getElementById('rule').style.width = (tag.left - 50 - 274) + 'px';
+  </script>
+</body>
+</html>

@@ -1,0 +1,109 @@
+---
+// Site footer, the last element of every page: contact links and the build
+// meta line. Inner pages pass their way-back links (← back home · ↑ …) as the
+// default slot; they render as the footer's first row, so each page ends with
+// one footer.
+
+// Live (build-time) value, regenerated on every Coolify rebuild.
+// DD.MM.YYYY: the site writes every visible date numerically, day first.
+const now = new Date();
+const pad = (n: number) => String(n).padStart(2, '0');
+const buildDate = `${pad(now.getUTCDate())}.${pad(now.getUTCMonth() + 1)}.${now.getUTCFullYear()}`;
+
+const hasBackLinks = Astro.slots.has('default');
+---
+
+<footer class:list={['footer', { 'with-back-links': hasBackLinks }]}>
+  {hasBackLinks && <div class="footer-back"><slot /></div>}
+  <div class="footer-links">
+    <a href="mailto:sebrogala@gmail.com">sebrogala@gmail.com</a>
+    <span class="sep">·</span>
+    <a href="https://linkedin.com/in/sebrogala" target="_blank" rel="noopener">linkedin.com/in/sebrogala</a>
+    <span class="sep">·</span>
+    <a href="https://github.com/SebRogala" target="_blank" rel="noopener">github.com/SebRogala</a>
+  </div>
+  <div class="footer-meta">made with Claude Design · latest build {buildDate}</div>
+</footer>
+
+<style>
+  .footer {
+    padding: 22px 0 36px;
+    border-top: 1px solid var(--rule);
+    display: flex;
+    /* The links and the build meta together just exceed the frame, so the meta
+       wraps to a second row. Both rows are centred; the column gap keeps the
+       two apart on the rare width where they do fit on one line. */
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px 32px;
+    font-family: var(--mono);
+    font-size: 0.90625rem;
+    color: var(--fg);
+  }
+  /* Inner pages: the footer follows content directly, so it needs the gap the
+     home page gets from its last section. */
+  .with-back-links {
+    margin-top: 56px;
+  }
+  .footer-back {
+    flex-basis: 100%;
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    /* Separates the page's own way-back links from the site-wide contact rows. */
+    margin-bottom: 16px;
+  }
+  .footer-back :global(a) {
+    color: var(--accent);
+    transition: color 160ms ease;
+  }
+  .footer-back :global(a:hover) {
+    color: var(--fg);
+  }
+  .sep,
+  .footer-back :global(.sep) {
+    color: var(--rule-2);
+  }
+  .footer-links {
+    display: flex;
+    gap: 22px;
+  }
+  .footer-links a {
+    color: var(--accent);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    text-decoration-color: rgba(125, 179, 108, 0.33);
+  }
+  .footer-meta {
+    /* Own row always: the links and the meta now both fit on one line, and a
+       wrap-dependent break would come and go with the viewport. */
+    flex-basis: 100%;
+    text-align: center;
+    color: var(--muted);
+    font-size: 0.75rem;
+  }
+
+  @media (max-width: 831px) {
+    .footer {
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      padding: 20px 0 28px;
+    }
+    .footer-meta,
+    .footer-back {
+      flex-basis: auto;
+    }
+    .footer-back {
+      margin-bottom: 12px;
+    }
+    .footer-links {
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+    }
+    .footer-links .sep {
+      display: none;
+    }
+  }
+</style>

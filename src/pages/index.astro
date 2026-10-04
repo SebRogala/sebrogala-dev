@@ -2,14 +2,9 @@
 import Base from '../layouts/Base.astro';
 import TopNav from '../components/TopNav.astro';
 import PastTalks from '../components/PastTalks.astro';
+import SiteFooter from '../components/SiteFooter.astro';
 import { omsLive, omsPhase, omsScopeVerb, capitalize } from '../lib/oms';
-
-// ─── Live (build-time) values ────────────────────────────────────
-// Regenerated on every Coolify rebuild. If these go stale, redeploy.
-// DD.MM.YYYY: the site writes every visible date numerically, day first.
-const now = new Date();
-const pad = (n: number) => String(n).padStart(2, '0');
-const buildDate = `${pad(now.getUTCDate())}.${pad(now.getUTCMonth() + 1)}.${now.getUTCFullYear()}`;
+import { personJsonLd } from '../lib/structuredData';
 
 // ─── Tile data ───────────────────────────────────────────────────
 // Ranked the way a buyer reads them: shipped and in-progress custom software
@@ -65,6 +60,7 @@ const tiles = [
 <Base
   title="Sebastian Rogala, AI-First Software Engineer | AI-native SDLC"
   description="AI-first software engineer who builds by directing AI agents and verifying the outcome. Talks, workshops and consulting on AI-native delivery."
+  jsonLd={personJsonLd}
 >
   <TopNav current="home" />
 
@@ -182,17 +178,7 @@ const tiles = [
       </div>
     </section>
 
-    <!-- ── Footer ─────────────────────────────────────────── -->
-    <footer class="footer">
-      <div class="footer-links">
-        <a href="mailto:sebrogala@gmail.com">sebrogala@gmail.com</a>
-        <span class="sep">·</span>
-        <a href="https://linkedin.com/in/sebrogala" target="_blank" rel="noopener">linkedin.com/in/sebrogala</a>
-        <span class="sep">·</span>
-        <a href="https://github.com/SebRogala" target="_blank" rel="noopener">github.com/SebRogala</a>
-      </div>
-      <div class="footer-meta">made with Claude Design · latest build {buildDate}</div>
-    </footer>
+    <SiteFooter />
   </main>
 </Base>
 
@@ -208,11 +194,6 @@ const tiles = [
   }
 
   /* Topnav + mobile-subnav styles live in src/components/TopNav.astro. */
-
-  /* `.sep` is also used inside the page footer below — keep as page-level rule. */
-  .sep {
-    color: var(--rule-2);
-  }
 
   /* ─── Hero ─────────────────────────────────────────────── */
   .hero {
@@ -615,40 +596,6 @@ const tiles = [
     color: var(--bg-base);
   }
 
-  /* ─── Footer ───────────────────────────────────────────── */
-  .footer {
-    padding: 22px 0 36px;
-    border-top: 1px solid var(--rule);
-    display: flex;
-    /* The links and the build meta together just exceed the frame, so the meta
-       wraps to a second row. Both rows are centred; the column gap keeps the
-       two apart on the rare width where they do fit on one line. */
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 10px 32px;
-    font-family: var(--mono);
-    font-size: 0.90625rem;
-    color: var(--fg);
-  }
-  .footer-links {
-    display: flex;
-    gap: 22px;
-  }
-  .footer-links a {
-    color: var(--accent);
-    text-decoration: underline;
-    text-underline-offset: 3px;
-    text-decoration-color: rgba(125, 179, 108, 0.33);
-  }
-  .footer-meta {
-    /* Own row always: the links and the meta now both fit on one line, and a
-       wrap-dependent break would come and go with the viewport. */
-    flex-basis: 100%;
-    text-align: center;
-    color: var(--muted);
-    font-size: 0.75rem;
-  }
-
   /* ─── Responsive: mobile ≤640px ────────────────────────── */
   /* The 3-track grid needs 740 + 28px of track, but .frame only offers
      viewport - 64px. Below ~832px it no longer fits, so the pitch section
@@ -767,24 +714,6 @@ const tiles = [
     .cta {
       flex-direction: column;
       gap: 12px;
-    }
-
-    .footer {
-      flex-direction: column;
-      align-items: center;
-      gap: 8px;
-      padding: 20px 0 28px;
-    }
-    .footer-meta {
-      flex-basis: auto;
-    }
-    .footer-links {
-      flex-direction: column;
-      align-items: center;
-      gap: 4px;
-    }
-    .footer-links .sep {
-      display: none;
     }
   }
 </style>

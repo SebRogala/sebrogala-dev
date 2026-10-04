@@ -1,23 +1,47 @@
 ---
 // Base layout — all pages extend this.
 // Defines: html shell, font preconnects, palette CSS variables, gradient background.
+// Head props beyond title/description all default to the site-wide card and
+// `website` type, so a page that passes none of them renders the same <head>:
+//   ogImage / ogImageAlt   social card path (site-relative) and its alt text
+//   ogType                 'website' | 'article'
+//   publishedTime / modifiedTime   article dates, emitted as ISO 8601
+//   jsonLd                 structured data object(s), see src/lib/structuredData.ts
+//   noindex                keeps the page out of search results (404)
 
 interface Props {
   title?: string;
   description?: string;
+  ogImage?: string;
+  ogImageAlt?: string;
+  ogType?: 'website' | 'article';
+  publishedTime?: Date;
+  modifiedTime?: Date;
+  jsonLd?: object | object[];
+  noindex?: boolean;
 }
 
 const {
   title = 'Sebastian Rogala, AI-First Software Engineer | AI-native SDLC',
   description = 'AI-first software engineer who builds by directing AI agents and verifying the outcome. Talks, workshops and consulting on AI-native delivery.',
+  // Social card. Versioned filename: a future swap gets a new URL, so platform and
+  // CDN caches never serve a stale card. LinkedIn caches previews for 7 days.
+  ogImage = '/og-card-v2.png',
+  ogImageAlt = 'Sebastian Rogala, AI-First Software Engineer',
+  ogType = 'website',
+  publishedTime,
+  modifiedTime,
+  jsonLd,
+  noindex = false,
 } = Astro.props;
 
 // Canonical URL without a trailing slash — matches the nginx canonicalisation.
 const canonical = new URL(Astro.url.pathname.replace(/\/+$/, '') || '/', Astro.site ?? Astro.url.origin).href;
 
-// Social card. Versioned filename: a future swap gets a new URL, so platform and
-// CDN caches never serve a stale card. LinkedIn caches previews for 7 days.
-const ogImage = new URL('/og-card-v2.png', Astro.site ?? Astro.url.origin).href;
+const ogImageUrl = new URL(ogImage, Astro.site ?? Astro.url.origin).href;
+
+// `<` escaped so a `</script>` inside any string value cannot close the tag.
+const jsonLdHtml = jsonLd && JSON.stringify(jsonLd).replace(/</g, '\\u003c');
 ---
 
 <!doctype html>
@@ -30,19 +54,29 @@ const ogImage = new URL('/og-card-v2.png', Astro.site ?? Astro.url.origin).href;
     <title>{title}</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
+    {noindex && <meta name="robots" content="noindex" />}
 
     <!-- Open Graph -->
-    <meta property="og:type" content="website" />
+    <meta property="og:type" content={ogType} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
-    <meta property="og:image" content={ogImage} />
+    <meta property="og:image" content={ogImageUrl} />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
-    <meta property="og:image:alt" content="Sebastian Rogala, AI-First Software Engineer" />
+    <meta property="og:image:alt" content={ogImageAlt} />
+    {ogType === 'article' && publishedTime && (
+      <meta property="article:published_time" content={publishedTime.toISOString()} />
+    )}
+    {ogType === 'article' && modifiedTime && (
+      <meta property="article:modified_time" content={modifiedTime.toISOString()} />
+    )}
 
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:image" content={ogImage} />
+    <meta name="twitter:image" content={ogImageUrl} />
+    <meta name="twitter:image:alt" content={ogImageAlt} />
+
+    {jsonLdHtml && <script type="application/ld+json" set:html={jsonLdHtml} />}
 
     <!-- Fonts: Source Serif 4, Inter, JetBrains Mono -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />

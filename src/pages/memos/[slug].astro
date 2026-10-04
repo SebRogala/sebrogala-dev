@@ -1,0 +1,349 @@
+---
+import Base from '../../layouts/Base.astro';
+import TopNav from '../../components/TopNav.astro';
+import SiteFooter from '../../components/SiteFooter.astro';
+import {
+  getMemos,
+  formatDate,
+  paragraphs,
+  wordCount,
+  renderInline,
+  renderTitle,
+  excerptText,
+  ogCardPath,
+  assertOgCard,
+  type Memo,
+} from '../../lib/memos';
+import { blogPostingJsonLd } from '../../lib/structuredData';
+import { readingMinutesTotal } from '../../lib/reading';
+
+export async function getStaticPaths() {
+  const memos = await getMemos();
+  return memos.map((memo) => ({ params: { slug: memo.id }, props: { memo } }));
+}
+
+interface Props {
+  memo: Memo;
+}
+
+const { memo } = Astro.props;
+assertOgCard(memo);
+
+const { title, published, updated, cover } = memo.data;
+const date = formatDate(published);
+const description = excerptText(memo);
+const site = Astro.site ?? Astro.url.origin;
+const url = new URL(`/memos/${memo.id}`, site).href;
+const ogImage = ogCardPath(memo);
+const words = wordCount(memo);
+const jsonLd = blogPostingJsonLd({
+  headline: title,
+  description,
+  url,
+  image: new URL(ogImage, site).href,
+  published,
+  updated,
+});
+---
+
+<Base
+  title={`${title} · Sebastian Rogala`}
+  description={description}
+  ogImage={ogImage}
+  ogImageAlt={`Memo card: ${title}`}
+  ogType="article"
+  publishedTime={published}
+  modifiedTime={updated}
+  jsonLd={jsonLd}
+>
+  <TopNav current="memos">
+    <!-- Narrow-screen reading progress. Hidden until the script runs, so
+         nothing shows with JS off. -->
+    <div
+      class="progress-bar"
+      role="progressbar"
+      aria-label="Reading progress"
+      aria-valuemin="0"
+      aria-valuemax="100"
+      aria-valuenow="0"
+      hidden
+    >
+      <span class="progress-bar-fill"></span>
+    </div>
+  </TopNav>
+
+  <main class="frame">
+    <header class="memo-head">
+      <div class="eyebrow">Memo · {date}</div>
+      <h1 set:html={renderTitle(title)} />
+    </header>
+
+    {
+      cover && (
+        <figure class="memo-cover">
+          <img src={cover.src} width={cover.width} height={cover.height} alt={cover.alt} />
+        </figure>
+      )
+    }
+
+    <div class:list={['read-wrap', { 'has-cover': cover }]}>
+      <section class="prose" data-words={words}>
+        {paragraphs(memo).map((p) => <p set:html={renderInline(p)} />)}
+        <div class="memo-end">{date} · <a href="/memos">all memos →</a></div>
+      </section>
+
+      <aside class="progress-rail" aria-hidden="true" hidden>
+        <div class="rail-track"><div class="rail-fill"></div></div>
+        <div class="rail-label"><b class="rail-pct">0%</b><br /><span class="rail-left">~{readingMinutesTotal(words)} min left</span></div>
+      </aside>
+    </div>
+
+    <SiteFooter>
+      <a href="/">← back home</a>
+      <span class="sep">·</span>
+      <a href="/memos">↑ memos</a>
+    </SiteFooter>
+  </main>
+</Base>
+
+<script>
+  import { minutesLeftLabel } from '../../lib/reading';
+
+  // Reading progress: 0 when the body's top reaches the nav's bottom edge,
+  // 1 when the body's bottom reaches the viewport's bottom edge.
+  const prose = document.querySelector<HTMLElement>('.prose');
+  const nav = document.querySelector<HTMLElement>('.nav-stack');
+  const rail = document.querySelector<HTMLElement>('.progress-rail');
+  const bar = document.querySelector<HTMLElement>('.progress-bar');
+  if (prose && nav && rail && bar) {
+    const words = Number(prose.dataset.words) || 0;
+    const fill = rail.querySelector<HTMLElement>('.rail-fill')!;
+    const pctEl = rail.querySelector<HTMLElement>('.rail-pct')!;
+    const leftEl = rail.querySelector<HTMLElement>('.rail-left')!;
+    const barFill = bar.querySelector<HTMLElement>('.progress-bar-fill')!;
+
+    const update = () => {
+      const navH = nav.offsetHeight;
+      const r = prose.getBoundingClientRect();
+      const span = r.height - (window.innerHeight - navH);
+      // A body shorter than the viewport is fully visible, so it counts as read.
+      const p = span <= 0 ? 1 : Math.min(1, Math.max(0, (navH - r.top) / span));
+      const pct = Math.round(p * 100);
+      fill.style.height = pct + '%';
+      pctEl.textContent = pct + '%';
+      leftEl.textContent = minutesLeftLabel(words, p);
+      barFill.style.width = pct + '%';
+      bar.setAttribute('aria-valuenow', String(pct));
+    };
+
+    rail.hidden = false;
+    bar.hidden = false;
+    window.addEventListener('scroll', update, { passive: true });
+    window.addEventListener('resize', update);
+    update();
+  }
+</script>
+
+<style>
+  .frame {
+    max-width: 1140px;
+    margin: 0 auto;
+    padding: 48px 32px;
+  }
+
+  .memo-head {
+    padding-bottom: 36px;
+  }
+  .eyebrow {
+    font-family: var(--mono);
+    font-size: 0.78125rem;
+    /* --fg-nav, not the site eyebrow's --muted: at this size --muted falls under
+       WCAG AA on the page gradient. Same token as the index dates. */
+    color: var(--fg-nav);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    margin-bottom: 18px;
+  }
+  h1 {
+    max-width: 740px;
+    font-family: var(--serif);
+    font-weight: 500;
+    font-size: 3.03125rem;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    color: var(--fg);
+    text-wrap: balance;
+  }
+  /* Command token in a title (/compact): set in mono, slightly smaller so its
+     x-height sits with the serif. */
+  h1 :global(.cmd) {
+    font-family: var(--mono);
+    font-weight: 400;
+    font-size: 0.84em;
+    letter-spacing: -0.01em;
+  }
+
+  .memo-cover {
+    max-width: 740px;
+    margin: 0 0 40px;
+    border: 1px solid var(--rule-2);
+    border-radius: 4px;
+    overflow: hidden;
+    background: var(--bg-raise);
+  }
+  .memo-cover img {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  /* Prose on the 740 track; the reading-progress rail sits in the otherwise
+     empty column to its right. */
+  .read-wrap {
+    display: grid;
+    grid-template-columns: minmax(0, 740px) 28px 1fr;
+  }
+  .prose {
+    grid-column: 1;
+    border-top: 1px solid var(--rule);
+    padding-top: 36px;
+    font-family: var(--sans);
+    font-size: 1.0625rem;
+    line-height: 1.7;
+    color: var(--fg);
+  }
+  /* The cover already separates header from body, so no rule above it. */
+  .has-cover .prose {
+    border-top: 0;
+    padding-top: 0;
+  }
+  .prose p {
+    text-wrap: pretty;
+  }
+  .prose p + p {
+    margin-top: 1.05em;
+  }
+  .prose :global(code) {
+    font-family: var(--mono);
+    font-size: 0.90625rem;
+    color: var(--fg-nav);
+    background: var(--bg-raise);
+    padding: 1px 5px;
+    border-radius: 3px;
+    white-space: nowrap;
+  }
+  .prose :global(a) {
+    color: var(--accent);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    text-decoration-color: rgba(125, 179, 108, 0.4);
+  }
+  .memo-end {
+    margin-top: 40px;
+    padding-top: 18px;
+    border-top: 1px dashed var(--rule-2);
+    font-family: var(--mono);
+    font-size: 0.90625rem;
+    color: var(--fg-nav);
+  }
+
+  .progress-rail {
+    grid-column: 3;
+    align-self: start;
+    position: sticky;
+    top: 110px;
+    padding-top: 36px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 12px;
+  }
+  .rail-track {
+    position: relative;
+    width: 2px;
+    height: 220px;
+    background: var(--rule-2);
+    border-radius: 1px;
+  }
+  .rail-fill {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 2px;
+    height: 0;
+    background: var(--accent);
+    border-radius: 1px;
+  }
+  .rail-fill::after {
+    content: '';
+    position: absolute;
+    left: -2px;
+    bottom: -3px;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 6px rgba(125, 179, 108, 0.5);
+  }
+  .rail-label {
+    font-family: var(--mono);
+    font-size: 0.78125rem;
+    line-height: 1.5;
+    color: var(--fg-nav);
+    text-align: right;
+  }
+  .rail-label b {
+    font-weight: 400;
+    color: var(--fg);
+  }
+
+  .progress-bar {
+    display: none;
+    height: 2px;
+    background: var(--rule);
+  }
+  .progress-bar-fill {
+    display: block;
+    width: 0;
+    height: 100%;
+    background: var(--accent);
+  }
+  /* `hidden` must win over the display values above (JS-off state). */
+  .progress-rail[hidden],
+  .progress-bar[hidden] {
+    display: none;
+  }
+
+  /* Below this width the right column is too narrow for the rail label, so the
+     bar under the nav takes over. */
+  @media (max-width: 960px) {
+    .read-wrap {
+      grid-template-columns: minmax(0, 740px);
+    }
+    .progress-rail {
+      display: none;
+    }
+    .progress-bar:not([hidden]) {
+      display: block;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .frame {
+      padding: 36px 22px;
+    }
+    .memo-head {
+      padding-bottom: 24px;
+    }
+    h1 {
+      font-size: 2.1875rem;
+    }
+    .memo-cover {
+      margin-bottom: 24px;
+    }
+    .prose {
+      font-size: 1rem;
+      padding-top: 24px;
+    }
+  }
+</style>

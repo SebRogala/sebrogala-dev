@@ -1,7 +1,7 @@
 ---
 import Base from '../layouts/Base.astro';
 import TopNav from '../components/TopNav.astro';
-import ContactBlock from '../components/ContactBlock.astro';
+import SiteFooter from '../components/SiteFooter.astro';
 import { authoredWidth } from '../lib/authoredWidth';
 import { omsPhase, omsStatus, omsScopeVerbFirstPerson, capitalize } from '../lib/oms';
 
@@ -240,11 +240,9 @@ const playbookImg = '23-claude-design-playbook-2026-10-02.png';
       </ul>
     </section>
 
-    <ContactBlock />
-
-    <footer class="page-footer">
+    <SiteFooter>
       <a href="/">← back home</a>
-    </footer>
+    </SiteFooter>
   </main>
 </Base>
 
@@ -256,7 +254,6 @@ const playbookImg = '23-claude-design-playbook-2026-10-02.png';
   }
 
   /* Topnav lives in src/components/TopNav.astro. */
-  /* `.sep` is also used in the page footer below — keep as page-level rule. */
   .sep {
     color: var(--rule-2);
   }
@@ -443,24 +440,6 @@ const playbookImg = '23-claude-design-playbook-2026-10-02.png';
     color: var(--fg-nav);
     text-wrap: pretty;
     text-align: center;
-  }
-
-  .page-footer {
-    margin-top: 56px;
-    padding-top: 22px;
-    border-top: 1px solid var(--rule);
-    font-family: var(--mono);
-    font-size: 0.90625rem;
-    display: flex;
-    gap: 12px;
-    flex-wrap: wrap;
-  }
-  .page-footer a {
-    color: var(--accent);
-    transition: color 160ms ease;
-  }
-  .page-footer a:hover {
-    color: var(--fg);
   }
 
   @media (max-width: 640px) {
