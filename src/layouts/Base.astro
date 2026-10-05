@@ -40,6 +40,11 @@ const canonical = new URL(Astro.url.pathname.replace(/\/+$/, '') || '/', Astro.s
 
 const ogImageUrl = new URL(ogImage, Astro.site ?? Astro.url.origin).href;
 
+// <title> escapes only what HTML needs in text (& < >). Astro's default `{title}`
+// also writes ' as &#39;, which Google showed raw in a search result. The
+// head-entities build check (integrations/) guards this.
+const titleHtml = title.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+
 // `<` escaped so a `</script>` inside any string value cannot close the tag.
 const jsonLdHtml = jsonLd && JSON.stringify(jsonLd).replace(/</g, '\\u003c');
 ---
@@ -51,7 +56,7 @@ const jsonLdHtml = jsonLd && JSON.stringify(jsonLd).replace(/</g, '\\u003c');
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="generator" content={Astro.generator} />
 
-    <title>{title}</title>
+    <title set:html={titleHtml} />
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
     {noindex && <meta name="robots" content="noindex" />}

@@ -1,5 +1,6 @@
 import { defineConfig } from 'astro/config';
 import sitemap from '@astrojs/sitemap';
+import headEntities from './integrations/head-entities.mjs';
 import { existsSync, readFileSync } from 'node:fs';
 
 const site = 'https://sebrogala.dev';
@@ -36,6 +37,7 @@ export default defineConfig({
   trailingSlash: 'never',
   redirects,
   integrations: [
+    headEntities(),
     sitemap({
       filter: (page) => !sitemapExcluded.has(page.replace(/\/$/, '')),
       serialize(item) {
