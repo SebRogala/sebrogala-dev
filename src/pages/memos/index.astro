@@ -2,7 +2,8 @@
 import Base from '../../layouts/Base.astro';
 import TopNav from '../../components/TopNav.astro';
 import SiteFooter from '../../components/SiteFooter.astro';
-import { getMemos, formatDate, renderTitle, excerptHtml } from '../../lib/memos';
+import { getMemos, formatDate, renderTitle, excerptHtml, wordCount } from '../../lib/memos';
+import { readingMinutesTotal } from '../../lib/reading';
 
 const memos = await getMemos();
 ---
@@ -23,7 +24,7 @@ const memos = await getMemos();
           <li>
             <a href={`/memos/${memo.id}`} class:list={['memo-row', { 'no-cover': !memo.data.cover }]}>
               <div>
-                <div class="memo-date">{formatDate(memo.data.published)}</div>
+                <div class="memo-date">{formatDate(memo.data.published)} · ~{readingMinutesTotal(wordCount(memo))} min</div>
                 <h2 class="memo-title" set:html={renderTitle(memo.data.title)} />
                 <p class="memo-excerpt" set:html={excerptHtml(memo)} />
               </div>

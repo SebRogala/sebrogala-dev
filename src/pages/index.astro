@@ -5,6 +5,11 @@ import PastTalks from '../components/PastTalks.astro';
 import SiteFooter from '../components/SiteFooter.astro';
 import { omsLive, omsPhase, omsScopeVerb, capitalize } from '../lib/oms';
 import { personJsonLd } from '../lib/structuredData';
+import { getMemos, formatDate, renderTitle, wordCount } from '../lib/memos';
+import { readingMinutesTotal } from '../lib/reading';
+
+// Newest three; fewer when fewer are published, none renders no section.
+const latestMemos = (await getMemos()).slice(0, 3);
 
 // ─── Tile data ───────────────────────────────────────────────────
 // Ranked the way a buyer reads them: shipped and in-progress custom software
@@ -132,6 +137,43 @@ const tiles = [
       }
     </section>
 
+    <!-- ── Latest memos: each row IS the link (no nested links). ── -->
+    {latestMemos.length > 0 && (
+      <section class="section memos-section">
+        <div class="main-col">
+          <h2 class="eyebrow">Latest memos</h2>
+          <ul class="lm-list">
+            {latestMemos.map((memo) => {
+              const minutes = `~${readingMinutesTotal(wordCount(memo))} min`;
+              return (
+                <li>
+                  <a href={`/memos/${memo.id}`} class:list={['lm-row', { 'no-cover': !memo.data.cover }]}>
+                    {memo.data.cover && (
+                      <figure class="lm-mini">
+                        <img
+                          src={memo.data.cover.src}
+                          width={memo.data.cover.width}
+                          height={memo.data.cover.height}
+                          alt=""
+                          loading="lazy"
+                        />
+                      </figure>
+                    )}
+                    <span class="lm-title" set:html={renderTitle(memo.data.title)} />
+                    <span class="lm-date">
+                      {formatDate(memo.data.published)}<span class="lm-date-min"> · {minutes}</span>
+                    </span>
+                    <span class="lm-min">{minutes}</span>
+                  </a>
+                </li>
+              );
+            })}
+          </ul>
+          <p class="speaking-more"><a href="/memos">all memos →</a></p>
+        </div>
+      </section>
+    )}
+
     <!-- ── Speaking ──────────────────────────────────────────── -->
     <section class="section speaking-section">
       <div class="main-col">
@@ -143,39 +185,40 @@ const tiles = [
 
     <!-- ── Availability (no fixed quarter — just an "open" signal). ─ -->
     <section class="section availability" id="availability">
-      <div class="avail-left">
+      <div class="avail-head">
         <h2 class="eyebrow">Availability</h2>
         <div class="status-pill">
           <span class="status-dot"></span>
           open
         </div>
       </div>
-      <div class="avail-right">
-        <ul class="shapes">
-          <li>
-            <span class="shape-name">Custom software projects</span>
-            From defining the need to launch and handover, like the <a href="/projects#education-saas">Education SaaS</a>{omsLive && <> and the <a href="/projects#oms-backoffice">OMS</a></>}.
-          </li>
-          <li>
-            <span class="shape-name">Fractional delivery</span>
-            I run delivery on your codebase.
-          </li>
-          <li>
-            <span class="shape-name">Advisory</span>
-            Where your review bottleneck sits, and what to enforce structurally.
-          </li>
-          <li>
-            <span class="shape-name">Workshops and training</span>
-            How a team moves from prompting to directing agents. <a href="/talks">topics →</a>
-          </li>
-        </ul>
-        <p class="avail-note">Full-time for the right fit. Based in Rzeszów, Poland.</p>
-        <p class="cta">
-          <a class="cta-link" href="mailto:sebrogala@gmail.com?subject=Custom%20software%20%2F%20delivery%20work">
-            Tell me what you're shipping →
-          </a>
-        </p>
+      <div class="avail-strip">
+        <p class="avail-fit">Full-time for the <a href="/right-fit">right fit →</a></p>
+        <p class="avail-where">An office in or near Rzeszów, or fully remote.</p>
       </div>
+      <ul class="shapes">
+        <li>
+          <span class="shape-name">Custom software projects</span>
+          From defining the need to launch and handover, like the <a href="/projects#education-saas">Education SaaS</a>{omsLive && <> and the <a href="/projects#oms-backoffice">OMS</a></>}.
+        </li>
+        <li>
+          <span class="shape-name">Fractional delivery</span>
+          I run delivery on your codebase.
+        </li>
+        <li>
+          <span class="shape-name">Advisory</span>
+          Where your review bottleneck sits, and what to enforce structurally.
+        </li>
+        <li>
+          <span class="shape-name">Workshops and training</span>
+          How a team moves from prompting to directing agents. <a href="/talks">topics →</a>
+        </li>
+      </ul>
+      <p class="cta">
+        <a class="cta-link" href="mailto:sebrogala@gmail.com?subject=Custom%20software%20%2F%20delivery%20work">
+          Tell me what you're shipping →
+        </a>
+      </p>
     </section>
 
     <SiteFooter />
@@ -377,7 +420,7 @@ const tiles = [
     height: 1px;
     background: var(--rule);
   }
-  /* The next section (.availability) brings its own border-top, so suppressing
+  /* The next section brings its own border-top, so suppressing
      the last row's bottom rule prevents two near-adjacent lines with whitespace
      between them. */
   .tile-row:last-child::after {
@@ -499,17 +542,107 @@ const tiles = [
     color: var(--fg);
   }
 
+  /* ─── Latest memos ────────────────────────────────────── */
+  /* Full frame width, like Speaking. Each row is one link with the .tile-row
+     hover mechanics: the background outsets 12px past the frame edge. */
+  .memos-section .main-col {
+    grid-column: 1 / -1;
+  }
+  .lm-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    border-top: 1px solid var(--rule);
+  }
+  .lm-list > li {
+    border-bottom: 1px solid var(--rule);
+  }
+  .lm-row {
+    display: grid;
+    grid-template-columns: 88px minmax(0, 1fr) auto auto;
+    gap: 22px;
+    align-items: center;
+    padding: 10px 12px;
+    margin: 0 -12px;
+    border-radius: 4px;
+    transition: background 160ms ease;
+  }
+  /* A memo without a cover renders no empty box: the title takes column 1. */
+  .lm-row.no-cover {
+    grid-template-columns: minmax(0, 1fr) auto auto;
+    padding: 14px 12px;
+  }
+  .lm-row:hover {
+    background: var(--bg-raise);
+  }
+  .lm-row:hover .lm-title {
+    color: var(--accent);
+  }
+  .lm-row:hover .lm-mini {
+    border-color: var(--accent);
+  }
+  .lm-mini {
+    margin: 0;
+    border: 1px solid var(--rule-2);
+    border-radius: 3px;
+    overflow: hidden;
+    background: var(--bg-raise);
+    transition: border-color 160ms ease;
+  }
+  .lm-mini img {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+  .lm-title {
+    font-family: var(--serif);
+    font-weight: 500;
+    font-size: 1.375rem;
+    line-height: 1.3;
+    letter-spacing: -0.012em;
+    color: var(--fg);
+    text-wrap: balance;
+    transition: color 160ms ease;
+  }
+  .lm-title :global(.cmd) {
+    font-family: var(--mono);
+    font-weight: 400;
+    font-size: 0.84em;
+    letter-spacing: -0.01em;
+  }
+  .lm-date,
+  .lm-min {
+    font-family: var(--mono);
+    font-size: 0.84375rem;
+    white-space: nowrap;
+  }
+  .lm-date {
+    color: var(--fg-nav);
+  }
+  .lm-min {
+    color: var(--muted);
+  }
+  /* Desktop shows the minutes in their own cell; phone folds them into the
+     date line. */
+  .lm-date-min {
+    display: none;
+  }
+
   /* ─── Availability ─────────────────────────────────────── */
+  /* Header row (eyebrow + pill), the ruled strip with the full-time line,
+     then the four shapes as a 2×2 grid, then the CTA. */
   .availability {
+    display: block;
     padding: 36px 0 44px;
-    grid-template-columns: 180px 1fr;
-    gap: 24px;
   }
-  .avail-left {
-    grid-column: 1;
+  .avail-head {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 24px;
   }
-  .availability .eyebrow {
-    margin-bottom: 12px;
+  .avail-head .eyebrow {
+    margin-bottom: 0;
   }
   .status-pill {
     font-family: var(--mono);
@@ -529,14 +662,33 @@ const tiles = [
     border-radius: 50%;
     box-shadow: 0 0 6px rgba(166, 212, 159, 0.53);
   }
-  .avail-right {
-    grid-column: 2;
+  .avail-strip {
+    margin-bottom: 24px;
+    padding: 18px 0;
+    border-top: 1px solid var(--rule);
+    border-bottom: 1px solid var(--rule);
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px 28px;
   }
-  .avail-note {
-    margin-top: 18px;
+  .avail-fit {
+    font-family: var(--serif);
+    font-weight: 500;
+    font-size: 1.375rem;
+    color: var(--fg);
+  }
+  /* Set in the line's own colour (as in the reference); the arrow carries the
+     affordance, hover turns it accent like the rows above. */
+  .avail-fit a {
+    transition: color 160ms ease;
+  }
+  .avail-fit a:hover {
+    color: var(--accent);
+  }
+  .avail-where {
     font-family: var(--sans);
     font-size: 1rem;
-    line-height: 1.6;
     color: var(--fg);
     opacity: 0.86;
   }
@@ -547,16 +699,18 @@ const tiles = [
     list-style: none;
     padding: 0;
     margin: 0;
-    border-top: 1px solid var(--rule);
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
   }
   .shapes li {
-    padding: 14px 0;
-    border-bottom: 1px solid var(--rule);
+    background: var(--bg-raise);
+    border-radius: 6px;
+    padding: 18px 22px;
     font-family: var(--sans);
     font-size: 1rem;
     line-height: 1.6;
     color: var(--fg);
-    opacity: 0.86;
     text-wrap: pretty;
   }
   /* Name on its own line above its one-line description. */
@@ -565,6 +719,7 @@ const tiles = [
     font-family: var(--mono);
     font-size: 0.90625rem;
     color: var(--accent);
+    margin-bottom: 4px;
   }
   .shapes a {
     color: var(--accent);
@@ -574,7 +729,7 @@ const tiles = [
   }
 
   .cta {
-    margin-top: 22px;
+    margin-top: 28px;
     display: flex;
     align-items: baseline;
     gap: 16px;
@@ -587,6 +742,7 @@ const tiles = [
     padding: 9px 14px;
     border: 1px solid var(--accent);
     border-radius: 3px;
+    white-space: nowrap;
     transition:
       background 160ms ease,
       color 160ms ease;
@@ -699,16 +855,56 @@ const tiles = [
       justify-content: flex-start;
     }
 
-    .availability {
-      grid-template-columns: 1fr;
-      padding: 24px 0;
+    .lm-row,
+    .lm-row.no-cover {
+      grid-template-columns: 72px minmax(0, 1fr);
+      gap: 4px 14px;
+      padding: 14px 0;
+      margin: 0;
+      align-items: start;
     }
-    .avail-right {
-      /* Reset desktop's grid-column: 2 so the block stacks under the
-         eyebrow + pill in the single-column mobile layout. */
+    .lm-row.no-cover {
+      grid-template-columns: minmax(0, 1fr);
+    }
+    .lm-mini {
+      grid-row: 1 / 3;
       grid-column: 1;
     }
+    /* Last column: column 2 beside the miniature, the only column without. */
+    .lm-date {
+      grid-row: 1;
+      grid-column: -2 / -1;
+    }
+    .lm-title {
+      grid-row: 2;
+      grid-column: -2 / -1;
+      font-size: 1.25rem;
+    }
+    .lm-date-min {
+      display: inline;
+    }
+    .lm-min {
+      display: none;
+    }
+
+    .availability {
+      padding: 24px 0;
+    }
+    .avail-strip {
+      flex-direction: column;
+      flex-wrap: nowrap;
+      align-items: flex-start;
+      gap: 6px;
+    }
+    .avail-fit {
+      font-size: 1.1875rem;
+    }
+    .shapes {
+      grid-template-columns: 1fr;
+      gap: 10px;
+    }
     .shapes li {
+      padding: 16px 18px;
       font-size: 0.96875rem;
     }
     .cta {

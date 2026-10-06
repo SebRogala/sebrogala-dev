@@ -2,10 +2,12 @@
 // Shared top navigation. Pass `current` to highlight the active page.
 // Showcase sub-pages (/projects/pipeforge) pass current="projects"
 // so the Projects nav slot highlights when the visitor is inside the hub.
+// /right-fit passes current="right-fit", which matches no item: it is not in
+// the nav, and nothing (not even the wordmark) highlights there.
 // The default slot renders inside the sticky stack, under the mobile sub-nav
 // (memo pages put their phone reading-progress bar there).
 interface Props {
-  current?: 'home' | 'projects' | 'memos' | 'talks';
+  current?: 'home' | 'projects' | 'memos' | 'talks' | 'right-fit';
 }
 const { current = 'home' } = Astro.props;
 const isActive = (page: Props['current']) => current === page;
