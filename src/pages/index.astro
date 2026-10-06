@@ -678,13 +678,12 @@ const tiles = [
     font-size: 1.375rem;
     color: var(--fg);
   }
-  /* Set in the line's own colour (as in the reference); the arrow carries the
-     affordance, hover turns it accent like the rows above. */
   .avail-fit a {
+    color: var(--accent);
     transition: color 160ms ease;
   }
   .avail-fit a:hover {
-    color: var(--accent);
+    color: var(--fg);
   }
   .avail-where {
     font-family: var(--sans);
