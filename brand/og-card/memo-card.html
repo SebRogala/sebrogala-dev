@@ -3,12 +3,18 @@
   Memo social card (og:image), 1200x630, one per memo. Rendered by
   render-memos.mjs through render.sh; reads ?title=…&date=DD.MM.YYYY.
   Mark, rule and tag geometry are identical to og-card.html; the tag reads
-  MEMO · DD.MM.YYYY. Title size starts from the character count (up to 80 → 64px,
+  MEMO · DD.MM.YYYY. The name line echoes the top row: name left, domain right,
+  the same rule between them. Title size starts from the character count (up to 80 → 64px,
   up to 110 → 52px, longer → 44px), then steps down while the title would come
   within 24px of the name line: DejaVu Serif runs wider than the fonts the count
-  thresholds were set with. If 44px still collides, <body> gets data-overflow and
-  render-memos.mjs refuses the card.
+  thresholds were set with. If the smallest size still collides, <body> gets
+  data-overflow and render.sh refuses the card.
   /command tokens in the title are set in the mono face at 0.86em.
+  render.sh also renders 1200x900 (4:3) and 1200x1200 (1:1); the format comes
+  from ?format=. Those use a larger size ladder (4:3: 76/64/52px, 1:1:
+  88/72/60px) with the same thresholds and step-down, and set the name line
+  56px under the title, centring the group from mark to name line in the card
+  height. The 16:9 layout is unchanged.
   DejaVu fonts are named explicitly so the render does not depend on a fallback.
 -->
 <html>
@@ -31,18 +37,32 @@
   }
   .title .cmd { font-family: 'DejaVu Sans Mono'; font-size: 0.86em; }
   .name {
-    position: absolute; left: 96px; bottom: 56px;
-    font-family: 'DejaVu Sans Mono'; font-size: 24px; letter-spacing: 1px;
+    position: absolute; left: 96px; right: 95.5px; bottom: 56px;
+    display: flex; align-items: center; gap: 40px;
+    font-family: 'DejaVu Sans Mono'; font-size: 32px; line-height: 1; letter-spacing: 2px;
     color: #beb6a7; white-space: nowrap;
   }
+  .name span:last-child { margin-right: -2px; }
+  .name i { flex: 1; height: 2px; background: #372f26; }
+  [data-format="4x3"], [data-format="4x3"] body { height: 900px; }
+  [data-format="1x1"], [data-format="1x1"] body { height: 1200px; }
+  #comp { position: absolute; inset: 0; }
 </style>
 </head>
 <body>
-  <img class="mark" src="../svg/sebrogala-1.2A-exact-light.svg" alt="">
-  <div class="rule" id="rule"></div>
-  <div class="tag" id="tag"></div>
-  <div class="title" id="title"></div>
-  <div class="name">Sebastian Rogala · sebrogala.dev</div>
+  <script>
+    // Format from the query, not the viewport: headless Chrome's viewport at
+    // script time is shorter than --window-size.
+    var format = new URLSearchParams(location.search).get('format') || '16x9';
+    document.documentElement.dataset.format = format;
+  </script>
+  <div id="comp">
+    <img class="mark" src="../svg/sebrogala-1.2A-exact-light.svg" alt="">
+    <div class="rule" id="rule"></div>
+    <div class="tag" id="tag"></div>
+    <div class="title" id="title"></div>
+  </div>
+  <div class="name"><span>Sebastian Rogala</span><i></i><span>sebrogala.dev</span></div>
   <script>
     var params = new URLSearchParams(location.search);
     var title = params.get('title') || '';
@@ -60,7 +80,7 @@
       el.appendChild(span);
     });
 
-    var sizes = [64, 52, 44];
+    var sizes = { '16x9': [64, 52, 44], '4x3': [76, 64, 52], '1x1': [88, 72, 60] }[format];
     var limit = document.querySelector('.name').getBoundingClientRect().top - 24;
     var i = title.length <= 80 ? 0 : title.length <= 110 ? 1 : 2;
     el.style.fontSize = sizes[i] + 'px';
@@ -71,6 +91,17 @@
 
     var tag = document.getElementById('tag').getBoundingClientRect();
     document.getElementById('rule').style.width = (tag.left - 50 - 274) + 'px';
+
+    if (format !== '16x9') {
+      // The name line follows the title, and the group from mark to name line is
+      // centred in the card height. The sizing above still guards the overflow.
+      var nameEl = document.querySelector('.name');
+      nameEl.style.bottom = 'auto';
+      nameEl.style.top = (el.getBoundingClientRect().bottom + 56) + 'px';
+      document.getElementById('comp').appendChild(nameEl);
+      var shift = (document.body.offsetHeight - (nameEl.getBoundingClientRect().bottom - 150)) / 2 - 150;
+      document.getElementById('comp').style.transform = 'translateY(' + shift + 'px)';
+    }
   </script>
 </body>
 </html>

@@ -15,6 +15,7 @@ import {
   type Memo,
 } from '../../lib/memos';
 import { blogPostingJsonLd } from '../../lib/structuredData';
+import { cardFormats } from '../../lib/ogCard';
 import { readingMinutesTotal } from '../../lib/reading';
 
 export async function getStaticPaths() {
@@ -40,7 +41,7 @@ const jsonLd = blogPostingJsonLd({
   headline: title,
   description,
   url,
-  image: new URL(ogImage, site).href,
+  image: cardFormats(ogImage).map((path) => new URL(path, site).href),
   published,
   updated,
 });

@@ -1,5 +1,6 @@
 #!/usr/bin/env node
-// Render each memo's OG card to public/og/memos/<slug>.png via render.sh.
+// Render each memo's OG card to public/og/memos/<slug>.png via render.sh, which
+// also writes <slug>-4x3.png and <slug>-1x1.png.
 // Usage (from the repo root):
 //   node brand/og-card/render-memos.mjs            render cards that do not exist yet
 //   node brand/og-card/render-memos.mjs --force    re-render every card
@@ -45,7 +46,8 @@ if (only && slugs.length === 0) throw new Error(`No memo file for slug "${only}"
 
 for (const slug of slugs) {
   const out = join(outDir, `${slug}.png`);
-  if (existsSync(out) && !force && !only) {
+  const outs = ['', '-4x3', '-1x1'].map((suffix) => join(outDir, `${slug}${suffix}.png`));
+  if (outs.every((file) => existsSync(file)) && !force && !only) {
     console.log(`skip   ${slug} (exists)`);
     continue;
   }
@@ -55,9 +57,7 @@ for (const slug of slugs) {
   if (!title || !/^\d{4}-\d{2}-\d{2}/.test(published ?? '')) throw new Error(`${slug}: needs title and an ISO published date`);
   const [y, m, d] = published.slice(0, 10).split('-');
   const query = new URLSearchParams({ title, date: `${d}.${m}.${y}` }).toString();
-  // The template marks a title that collides with the name line even at 44px.
-  const dom = execFileSync('google-chrome', ['--headless', '--disable-gpu', '--no-sandbox', '--window-size=1200,630', '--dump-dom', `file://${join(here, 'memo-card.html')}?${query}`], { encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] });
-  if (/<body[^>]*data-overflow/.test(dom)) throw new Error(`${slug}: title too long for the card even at 44px; shorten it`);
+  // render.sh exits non-zero (and this throws) when the title overflows a format.
   execFileSync(join(here, 'render.sh'), [out, 'memo-card.html', query], { stdio: 'inherit' });
   manifest[slug] = { title, date: `${d}.${m}.${y}` };
   console.log(`render ${slug} → ${out}`);

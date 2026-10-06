@@ -9,6 +9,10 @@
   Rendered at 2x and box-downscaled; a 1x render hints the glyphs differently.
   The rule runs from x=274 to 50px before the tagline box, so a longer tagline
   gives a shorter rule.
+  render.sh also renders 1200x900 (4:3) and 1200x1200 (1:1), for structured data
+  that lists one image per aspect ratio. The format comes from ?format=. In
+  the taller formats the name sets on two centred lines at a larger size, and the block
+  from mark to the name's last baseline is centred vertically. The 16:9 layout is unchanged.
 -->
 <html>
 <head>
@@ -28,16 +32,38 @@
     font-family: 'DejaVu Serif'; font-size: 116px; line-height: 1;
     color: #ede3d1; white-space: nowrap;
   }
+  [data-format="4x3"], [data-format="4x3"] body { height: 900px; }
+  [data-format="1x1"], [data-format="1x1"] body { height: 1200px; }
+  #comp { position: absolute; inset: 0; }
+  [data-format="4x3"] .name { font-size: 150px; }
+  [data-format="1x1"] .name { font-size: 192px; }
+  [data-format="4x3"] .name span, [data-format="1x1"] .name span { display: block; }
+  [data-format="4x3"] .name, [data-format="1x1"] .name { left: 0; right: 0; text-align: center; }
 </style>
 </head>
 <body>
-  <img class="mark" src="../svg/sebrogala-1.2A-exact-light.svg" alt="">
-  <div class="rule" id="rule"></div>
-  <div class="tag" id="tag">AI-NATIVE SOFTWARE ENGINEER</div>
-  <div class="name">Sebastian Rogala</div>
+  <script>
+    // Format from the query, not the viewport: headless Chrome's viewport at
+    // script time is shorter than --window-size.
+    var format = new URLSearchParams(location.search).get('format') || '16x9';
+    document.documentElement.dataset.format = format;
+  </script>
+  <div id="comp">
+    <img class="mark" src="../svg/sebrogala-1.2A-exact-light.svg" alt="">
+    <div class="rule" id="rule"></div>
+    <div class="tag" id="tag">AI-NATIVE SOFTWARE ENGINEER</div>
+    <div class="name" id="name"><span>Sebastian</span> <span>Rogala</span></div>
+  </div>
   <script>
     var tag = document.getElementById('tag').getBoundingClientRect();
     document.getElementById('rule').style.width = (tag.left - 50 - 274) + 'px';
+    if (format !== '16x9') {
+      // Centre on the last baseline, not the line box: DejaVu's descent is ~0.24em.
+      var nameEl = document.getElementById('name');
+      var bottom = nameEl.getBoundingClientRect().bottom - 0.24 * parseFloat(getComputedStyle(nameEl).fontSize);
+      var shift = (document.body.offsetHeight - (bottom - 150)) / 2 - 150;
+      document.getElementById('comp').style.transform = 'translateY(' + shift + 'px)';
+    }
   </script>
 </body>
 </html>

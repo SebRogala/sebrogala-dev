@@ -8,6 +8,7 @@
 //   publishedTime / modifiedTime   article dates, emitted as ISO 8601
 //   jsonLd                 structured data object(s), see src/lib/structuredData.ts
 //   noindex                keeps the page out of search results (404)
+import { siteCard } from '../lib/ogCard';
 
 interface Props {
   title?: string;
@@ -24,9 +25,7 @@ interface Props {
 const {
   title = 'Sebastian Rogala, AI-Native Software Engineer | Agentic SDLC',
   description = 'AI-native software engineer who builds by directing AI agents and verifying the outcome. Talks, workshops and consulting on AI-native delivery.',
-  // Social card. Versioned filename: a future swap gets a new URL, so platform and
-  // CDN caches never serve a stale card. LinkedIn caches previews for 7 days.
-  ogImage = '/og-card-v3.png',
+  ogImage = siteCard,
   ogImageAlt = 'Sebastian Rogala, AI-Native Software Engineer',
   ogType = 'website',
   publishedTime,

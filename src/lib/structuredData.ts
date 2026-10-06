@@ -1,5 +1,6 @@
 // JSON-LD for the <head> (passed to Base as `jsonLd`). Person facts live here
 // once; every value is something the site already shows on its pages.
+import { cardFormats, siteCard } from './ogCard';
 
 const site = 'https://sebrogala.dev';
 
@@ -11,13 +12,18 @@ const person = {
   sameAs: ['https://linkedin.com/in/sebrogala', 'https://github.com/SebRogala'],
 };
 
-export const personJsonLd = { '@context': 'https://schema.org', ...person };
+export const personJsonLd = {
+  '@context': 'https://schema.org',
+  ...person,
+  image: cardFormats(siteCard).map((path) => new URL(path, site).href),
+};
 
 interface BlogPostingInput {
   headline: string;
   description: string;
   url: string;
-  image: string;
+  /** Absolute URLs, one per aspect ratio (cardFormats). */
+  image: string[];
   published: Date;
   updated?: Date;
 }

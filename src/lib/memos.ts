@@ -3,6 +3,7 @@
 import { existsSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { getCollection, type CollectionEntry } from 'astro:content';
+import { cardFormats } from './ogCard';
 
 export type Memo = CollectionEntry<'memos'>;
 
@@ -101,18 +102,21 @@ export const excerptText = (memo: Memo) =>
 
 // ─── OG card ─────────────────────────────────────────────────────
 
-/** Site path of the memo's OG card; rendered by brand/og-card/render-memos.mjs. */
+/** Site path of the memo's 16:9 OG card; rendered, with its cardFormats()
+ * siblings, by brand/og-card/render-memos.mjs. */
 export const ogCardPath = (memo: Memo) => `/og/memos/${memo.id}.png`;
 
 /**
- * Fails the build when a memo's card is missing or stale (rendered for another
+ * Fails the build when any of a memo's card renders is missing, or the card is stale (rendered for another
  * title or date than the memo now has), so no memo ships with a wrong card.
  * render-memos.mjs records what each card shows in brand/og-card/memo-cards.json.
  */
 export const assertOgCard = (memo: Memo) => {
   const fix = `Run: node brand/og-card/render-memos.mjs --only ${memo.id}`;
-  const file = join(process.cwd(), 'public', ogCardPath(memo));
-  if (!existsSync(file)) throw new Error(`Missing OG card for memo "${memo.id}": ${file}. ${fix}`);
+  for (const path of cardFormats(ogCardPath(memo))) {
+    const file = join(process.cwd(), 'public', path);
+    if (!existsSync(file)) throw new Error(`Missing OG card for memo "${memo.id}": ${file}. ${fix}`);
+  }
   const manifestPath = join(process.cwd(), 'brand', 'og-card', 'memo-cards.json');
   const rendered = existsSync(manifestPath) ? JSON.parse(readFileSync(manifestPath, 'utf8'))[memo.id] : undefined;
   const expected = { title: memo.data.title, date: formatDate(memo.data.published) };
