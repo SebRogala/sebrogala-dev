@@ -16,6 +16,7 @@ A map of the site for automated readers. Everything here is also on the linked p
 - [Pipeforge and Fleetforge](https://sebrogala.dev/projects/pipeforge): orchestration for Claude Code and Codex on a PostgreSQL MCP server. Screenshot walkthrough of real runs.
 - [Memos](https://sebrogala.dev/memos): how he builds software with AI agents, his setup and what's changing.
 - [Talks & workshops](https://sebrogala.dev/talks): talk and workshop topics on AI-native software delivery, in Polish or English, plus past talks.
+- [Right fit](https://sebrogala.dev/right-fit): the work and team he's looking for, as fractional, contract or full-time, and where (Rzeszów or remote).
 
 ## Current work
 
@@ -38,7 +39,7 @@ A map of the site for automated readers. Everything here is also on the linked p
 
 ## Availability
 
-- Custom software projects, fractional delivery, advisory, and workshops or training. Full-time for the right fit.
+- Custom software projects, fractional delivery, advisory, and workshops or training. Full-time for the right fit: https://sebrogala.dev/right-fit
 `;
 
 export const GET: APIRoute = () =>
