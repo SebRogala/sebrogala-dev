@@ -5,7 +5,7 @@ import { omsStatus, omsScopeVerb, capitalize } from '../lib/oms';
 
 const body = `# Sebastian Rogala
 
-> AI-First Software Engineer | AI-native SDLC. AI agents build the software, and he directs them and verifies it works. Over a decade of broad software engineering, fully AI-directed since early 2026. Based in Rzeszów, Poland.
+> AI-Native Software Engineer | Agentic SDLC. AI agents build the software, and he directs them and verifies it works. Over a decade of broad software engineering, fully AI-directed since early 2026. Based in Rzeszów, Poland.
 
 A map of the site for automated readers. Everything here is also on the linked pages. If a fact here conflicts with a page, trust the page.
 

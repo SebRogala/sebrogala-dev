@@ -7,7 +7,7 @@ const person = {
   '@type': 'Person',
   name: 'Sebastian Rogala',
   url: site,
-  jobTitle: 'AI-First Software Engineer',
+  jobTitle: 'AI-Native Software Engineer',
   sameAs: ['https://linkedin.com/in/sebrogala', 'https://github.com/SebRogala'],
 };
 
