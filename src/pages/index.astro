@@ -1,4 +1,5 @@
 ---
+import { Image } from 'astro:assets';
 import Base from '../layouts/Base.astro';
 import TopNav from '../components/TopNav.astro';
 import PastTalks from '../components/PastTalks.astro';
@@ -7,6 +8,7 @@ import { omsLive, omsPhase, omsScopeVerb, capitalize } from '../lib/oms';
 import { personJsonLd } from '../lib/structuredData';
 import { getMemos, formatDate, renderTitle, wordCount } from '../lib/memos';
 import { readingMinutesTotal } from '../lib/reading';
+import heroArt from '../assets/site-hero-fleet-v3.webp';
 
 // Newest three; fewer when fewer are published, none renders no section.
 const latestMemos = (await getMemos()).slice(0, 3);
@@ -80,10 +82,12 @@ const tiles = [
 
     <!-- ── Fan-out illustration (no caption; alt carries it) ─── -->
     <div class="hero-art">
-      <img
-        src="/site-hero-fleet-v3.webp"
-        width="1536"
-        height="1024"
+      <Image
+        src={heroArt}
+        widths={[480, 740, 1110, 1480]}
+        sizes="(min-width: 900px) min(50vw, 600px), (max-width: 740px) 100vw, 740px"
+        loading="eager"
+        fetchpriority="high"
         alt="Illustration: Sebastian facing a coordinator agent that fans out to supervisors, orchestrators and many working agents."
       />
     </div>
@@ -150,12 +154,11 @@ const tiles = [
                   <a href={`/memos/${memo.id}`} class:list={['lm-row', { 'no-cover': !memo.data.cover }]}>
                     {memo.data.cover && (
                       <figure class="lm-mini">
-                        <img
+                        <Image
                           src={memo.data.cover.src}
-                          width={memo.data.cover.width}
-                          height={memo.data.cover.height}
+                          widths={[96, 192, 288]}
+                          sizes="88px"
                           alt=""
-                          loading="lazy"
                         />
                       </figure>
                     )}

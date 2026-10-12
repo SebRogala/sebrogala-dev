@@ -1,4 +1,4 @@
-import { defineConfig } from 'astro/config';
+import { defineConfig, fontProviders } from 'astro/config';
 import sitemap from '@astrojs/sitemap';
 import headEntities from './integrations/head-entities.mjs';
 import { existsSync, readFileSync } from 'node:fs';
@@ -36,6 +36,43 @@ export default defineConfig({
   site,
   trailingSlash: 'never',
   redirects,
+  // Page CSS is a few KiB; inlined it no longer blocks first paint.
+  build: {
+    inlineStylesheets: 'always',
+  },
+  // Self-hosted at build time (no fonts.googleapis.com round trip), with
+  // metric-matched fallbacks so the swap does not shift layout.
+  experimental: {
+    fonts: [
+      {
+        provider: fontProviders.google(),
+        name: 'Source Serif 4',
+        cssVariable: '--font-serif',
+        weights: [400, 500],
+        styles: ['normal', 'italic'],
+        subsets: ['latin'],
+        fallbacks: ['Georgia', 'serif'],
+      },
+      {
+        provider: fontProviders.google(),
+        name: 'Inter',
+        cssVariable: '--font-sans',
+        weights: [400, 500, 600],
+        styles: ['normal'],
+        subsets: ['latin'],
+        fallbacks: ['Helvetica Neue', 'sans-serif'],
+      },
+      {
+        provider: fontProviders.google(),
+        name: 'JetBrains Mono',
+        cssVariable: '--font-mono',
+        weights: [400, 500],
+        styles: ['normal'],
+        subsets: ['latin'],
+        fallbacks: ['ui-monospace', 'Menlo', 'monospace'],
+      },
+    ],
+  },
   integrations: [
     headEntities(),
     sitemap({

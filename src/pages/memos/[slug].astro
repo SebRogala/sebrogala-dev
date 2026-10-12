@@ -1,4 +1,5 @@
 ---
+import { Image } from 'astro:assets';
 import Base from '../../layouts/Base.astro';
 import TopNav from '../../components/TopNav.astro';
 import SiteFooter from '../../components/SiteFooter.astro';
@@ -82,7 +83,14 @@ const jsonLd = blogPostingJsonLd({
     {
       cover && (
         <figure class="memo-cover">
-          <img src={cover.src} width={cover.width} height={cover.height} alt={cover.alt} />
+          <Image
+            src={cover.src}
+            widths={[480, 740, 1110, 1480]}
+            sizes="(max-width: 740px) 100vw, 740px"
+            loading="eager"
+            fetchpriority="high"
+            alt={cover.alt}
+          />
         </figure>
       )
     }

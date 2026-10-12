@@ -11,17 +11,17 @@ const memos = defineCollection({
     base: './src/content/memos',
     generateId: ({ entry }) => entry.replace(/\.md$/, ''),
   }),
-  schema: z.object({
+  schema: ({ image }) => z.object({
     title: z.string(),
     published: z.coerce.date(),
     // Optional. When set: dateModified, article:modified_time, sitemap lastmod.
     updated: z.coerce.date().optional(),
     // The memo's own image (page + index thumbnail). Not the OG card.
+    // src is relative to the .md file; astro:assets reads its dimensions and
+    // renders the resized variants.
     cover: z
       .object({
-        src: z.string(),
-        width: z.number(),
-        height: z.number(),
+        src: image(),
         alt: z.string(),
       })
       .optional(),

@@ -1,4 +1,5 @@
 ---
+import { Image } from 'astro:assets';
 import Base from '../../layouts/Base.astro';
 import TopNav from '../../components/TopNav.astro';
 import SiteFooter from '../../components/SiteFooter.astro';
@@ -30,12 +31,11 @@ const memos = await getMemos();
               </div>
               {memo.data.cover && (
                 <figure class="memo-thumb">
-                  <img
+                  <Image
                     src={memo.data.cover.src}
-                    width={memo.data.cover.width}
-                    height={memo.data.cover.height}
+                    widths={[200, 400, 640, 960]}
+                    sizes="(max-width: 640px) 100vw, 200px"
                     alt={memo.data.cover.alt}
-                    loading="lazy"
                   />
                 </figure>
               )}

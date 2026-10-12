@@ -2,9 +2,7 @@
 title: "Claude Design, and the playbook I needed to get it built 1:1"
 published: 2026-10-05
 cover:
-  src: /memos/claude-design-playbook/cover.webp
-  width: 1672
-  height: 941
+  src: ../../assets/memos/claude-design-playbook.webp
   alt: "Illustration: a person carries an intake from a coding agent to Claude Design, and a handoff package back to the coding agent, which builds the app."
 ---
 

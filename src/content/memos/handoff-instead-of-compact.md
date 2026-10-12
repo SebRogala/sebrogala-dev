@@ -2,9 +2,7 @@
 title: "I haven't hit /compact in months"
 published: 2026-10-04
 cover:
-  src: /memos/handoff-instead-of-compact/cover.webp
-  width: 1672
-  height: 941
+  src: ../../assets/memos/handoff-instead-of-compact.webp
   alt: "Illustration: a session ring near full hands a document to a fresh session, which fans out to three smaller agents."
 ---
 

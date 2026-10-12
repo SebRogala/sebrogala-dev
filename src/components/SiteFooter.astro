@@ -97,10 +97,15 @@ const hasBackLinks = Astro.slots.has('default');
     .footer-back {
       margin-bottom: 12px;
     }
+    /* Stacked links: padding makes each tap target ~36px tall without
+       changing the visual rhythm much (gap dropped to compensate). */
     .footer-links {
       flex-direction: column;
       align-items: center;
-      gap: 4px;
+      gap: 0;
+    }
+    .footer-links a {
+      padding: 8px 4px;
     }
     .footer-links .sep {
       display: none;
