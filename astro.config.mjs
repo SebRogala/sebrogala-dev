@@ -40,8 +40,10 @@ export default defineConfig({
   build: {
     inlineStylesheets: 'always',
   },
-  // Self-hosted at build time (no fonts.googleapis.com round trip), with
-  // metric-matched fallbacks so the swap does not shift layout.
+  // Self-hosted at build time (no fonts.googleapis.com round trip). Astro's
+  // generated fallbacks are off: they cover Times/Arial/Courier only (absent
+  // on Android and Linux) and tuned the serif one to the italic file. The
+  // metric-matched fallback faces live in src/layouts/Base.astro instead.
   experimental: {
     fonts: [
       {
@@ -51,7 +53,8 @@ export default defineConfig({
         weights: [400, 500],
         styles: ['normal', 'italic'],
         subsets: ['latin'],
-        fallbacks: ['Georgia', 'serif'],
+        fallbacks: ['Serif Fallback', 'Serif Fallback Android', 'Georgia', 'serif'],
+        optimizedFallbacks: false,
       },
       {
         provider: fontProviders.google(),
@@ -60,7 +63,8 @@ export default defineConfig({
         weights: [400, 500, 600],
         styles: ['normal'],
         subsets: ['latin'],
-        fallbacks: ['Helvetica Neue', 'sans-serif'],
+        fallbacks: ['Sans Fallback', 'Sans Fallback Android', 'Helvetica Neue', 'sans-serif'],
+        optimizedFallbacks: false,
       },
       {
         provider: fontProviders.google(),
@@ -69,7 +73,8 @@ export default defineConfig({
         weights: [400, 500],
         styles: ['normal'],
         subsets: ['latin'],
-        fallbacks: ['ui-monospace', 'Menlo', 'monospace'],
+        fallbacks: ['Mono Fallback', 'ui-monospace', 'Menlo', 'monospace'],
+        optimizedFallbacks: false,
       },
     ],
   },

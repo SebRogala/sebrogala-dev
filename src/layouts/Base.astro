@@ -201,9 +201,11 @@ const jsonLdHtml = jsonLd && JSON.stringify(jsonLd).replace(/</g, '\\u003c');
           },
           { passive: true }
         );
-        // First check in a frame: reading scrollY synchronously here forced a
-        // layout mid-parse (Lighthouse "forced reflow").
-        visRaf = requestAnimationFrame(update);
+        // First check after load: reading scrollY earlier (even in a frame)
+        // forced the page's first layout ahead of time — Lighthouse attributed
+        // ~300ms of blocking reflow to it on mobile. A restored scroll position
+        // also fires a scroll event, which the listener above handles.
+        window.addEventListener('load', update, { once: true });
 
         function easeOutCubic(t) {
           return 1 - Math.pow(1 - t, 3);
@@ -237,6 +239,53 @@ const jsonLdHtml = jsonLd && JSON.stringify(jsonLd).replace(/</g, '\\u003c');
 </html>
 
 <style is:global>
+  /* ─── Font fallbacks ─────────────────────────────────────────────
+     Shown until the webfonts load, sized to their metrics so the swap does
+     not shift layout. Overrides use Capsize's formula (as Astro does) against
+     the regular-weight webfont files. Liberation fonts share Times/Arial/
+     Courier metrics, so one face covers Windows, macOS and Linux; Android has
+     none of them and gets Noto Serif / Roboto. Recompute if a font changes. */
+  @font-face {
+    font-family: 'Serif Fallback';
+    src: local('Times New Roman'), local('Liberation Serif');
+    size-adjust: 117.9077%;
+    ascent-override: 87.8653%;
+    descent-override: 28.4121%;
+    line-gap-override: 0%;
+  }
+  @font-face {
+    font-family: 'Serif Fallback Android';
+    src: local('Noto Serif'), local('NotoSerif-Regular');
+    size-adjust: 99.5842%;
+    ascent-override: 104.0326%;
+    descent-override: 33.6399%;
+    line-gap-override: 0%;
+  }
+  @font-face {
+    font-family: 'Sans Fallback';
+    src: local('Arial'), local('Liberation Sans');
+    size-adjust: 107.1194%;
+    ascent-override: 90.4365%;
+    descent-override: 22.518%;
+    line-gap-override: 0%;
+  }
+  @font-face {
+    font-family: 'Sans Fallback Android';
+    src: local('Roboto'), local('Roboto-Regular');
+    size-adjust: 107.3546%;
+    ascent-override: 90.2384%;
+    descent-override: 22.4686%;
+    line-gap-override: 0%;
+  }
+  @font-face {
+    font-family: 'Mono Fallback';
+    src: local('Courier New'), local('Liberation Mono');
+    size-adjust: 99.9837%;
+    ascent-override: 102.0166%;
+    descent-override: 30.0049%;
+    line-gap-override: 0%;
+  }
+
   /* ─── Palette (R6 — Notebook brown) ─────────────────────────────── */
   :root {
     /* ─── Type scale ──────────────────────────────────────────────
