@@ -26,3 +26,7 @@ Add a line here when you add a component.
 
 Run `npm test` and `npm run build` before you commit. The build fails on a memo figure
 whose `after` text starts no paragraph, and on a missing or stale OG card.
+
+After a change to `src/content.config.ts`, stop the dev server, delete `.astro/`, and start
+it again. Until then the dev server keeps serving entries parsed with the old schema (seen
+with Astro 5.18: a new frontmatter field stayed missing across plain restarts).
