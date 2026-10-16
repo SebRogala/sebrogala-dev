@@ -244,7 +244,8 @@ const jsonLdHtml = jsonLd && JSON.stringify(jsonLd).replace(/</g, '\\u003c');
      not shift layout. Overrides use Capsize's formula (as Astro does) against
      the regular-weight webfont files. Liberation fonts share Times/Arial/
      Courier metrics, so one face covers Windows, macOS and Linux; Android has
-     none of them and gets Noto Serif / Roboto. Recompute if a font changes. */
+     none of them and gets Noto Serif / Roboto. When a font changes, rebuild and
+     paste the output of `node scripts/font-fallback-overrides.mjs`. */
   @font-face {
     font-family: 'Serif Fallback';
     src: local('Times New Roman'), local('Liberation Serif');
