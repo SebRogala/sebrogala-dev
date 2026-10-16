@@ -25,6 +25,18 @@ const memos = defineCollection({
         alt: z.string(),
       })
       .optional(),
+    // Inline SVG diagrams. Each renders after the body paragraph that starts
+    // with `after`; `svg` is a file in src/assets/memos/. The build fails when
+    // `after` matches no paragraph.
+    figures: z
+      .array(
+        z.object({
+          after: z.string(),
+          svg: z.string(),
+          alt: z.string(),
+        }),
+      )
+      .optional(),
   }),
 });
 

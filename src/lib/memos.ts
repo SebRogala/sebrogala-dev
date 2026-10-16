@@ -26,18 +26,48 @@ export const paragraphs = (memo: Memo) =>
 
 export const wordCount = (memo: Memo) => paragraphs(memo).join(' ').split(/\s+/).length;
 
+export type MemoFigure = { alt: string; svg: string };
+
+/** Body paragraphs, each with the figures that follow it. Throws when a
+ * figure's `after` text starts no paragraph, so a misplaced figure fails the build. */
+export const bodyBlocks = (memo: Memo) => {
+  const ps = paragraphs(memo);
+  const figures = memo.data.figures ?? [];
+  for (const f of figures) {
+    if (!ps.some((p) => p.startsWith(f.after))) {
+      throw new Error(`Memo "${memo.id}": figure "${f.svg}" follows "${f.after}", which starts no paragraph.`);
+    }
+  }
+  return ps.map((text) => ({
+    text,
+    figures: figures
+      .filter((f) => text.startsWith(f.after))
+      .map((f): MemoFigure => ({
+        alt: f.alt,
+        svg: readFileSync(join(process.cwd(), 'src', 'assets', 'memos', f.svg), 'utf8').replace(
+          /^<svg\b/,
+          `<svg role="img" aria-label="${escapeHtml(f.alt)}"`,
+        ),
+      })),
+  }));
+};
+
 // ─── Inline rendering ────────────────────────────────────────────
 // A memo's source keeps raw URLs; no raw URL is ever shown as text:
 //   1. a GitHub issue URL renders as `#<n>`, inside the author's parentheses;
 //   2. `word (url)` renders as the word, linked, parenthetical dropped;
 //   3. any other bare URL renders as its hostname, linked.
-// `/command` tokens (/compact, /deliver, …) render as inline code.
+// `/command` tokens (/compact, /deliver, …) and `backticked` spans render as
+// inline code.
 
 const escapeHtml = (s: string) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 
 const COMMAND = /(^|[\s(“])(\/[a-z][a-z0-9-]*)(?=$|[\s.,;:!?)”])/g;
+const CODE_SPAN = /`([^`]+)`/g;
 const commands = (text: string, open = '<code>', close = '</code>') =>
-  escapeHtml(text).replace(COMMAND, (_, lead, cmd) => `${lead}${open}${cmd}${close}`);
+  escapeHtml(text)
+    .replace(CODE_SPAN, (_, code) => `${open}${code}${close}`)
+    .replace(COMMAND, (_, lead, cmd) => `${lead}${open}${cmd}${close}`);
 
 const ISSUE = /^https?:\/\/github\.com\/[^\s)]*\/issues\/(\d+)/;
 // Case 2 first (word + parenthesised URL), then any URL on its own.

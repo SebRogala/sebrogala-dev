@@ -1,0 +1,33 @@
+---
+title: "My orchestrator can't see the next step anymore"
+published: 2026-10-17
+cover:
+  src: ../../assets/memos/graph-walker-engine.webp
+  alt: "Illustration: a server holds a hidden workflow graph and pushes out one step; a worker agent acts on that step while the orchestrator only watches it."
+figures:
+  - after: "Here is how it works now."
+    svg: graph-walker-engine-sequence.svg
+    alt: "Sequence diagram: the orchestrator creates a run and starts pipeforge walk; the walker takes a lease from the MCP server, which hands out one step at a time; shell steps run in the walker, agent steps go to seats, judgments go back to the orchestrator."
+---
+
+In my first memo I wrote that I was building a “graph walker”, something that turns /deliver into small, defined steps executed one by one, and that it was still in build. Since 16.10.2026 my mid-size delivery workflow runs fully on it. This memo is about why I needed it, how it works, and what the first fully logged run showed, including the parts that didn't work.
+
+When I started with LLMs, I quickly saw that I needed some kind of orchestrator. Delivering one task is a fairly defined process. It has stages and dependencies, not every stage is always needed, and sometimes something extra is required. The easiest way to get that is a skill of my own that calls the stages one after another, and each stage can be its own skill, so the logic isn't duplicated. That works well until the process gets big.
+
+At some point my orchestrator started skipping steps. Instead of following its instructions, it chose to do things its own way. One example is a red gate for too many lines in a class. The instruction says clearly that the orchestrator spawns the architecture-auditor, and usually that's exactly what happened. But there were times it decided to read the auditor's contract itself and do the work on its own, and its verdict was wrong. When I noticed, I told it to spawn the auditor after all, to check whether the earlier decision was right. It wasn't. Nothing had to move to shared code. The domain had just grown a bit, and part of the class needed extracting into a separate class in the same place, in the same domain.
+
+That showed me an agent won't always stick to what I expect it to stick to, and I started thinking about how to make sure it doesn't happen again. I saw two reasons. The orchestrator could see what came next, so it knew the auditor step was coming and decided to skip it. And the whole managing skill was loaded at the start, so as context grew, the parts of the skill that should fire later were the ones getting lost. The solution that made most sense to me was a completely new engine that hands out the steps of a workflow one at a time.
+
+Here is how it works now. The orchestrator creates a run and starts `pipeforge walk` in the background. The walker holds no graph. It takes a lease from my MCP server, runs whatever step the server hands back, reports the outcome, and repeats until the server says it's done. I call one step an atom. An atom is a shell command (gates, commit, integrate), an agent task sent to a seat (in this run, Codex panes on gpt-6.1-sol, running in herdr), or a judgment that comes back to the orchestrator itself. Every atom has defined inputs and a contract for its result. So in the example above, gates are one atom, the result is red, the walker reports it, and the server decides from the defined workflow that the next atom is the architecture-auditor. The walker sends that atom straight to a seat, so the orchestrator isn't even the one who could skip it. It only gets a short, fresh question when a step needs its judgment, with nothing ahead of it to improvise around. Branches and decisions live on the server as much as possible. In this run the fidelity review was skipped by a branch in the graph, not by the agent.
+
+It doesn't remove all of the orchestrator's discretion, to be fair. Before a walk it still prepares the inputs, like which reviewers run for a given task. That choice follows a rule (the task's scope), but the orchestrator applies the rule itself and nothing checks it yet. So my honest claim is narrower: it can't skip a step that's in the graph.
+
+Getting there wasn't simple. Everything had to be split into atoms, each with its inputs and result contract, the walker had to go atom by atom, and connecting it to MCP and to the coordinator levels from my first memo brought more requirements along the way. A few days ago I got one of my pipelines running on the engine, and it still needed a lot of fixes. Now my mid-size workflow runs fully on it. I've run it on three projects (OMS, Pipeforge itself and ProfitOfExile), and on ProfitOfExile I decided to capture every piece of data I could.
+
+One unit there (one task, from opening the branch to integrating it) took 1h16m. That was three runs and 37 atoms, with 10 Codex seat runs doing the agent work. The orchestrator made 106 API calls, and its context grew from ~64k to ~213k tokens. It cost about $5, and that number is approximate and for the orchestrator alone. The seats aren't in it, because no usage data from them reaches me. About two thirds of those $5 was re-reading cache, since every call pays for the whole context again. While the engine was running atoms, the orchestrator cost nothing, because nobody called it. The task landed as a commit and the test gate passed 151 of 151.
+
+The run also showed what doesn't work yet. For ~38 minutes it just waited. A Codex seat was still booting when a step was sent to it, so the host refused the delivery and the server sent a judgment to the orchestrator. But the orchestrator's own watcher was waiting for a file name that never got written, so the judgment sat there until the supervisor's 55-minute check poked it. That's about half of the unit's time.
+
+The part I keep thinking about is how the orchestrator described it afterwards. It reported the stall as about 15 minutes. It said it answered the judgment at ~18:27, while the file shows 18:47, after the supervisor's ping. It estimated its own context as "well under 100k" when it was at 149k. The engine's logs had the right numbers the whole time, so they are what I check now, not the agent's account of the run.
+
+So the next steps came out of this run. I'm connecting Mercure, so the coordinator gets events instead of finding out at the next 55-minute check. I also plan for the MCP server to call a classifier, initially Jev, to narrow a decision down before it reaches the main LLM. That one isn't built yet, and the engine isn't in its final form either. But the auditor step from that class-size example can't be skipped anymore.
