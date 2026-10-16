@@ -11,7 +11,7 @@ services:
       - infra
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.sebrogala.rule=Host(`sebrogala.localhost`)"
+      - "traefik.http.routers.sebrogala.rule=Host(`sebrogala.dev.localhost`) || Host(`sebrogala.localhost`)"
       - "traefik.http.routers.sebrogala.entrypoints=websecure"
       - "traefik.http.routers.sebrogala.tls=true"
       - "traefik.http.services.sebrogala.loadbalancer.server.port=4321"

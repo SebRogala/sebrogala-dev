@@ -100,13 +100,13 @@ export default defineConfig({
   vite: {
     server: {
       hmr: {
-        host: 'sebrogala.localhost',
+        host: 'sebrogala.dev.localhost',
         protocol: 'wss',
         clientPort: 443,
       },
       // Allow Vite to accept requests from the Traefik-fronted hostname.
       // softsolution.localhost kept for back-compat while infra is being switched over.
-      allowedHosts: ['sebrogala.localhost', 'softsolution.localhost', 'localhost', '127.0.0.1'],
+      allowedHosts: ['sebrogala.dev.localhost', 'sebrogala.localhost', 'softsolution.localhost', 'localhost', '127.0.0.1'],
     },
   },
 });
