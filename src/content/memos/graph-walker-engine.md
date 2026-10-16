@@ -1,6 +1,7 @@
 ---
 title: "My orchestrator can't see the next step anymore"
 published: 2026-10-17
+description: "My orchestrator skipped steps it was told to run, so I built an engine that hands out one step at a time. How it works, and what the first logged run showed."
 cover:
   src: ../../assets/memos/graph-walker-engine.webp
   alt: "Illustration: a server holds a hidden workflow graph and pushes out one step; a worker agent acts on that step while the orchestrator only watches it."
@@ -10,7 +11,7 @@ figures:
     alt: "Sequence diagram: the orchestrator creates a run and starts pipeforge walk; the walker takes a lease from the MCP server, which hands out one step at a time; shell steps run in the walker, agent steps go to seats, judgments go back to the orchestrator."
 ---
 
-In my first memo I wrote that I was building a “graph walker”, something that turns /deliver into small, defined steps executed one by one, and that it was still in build. Since 16.10.2026 my mid-size delivery workflow runs fully on it. This memo is about why I needed it, how it works, and what the first fully logged run showed, including the parts that didn't work.
+In my first memo (https://sebrogala.dev/memos/handoff-instead-of-compact) I wrote that I was building a “graph walker”, something that turns /deliver into small, defined steps executed one by one, and that it was still in build. Since 16.10.2026 my mid-size delivery workflow runs fully on it. This memo is about why I needed it, how it works, and what the first fully logged run showed, including the parts that didn't work.
 
 When I started with LLMs, I quickly saw that I needed some kind of orchestrator. Delivering one task is a fairly defined process. It has stages and dependencies, not every stage is always needed, and sometimes something extra is required. The easiest way to get that is a skill of my own that calls the stages one after another, and each stage can be its own skill, so the logic isn't duplicated. That works well until the process gets big.
 

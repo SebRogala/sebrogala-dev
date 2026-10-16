@@ -14,6 +14,9 @@ const memos = defineCollection({
   schema: ({ image }) => z.object({
     title: z.string(),
     published: z.coerce.date(),
+    // Optional. Meta description and JSON-LD description; the first sentence
+    // of the body is used when absent.
+    description: z.string().optional(),
     // Optional. When set: dateModified, article:modified_time, sitemap lastmod.
     updated: z.coerce.date().optional(),
     // The memo's own image (page + index thumbnail). Not the OG card.

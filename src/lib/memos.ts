@@ -111,8 +111,10 @@ const firstSentence = (memo: Memo) => paragraphs(memo)[0].split(/(?<=\.)\s/)[0];
 /** Excerpt as HTML for the index row. */
 export const excerptHtml = (memo: Memo) => renderPlainLinks(firstSentence(memo));
 
-/** Excerpt as plain text, for meta description and JSON-LD. */
+/** Meta description and JSON-LD text: the frontmatter description, else the
+ * first sentence as plain text. */
 export const excerptText = (memo: Memo) =>
+  memo.data.description ??
   segments(firstSentence(memo))
     .map(({ text }) => text)
     .join('');
