@@ -26,8 +26,6 @@ export const paragraphs = (memo: Memo) =>
 
 export const wordCount = (memo: Memo) => paragraphs(memo).join(' ').split(/\s+/).length;
 
-export type MemoFigure = { alt: string; svg: string };
-
 /** Body paragraphs, each with the figures that follow it. Throws when a
  * figure's `after` text starts no paragraph, so a misplaced figure fails the build. */
 export const bodyBlocks = (memo: Memo) => {
@@ -35,21 +33,10 @@ export const bodyBlocks = (memo: Memo) => {
   const figures = memo.data.figures ?? [];
   for (const f of figures) {
     if (!ps.some((p) => p.startsWith(f.after))) {
-      throw new Error(`Memo "${memo.id}": figure "${f.svg}" follows "${f.after}", which starts no paragraph.`);
+      throw new Error(`Memo "${memo.id}": a figure follows "${f.after}", which starts no paragraph.`);
     }
   }
-  return ps.map((text) => ({
-    text,
-    figures: figures
-      .filter((f) => text.startsWith(f.after))
-      .map((f): MemoFigure => ({
-        alt: f.alt,
-        svg: readFileSync(join(process.cwd(), 'src', 'assets', 'memos', f.svg), 'utf8').replace(
-          /^<svg\b/,
-          `<svg role="img" aria-label="${escapeHtml(f.alt)}"`,
-        ),
-      })),
-  }));
+  return ps.map((text) => ({ text, figures: figures.filter((f) => text.startsWith(f.after)) }));
 };
 
 // ─── Inline rendering ────────────────────────────────────────────

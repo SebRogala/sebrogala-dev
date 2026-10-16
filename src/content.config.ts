@@ -25,15 +25,16 @@ const memos = defineCollection({
         alt: z.string(),
       })
       .optional(),
-    // Inline SVG diagrams. Each renders after the body paragraph that starts
-    // with `after`; `svg` is a file in src/assets/memos/. The build fails when
-    // `after` matches no paragraph.
+    // In-body figures, rendered by src/components/Figure.astro. Each follows
+    // the body paragraph that starts with `after`; src is relative to the .md
+    // file. The build fails when `after` starts no paragraph.
     figures: z
       .array(
         z.object({
           after: z.string(),
-          svg: z.string(),
+          src: image(),
           alt: z.string(),
+          caption: z.string().optional(),
         }),
       )
       .optional(),

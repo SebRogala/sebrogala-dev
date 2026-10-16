@@ -6,7 +6,7 @@ cover:
   alt: "Illustration: a server holds a hidden workflow graph and pushes out one step; a worker agent acts on that step while the orchestrator only watches it."
 figures:
   - after: "Here is how it works now."
-    svg: graph-walker-engine-sequence.svg
+    src: ../../assets/memos/graph-walker-engine-sequence.svg
     alt: "Sequence diagram: the orchestrator creates a run and starts pipeforge walk; the walker takes a lease from the MCP server, which hands out one step at a time; shell steps run in the walker, agent steps go to seats, judgments go back to the orchestrator."
 ---
 
