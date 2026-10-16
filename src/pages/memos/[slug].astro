@@ -86,8 +86,8 @@ const jsonLd = blogPostingJsonLd({
         <figure class="memo-cover">
           <Image
             src={cover.src}
-            widths={[480, 740, 1110, 1480]}
-            sizes="(max-width: 740px) 100vw, 740px"
+            widths={[480, 640, 740, 1110, 1480]}
+            sizes="(max-width: 784px) calc(100vw - 44px), 740px"
             loading="eager"
             fetchpriority="high"
             alt={cover.alt}
@@ -159,7 +159,9 @@ const jsonLd = blogPostingJsonLd({
     bar.hidden = false;
     window.addEventListener('scroll', update, { passive: true });
     window.addEventListener('resize', update);
-    update();
+    // First read after load: earlier, it forced the first layout mid-parse.
+    if (document.readyState === 'complete') update();
+    else window.addEventListener('load', update, { once: true });
   }
 </script>
 
